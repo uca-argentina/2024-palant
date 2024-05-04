@@ -15,3 +15,9 @@ DummyTest >> testPrueba [
 
 	self assert: Dummy new isDummy
 ]
+
+{ #category : #tests }
+DummyTest >> testPrueba2 [
+
+self assert: true
+]
