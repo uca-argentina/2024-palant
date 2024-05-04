@@ -12,6 +12,14 @@ SquareTest >> testIsTrueWhenShipDocks [
 ]
 
 { #category : #tests }
+SquareTest >> testIsTrueWhenShipUndocks [
+	|aSquare aShip|
+	aSquare := Square createEmptySquare.
+	aSquare dockShip: aShip.
+	self assert: (aSquare undockShip: aShip).
+]
+
+{ #category : #tests }
 SquareTest >> testSquareReturnsEmptyCollectionWhenNoDockedShips [ 
 	|aSquare|
 	aSquare := Square createEmptySquare.

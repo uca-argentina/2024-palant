@@ -27,3 +27,9 @@ Square >> getDockedShips [
 Square >> initializeEmptySquare [
 	dockedShips := OrderedCollection new.
 ]
+
+{ #category : #'as yet unclassified' }
+Square >> undockShip: aShip [ 
+	dockedShips remove: aShip ifAbsent: [ ^false ]. 
+	^true.
+]
