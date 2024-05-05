@@ -27,7 +27,8 @@ Board >> findShip: aShip [
 { #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.
-	1 to: aSize do: [:x | squares add: Square createEmptySquare ]
+	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
+	squares add: EndSquare createEmptySquare.
 ]
 
 { #category : #'as yet unclassified' }

@@ -23,6 +23,7 @@ BoardTest >> testMoveDoesntExceedBoard [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize.
+	aShip := Ship named: 'testShip'.
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 20.
 	self assert: ((aBoard findShip: aShip) == (aBoard boardSize)).
