@@ -2,7 +2,8 @@ Class {
 	#name : #Ship,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'winner'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,7 +16,7 @@ Ship class >> named: aName [
 
 { #category : #testing }
 Ship >> initializeName: aName [
-
+	winner := false.
 	name := aName.
 ]
 
@@ -24,10 +25,20 @@ Ship >> isNamed [
 	^true.
 ]
 
+{ #category : #testing }
+Ship >> isWinner [
+	^winner.
+]
+
 { #category : #'as yet unclassified' }
 Ship >> rollDice: someDice [ 
 	|result|
 	result := 0.
 	someDice do: [ :die | result:= result  + die throw ].
 	^result.
+]
+
+{ #category : #testing }
+Ship >> setWinner [
+	winner := true.
 ]
