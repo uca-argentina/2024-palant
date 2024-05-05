@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #asserting }
-DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [ [ 
+DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
 	self should: aErrorBlock raise: anErrorClass withExceptionDo: [:error|self assert: error messageText equals:anErrorMessage].
-]
+
 ]
 
 { #category : #tests }
