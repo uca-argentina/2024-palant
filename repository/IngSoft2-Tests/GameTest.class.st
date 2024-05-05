@@ -4,6 +4,12 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #asserting }
+GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
+	self should: aErrorBlock raise: anErrorClass withExceptionDo: [:error|self assert: error messageText equals:anErrorMessage].
+
+]
+
 { #category : #tests }
 GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
@@ -20,33 +26,8 @@ GameTest >> testValidGameCanBeInitialized [
 ]
 
 { #category : #tests }
-GameTest >> testValidGameCanBePlayed [
-	|game someShips aBoard someDice|
-	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 20.
-	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
-	game:= Game new.
-	game initializeShips: someShips.
-	game initializeBoard: aBoard.
-	game initializeDice: someDice.
-	game begin.
-	self assert: (game getStatus) = 'Playing'.
-]
-
-{ #category : #tests }
 GameTest >> testValidGameCanBeginWhenInitialized [
-	|game someShips aBoard someDice|
-	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 20.
-	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
-	game:= Game new.
-	game initializeShips: someShips.
-	game initializeBoard: aBoard.
-	game initializeDice: someDice.
-	game begin.
-	self assert: (game getStatus) = 'Launching'.
+	self should:[(Game new) begin.] raise: Error withMessage: 'Cannot begin an uninitialized game.'
 ]
 
 { #category : #tests }
