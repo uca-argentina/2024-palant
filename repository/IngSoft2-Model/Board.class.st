@@ -9,7 +9,7 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> withSize: aSize [ 
-	^(self new) initializeSize: aSize.
+	^((self new) initializeSize: aSize) initializeWormSquares.
 ]
 
 { #category : #initialization }
@@ -25,10 +25,41 @@ Board >> findShip: aShip [
 ]
 
 { #category : #initialization }
+Board >> findWormSquares [
+	|positions|
+	positions := OrderedCollection new.
+	1 to: (self boardSize) do: [ :x | ((squares at: x) class == WormSquare) ifTrue:[ positions add: x ] ].
+	^positions.
+	
+	
+]
+
+{ #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.
 	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
 	squares add: EndSquare createEmptySquare.
+]
+
+{ #category : #initialization }
+Board >> initializeWormSquares [ 
+	|worm1Position worm1 worm2Position worm2|
+	
+	worm1Position := (self boardSize - 1) atRandom.
+	worm2Position := (self boardSize - 1) atRandom.
+	[ worm1Position = worm2Position ] whileTrue: [ 
+		worm2Position := (self boardSize - 1) atRandom.
+	 ].
+	
+	worm1 := WormSquare createEmptySquare.
+	worm2 := WormSquare createEmptySquare.
+	
+	worm1 initializeLink: worm2.
+	worm2 initializeLink: worm1.
+	
+	squares at: worm1Position put: worm1.
+	squares at: worm2Position put: worm2.
+	
 ]
 
 { #category : #'as yet unclassified' }
