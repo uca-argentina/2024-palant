@@ -78,6 +78,22 @@ Board >> place: aShip at: aPosition [
 	^true.
 ]
 
+{ #category : #initialization }
+Board >> showBoard [
+	|dockedHere|
+	squares do: [ :square | 
+			((square getDockedShips) isEmpty)
+			ifTrue: [ 
+				Transcript show: '#'
+			]
+			ifFalse: [ 
+				(square getDockedShips) do: [ :thisShip | Transcript show: (thisShip getName). ]. 
+				Transcript show:'.'.
+			]
+		 ].
+	Transcript show: '';cr.
+]
+
 { #category : #'as yet unclassified' }
 Board >> takeOut: aShip [
 	|shipPosition|

@@ -15,6 +15,11 @@ Ship class >> named: aName [
 ]
 
 { #category : #testing }
+Ship >> getName [
+	^name.
+]
+
+{ #category : #testing }
 Ship >> initializeName: aName [
 	winner := false.
 	name := aName.

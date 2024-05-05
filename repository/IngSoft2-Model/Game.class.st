@@ -14,6 +14,7 @@ Class {
 Game >> begin [
 	status := 'Launching'.
 	(self hasBeenInitialized) ifTrue: [ 
+		ships do: [ :ship | board place: ship at: 1 ].
 		self gameplay.
 	] ifFalse: [ 
 		Error signal: 'Cannot begin an uninitialized game.'.
@@ -25,6 +26,7 @@ Game >> begin [
 { #category : #'as yet unclassified' }
 Game >> endGame [
 	status := 'Over'.
+	board showBoard.
 		
 	
 ]
@@ -32,10 +34,12 @@ Game >> endGame [
 { #category : #'as yet unclassified' }
 Game >> gameplay [
 	status := 'Playing'.
-	[ships anySatisfy: [:aShip | aShip isWinner]] whileTrue: [ 
+	[ships anySatisfy: [:aShip | aShip isWinner]] whileFalse: [ 
 			ships do: [ :ship | 
-				board move: ship distance: (ship rollDice: dice). 
-				]
+				(ships anySatisfy: [:aShip | aShip isWinner]) ifFalse: [ 
+					board move: ship distance: (ship rollDice: dice). 
+				].
+			].
 	 ].
 	self endGame.
 		
@@ -51,7 +55,7 @@ Game >> getStatus [
 
 { #category : #'as yet unclassified' }
 Game >> hasBeenInitialized [
-	^((board ~= nil) and: (dice ~= nil)) and: (ships ~= nil).
+	^(((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil).
 ]
 
 { #category : #initialization }
