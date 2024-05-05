@@ -34,6 +34,7 @@ BoardTest >> testMoveReturnsTrueWhenValidMovement [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize.
+	aShip := Ship named: 'TestShip'.
 	aBoard place: aShip at: 1. 
 	self assert: (aBoard move: aShip distance: 4).
 ]
