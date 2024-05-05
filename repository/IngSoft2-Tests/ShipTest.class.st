@@ -22,6 +22,7 @@ ShipTest >> testValidWhenCanRollDice [
 	dice:= OrderedCollection new.
 	dice add: (Die of: 4).
 	aShip := Ship named: 'Nave1'.
+	aShip rollDice: dice.
 	self assert: ((aShip rollDice: dice) > 0).
 ]
 
