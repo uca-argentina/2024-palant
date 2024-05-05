@@ -19,11 +19,12 @@ BoardTest >> testBoardIsCreatedWithNSquares [
 ]
 
 { #category : #tests }
-BoardTest >> testPlaceInInvalidPositionThrowsError [
+BoardTest >> testPlaceAndTakeOutInInvalidPositionThrowsError [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 4.
 	aBoard := Board withSize: aBoardSize .
 	self should: [aBoard place: aShip at: 6] raise: Error withMessage: 'Cannot place ship outside the board.'.
+	aBoard place: aShip at: 4.
 ]
 
 { #category : #tests }
@@ -32,4 +33,13 @@ BoardTest >> testPlaceReturnsTrueWhenValidPlacement [
 	aBoardSize := 4.
 	aBoard := Board withSize: aBoardSize .
 	self assert: (aBoard place: aShip at: 3).
+]
+
+{ #category : #tests }
+BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
+	|aBoard aBoardSize aShip|
+	aBoardSize := 4.
+	aBoard := Board withSize: aBoardSize .
+	aBoard place: aShip at: 3.
+	self assert: (aBoard takeOut: aShip).
 ]
