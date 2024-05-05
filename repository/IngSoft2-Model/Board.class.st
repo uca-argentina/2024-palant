@@ -19,7 +19,9 @@ Board >> boardSize [
 
 { #category : #initialization }
 Board >> findShip: aShip [
+
 	1 to: (self boardSize) do: [:x | ((squares at: x) getDockedShips includes: aShip)  ifTrue: [ ^x ] ].
+
 ]
 
 { #category : #initialization }
@@ -28,10 +30,19 @@ Board >> initializeSize: aSize [
 	1 to: aSize do: [:x | squares add: Square createEmptySquare ]
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> move: aShip distance: aDistance [ 
+	|shipPosition|
+	shipPosition := self findShip: aShip.
+	^((self takeOut: aShip) and: (self place: aShip at: (shipPosition + aDistance)))
+]
+
 { #category : #accessing }
 Board >> place: aShip at: aPosition [ 
-	(aPosition > squares size) ifTrue: [ Error signal: 'Cannot place ship outside the board.'].
+	(aPosition > squares size) ifTrue: [ (squares at: (self boardSize)) dockShip: aShip ]
+	ifFalse: [ 
 	(squares at: aPosition) dockShip: aShip.
+	].
 	^true.
 ]
 
