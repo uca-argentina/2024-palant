@@ -28,6 +28,6 @@ Ship >> isNamed [
 Ship >> rollDice: someDice [ 
 	|result|
 	result := 0.
-	someDice do: [ :die | result + die throw ].
+	someDice do: [ :die | result:= result  + die throw ].
 	^result.
 ]
