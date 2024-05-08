@@ -1,3 +1,6 @@
+"
+Die returns the random number according to the faces it has been initialized with.
+"
 Class {
 	#name : #Die,
 	#superclass : #Object,

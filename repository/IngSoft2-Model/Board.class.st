@@ -1,3 +1,6 @@
+"
+Board is made of squares, has the responsability of moving a ship and the initializers of particular squares.
+"
 Class {
 	#name : #Board,
 	#superclass : #Object,
@@ -12,19 +15,19 @@ Board class >> withSize: aSize [
 	^((self new) initializeSize: aSize) initializeWormSquares.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Board >> boardSize [
 	^(squares size).
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Board >> findShip: aShip [
 
 	1 to: (self boardSize) do: [:x | ((squares at: x) getDockedShips includes: aShip)  ifTrue: [ ^x ] ].
 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Board >> findWormSquares [
 	|positions|
 	positions := OrderedCollection new.
@@ -62,7 +65,7 @@ Board >> initializeWormSquares [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Board >> move: aShip distance: aDistance [ 
 	|shipPosition|
 	shipPosition := self findShip: aShip.
@@ -78,7 +81,7 @@ Board >> place: aShip at: aPosition [
 	^true.
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 Board >> showBoard [
 	|dockedHere|
 	squares do: [ :square | 
@@ -94,7 +97,7 @@ Board >> showBoard [
 	Transcript show: '';cr.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'modifier state' }
 Board >> takeOut: aShip [
 	|shipPosition|
 	shipPosition := (self findShip: aShip).

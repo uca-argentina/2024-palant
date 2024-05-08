@@ -1,3 +1,6 @@
+"
+Square can dock and undock ships from itself and can return which ships are docked there.
+"
 Class {
 	#name : #Square,
 	#superclass : #Object,
@@ -28,7 +31,7 @@ Square >> initializeEmptySquare [
 	dockedShips := OrderedCollection new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Square >> undockShip: aShip [ 
 	dockedShips remove: aShip ifAbsent: [ ^false ]. 
 	^true.

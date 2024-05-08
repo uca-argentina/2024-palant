@@ -1,3 +1,6 @@
+"
+Worm Square consists of a pair that teleports a ship to the according 'linked' square instead of docking it in itself.
+"
 Class {
 	#name : #WormSquare,
 	#superclass : #Square,
@@ -18,7 +21,7 @@ WormSquare >> initializeLink: aWormSquare [
 	linkedSquare := aWormSquare.
 ]
 
-{ #category : #initialization }
+{ #category : #modifying }
 WormSquare >> landShip: aShip [
 	dockedShips add: aShip.
 	^true.

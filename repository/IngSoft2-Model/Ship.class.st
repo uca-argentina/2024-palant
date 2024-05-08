@@ -1,3 +1,6 @@
+"
+Ship needs to have a name, has the responsability to roll the dice each turn and has the satuts winner.
+"
 Class {
 	#name : #Ship,
 	#superclass : #Object,
@@ -19,7 +22,7 @@ Ship >> getName [
 	^name.
 ]
 
-{ #category : #testing }
+{ #category : #'class initialization' }
 Ship >> initializeName: aName [
 	winner := false.
 	name := aName.
@@ -35,7 +38,7 @@ Ship >> isWinner [
 	^winner.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Ship >> rollDice: someDice [ 
 	|result|
 	result := 0.

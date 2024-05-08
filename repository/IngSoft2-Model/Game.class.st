@@ -1,3 +1,6 @@
+"
+Game has all the other classes initializers, a status in order to check whether the game is over or not and has a function for playing out the turns.
+"
 Class {
 	#name : #Game,
 	#superclass : #Object,
@@ -10,7 +13,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Game >> begin [
 	status := 'Launching'.
 	(self hasBeenInitialized) ifTrue: [ 
@@ -23,7 +26,7 @@ Game >> begin [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'modifier state' }
 Game >> endGame [
 	status := 'Over'.
 	board showBoard.
@@ -31,7 +34,7 @@ Game >> endGame [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Game >> gameplay [
 	status := 'Playing'.
 	[ships anySatisfy: [:aShip | aShip isWinner]] whileFalse: [ 
@@ -46,14 +49,14 @@ Game >> gameplay [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - attributes' }
 Game >> getStatus [
 	^status.
 		
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> hasBeenInitialized [
 	^(((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil).
 ]

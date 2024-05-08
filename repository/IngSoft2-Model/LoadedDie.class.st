@@ -1,3 +1,6 @@
+"
+Loaded Die is a specific die to force certain results and test code out.
+"
 Class {
 	#name : #LoadedDie,
 	#superclass : #Object,
