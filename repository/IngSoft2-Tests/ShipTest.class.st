@@ -11,6 +11,17 @@ ShipTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ]
 
 { #category : #tests }
+ShipTest >> testIsValidWhenShipsFuelReducesProportionallyToMovement [
+
+	| aShip aBoard |
+	aBoard := Board withSize: 20 withWorms: false.
+	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 10).
+	aBoard place: aShip at: 1.
+	aBoard move: aShip distance: 5.
+	self assert: aShip tank status = 5
+]
+
+{ #category : #tests }
 ShipTest >> testPassesWhenShipCanRollMultipleDice [
 	
 	|aShip dice |
@@ -25,4 +36,14 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 { #category : #tests }
 ShipTest >> testShipCannotBeCreatedWithEmptyName [
 	self should:[Ship named: ''] raise: Error withMessage: 'Ship must have a name'
+]
+
+{ #category : #tests }
+ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
+	|aShip aBoard|
+	aBoard := Board withSize: 20 withWorms: false. 
+	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 3).
+	aBoard place: aShip at: 1.
+	aBoard move: aShip distance: 10.
+	self assert: ((aBoard findShip: aShip) = 1). 
 ]

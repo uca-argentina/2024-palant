@@ -23,7 +23,7 @@ BoardTest >> testMoveDoesntExceedBoard [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize.
-	aShip := Ship named: 'testShip'.
+	aShip := Ship named: 'testShip' withTank: (FuelTank withMax: 10000).
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 20.
 	self assert: ((aBoard findShip: aShip) = (aBoard boardSize)).
@@ -34,7 +34,7 @@ BoardTest >> testMoveReturnsTrueWhenValidMovement [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false.
-	aShip := Ship named: 'TestShip'.
+	aShip := Ship named: 'TestShip' withTank: (FuelTank withMax: 10000).
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 4.
 	self assert: ((aBoard findShip: aShip) = 5)

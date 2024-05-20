@@ -80,10 +80,17 @@ Board >> initializeWormSquares [
 ]
 
 { #category : #action }
-Board >> move: aShip distance: aDistance [ 
-	|shipPosition|
+Board >> move: aShip distance: aDistance [
+
+	| shipPosition |
 	shipPosition := self findShip: aShip.
-	^((self takeOut: aShip) and: (self place: aShip at: (shipPosition + aDistance)))
+	(aShip consumeFuel: aDistance)
+		ifTrue: [
+			(self takeOut: aShip) and:
+				(self place: aShip at: shipPosition + aDistance) ]
+		ifFalse: [ self resetToStart: aShip.
+					  aShip tank reset.
+					 ]
 ]
 
 { #category : #accessing }
@@ -93,6 +100,12 @@ Board >> place: aShip at: aPosition [
 	(squares at: aPosition) dockShip: aShip.
 	].
 	^true.
+]
+
+{ #category : #'modifier state' }
+Board >> resetToStart: aShip [
+	self takeOut: aShip.
+	self place: aShip at: 1.
 ]
 
 { #category : #action }
