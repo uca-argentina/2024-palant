@@ -11,19 +11,20 @@ ShipTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ]
 
 { #category : #tests }
-ShipTest >> testShipCannotBeCreatedWithEmptyName [
-	self should:[Ship named: ''] raise: Error withMessage: 'Ship must have a name'
-]
-
-{ #category : #tests }
-ShipTest >> testValidWhenCanRollDice [
+ShipTest >> testPassesWhenShipCanRollMultipleDice [
 	
 	|aShip dice |
 	dice:= OrderedCollection new.
-	dice add: (Die of: 4).
+	dice add: (LoadedDie of: 4).
+	dice add: (LoadedDie of: 5).
 	aShip := Ship named: 'Nave1'.
 	aShip rollDice: dice.
-	self assert: ((aShip rollDice: dice) > 0).
+	self assert: ((aShip rollDice: dice) = 9).
+]
+
+{ #category : #tests }
+ShipTest >> testShipCannotBeCreatedWithEmptyName [
+	self should:[Ship named: ''] raise: Error withMessage: 'Ship must have a name'
 ]
 
 { #category : #tests }

@@ -26,25 +26,27 @@ BoardTest >> testMoveDoesntExceedBoard [
 	aShip := Ship named: 'testShip'.
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 20.
-	self assert: ((aBoard findShip: aShip) == (aBoard boardSize)).
+	self assert: ((aBoard findShip: aShip) = (aBoard boardSize)).
 ]
 
 { #category : #tests }
 BoardTest >> testMoveReturnsTrueWhenValidMovement [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize.
+	aBoard := Board withSize: aBoardSize withWorms: false.
 	aShip := Ship named: 'TestShip'.
 	aBoard place: aShip at: 1. 
-	self assert: (aBoard move: aShip distance: 4).
+	aBoard move: aShip distance: 4.
+	self assert: ((aBoard findShip: aShip) = 5)
 ]
 
 { #category : #tests }
 BoardTest >> testPlaceReturnsTrueWhenValidPlacement [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 4.
-	aBoard := Board withSize: aBoardSize .
-	self assert: (aBoard place: aShip at: 3).
+	aBoard := Board withSize: aBoardSize withWorms: false .
+	aBoard place: aShip at: 3.
+	self assert: ((aBoard findShip: aShip) = 3).
 ]
 
 { #category : #tests }
@@ -53,5 +55,6 @@ BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
 	aBoardSize := 4.
 	aBoard := Board withSize: aBoardSize .
 	aBoard place: aShip at: 3.
-	self assert: (aBoard takeOut: aShip).
+	aBoard takeOut: aShip.
+	self assert: ((aBoard findShip: aShip) = -1).
 ]

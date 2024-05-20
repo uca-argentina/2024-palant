@@ -15,6 +15,14 @@ Board class >> withSize: aSize [
 	^((self new) initializeSize: aSize) initializeWormSquares.
 ]
 
+{ #category : #'instance creation' }
+Board class >> withSize: aSize withWorms: hasWorms [
+	|boardToReturn|
+	boardToReturn := ((self new) initializeSize: aSize).
+	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
+	^boardToReturn 
+]
+
 { #category : #accessing }
 Board >> boardSize [
 	^(squares size).
@@ -24,6 +32,7 @@ Board >> boardSize [
 Board >> findShip: aShip [
 
 	1 to: (self boardSize) do: [:x | ((squares at: x) getDockedShips includes: aShip)  ifTrue: [ ^x ] ].
+	^-1.
 
 ]
 
