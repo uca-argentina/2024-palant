@@ -28,11 +28,6 @@ Ship >> initializeName: aName [
 	name := aName.
 ]
 
-{ #category : #testing }
-Ship >> isNamed [
-	^true.
-]
-
 { #category : #accessing }
 Ship >> rollDice: someDice [ 
 	|result|

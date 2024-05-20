@@ -21,9 +21,7 @@ TotalTest >> testRandomGameFinishes [
 	board := Board withSize: ((5 to: 50) atRandom).
 	
 	game := Game new.
-	game initializeBoard: board.
-	game initializeDice: dice.
-	game initializeShips: ships.
+	game initializeBoard: board initializeDice: dice initializeShips: ships.
 	game begin.
 	self assert:((game getStatus) = 'Over').
 	

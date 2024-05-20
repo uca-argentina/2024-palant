@@ -67,6 +67,13 @@ Game >> initializeBoard: aBoard [
 ]
 
 { #category : #initialization }
+Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips [ 
+	board := aBoard.
+	ships := someShips.
+	dice := someDice.
+]
+
+{ #category : #initialization }
 Game >> initializeDice: someDice [ 
 	dice := someDice.
 ]

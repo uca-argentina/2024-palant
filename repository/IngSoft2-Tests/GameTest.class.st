@@ -18,9 +18,7 @@ GameTest >> testValidGameCanBeInitialized [
 	aBoard := Board withSize: 20.
 	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
 	game:= Game new.
-	game initializeShips: someShips.
-	game initializeBoard: aBoard.
-	game initializeDice: someDice.
+	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips.
 
 	self assert: (game hasBeenInitialized).
 ]
@@ -33,9 +31,7 @@ GameTest >> testValidGameCanFinish [
 	aBoard := Board withSize: 40.
 	someDice := OrderedCollection with: (Die of: 3) with: (Die of: 4).
 	game:= Game new.
-	game initializeShips: someShips.
-	game initializeBoard: aBoard.
-	game initializeDice: someDice.
+	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips.
 	game begin.
 	self assert: (game getStatus) = 'Over'.
 ]

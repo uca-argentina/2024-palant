@@ -26,11 +26,3 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 ShipTest >> testShipCannotBeCreatedWithEmptyName [
 	self should:[Ship named: ''] raise: Error withMessage: 'Ship must have a name'
 ]
-
-{ #category : #tests }
-ShipTest >> testValidWhenShipIsCreated [
-
-	|aShip|
-	aShip := Ship new.
-	self assert: aShip isNamed.
-]
