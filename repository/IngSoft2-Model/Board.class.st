@@ -37,6 +37,11 @@ Board >> findWormSquares [
 	
 ]
 
+{ #category : #testing }
+Board >> hasWinner [
+	^((squares at: self boardSize) getDockedShips isNotEmpty)
+]
+
 { #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.

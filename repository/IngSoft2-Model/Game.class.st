@@ -37,9 +37,9 @@ Game >> endGame [
 { #category : #action }
 Game >> gameplay [
 	status := 'Playing'.
-	[ships anySatisfy: [:aShip | aShip isWinner]] whileFalse: [ 
+	[board hasWinner] whileFalse: [ 
 			ships do: [ :ship | 
-				(ships anySatisfy: [:aShip | aShip isWinner]) ifFalse: [ 
+				(board hasWinner) ifFalse: [ 
 					board move: ship distance: (ship rollDice: dice). 
 				].
 			].

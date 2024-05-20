@@ -33,20 +33,10 @@ Ship >> isNamed [
 	^true.
 ]
 
-{ #category : #testing }
-Ship >> isWinner [
-	^winner.
-]
-
 { #category : #accessing }
 Ship >> rollDice: someDice [ 
 	|result|
 	result := 0.
 	someDice do: [ :die | result:= result  + die throw ].
 	^result.
-]
-
-{ #category : #testing }
-Ship >> setWinner [
-	winner := true.
 ]

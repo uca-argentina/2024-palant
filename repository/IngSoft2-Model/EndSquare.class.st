@@ -10,6 +10,5 @@ Class {
 { #category : #modifying }
 EndSquare >> dockShip: aShip [
 	dockedShips add: aShip.
-	aShip setWinner.
 	^true.
 ]
