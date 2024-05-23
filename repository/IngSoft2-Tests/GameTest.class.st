@@ -31,7 +31,7 @@ GameTest >> testValidGameCanFinish [
 	aBoard := Board withSize: 40.
 	someDice := OrderedCollection with: (Die of: 3) with: (Die of: 4).
 	game:= Game new.
-	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips.
+	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 3.
 	game begin.
 	self assert: (game getStatus) = 'Over'.
 ]

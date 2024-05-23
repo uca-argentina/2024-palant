@@ -8,7 +8,8 @@ Class {
 		'board',
 		'dice',
 		'ships',
-		'status'
+		'status',
+		'maxLaps'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -37,9 +38,9 @@ Game >> endGame [
 { #category : #action }
 Game >> gameplay [
 	status := 'Playing'.
-	[board hasWinner] whileFalse: [ 
+	[self hasWinner] whileFalse: [ 
 			ships do: [ :ship | 
-				(board hasWinner) ifFalse: [ 
+				(self hasWinner) ifFalse: [ 
 					board move: ship distance: (ship rollDice: dice). 
 				].
 			].
@@ -61,6 +62,11 @@ Game >> hasBeenInitialized [
 	^(((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil).
 ]
 
+{ #category : #action }
+Game >> hasWinner [
+	^(ships anySatisfy: [:x | x getLaps = maxLaps]).
+]
+
 { #category : #initialization }
 Game >> initializeBoard: aBoard [ 
 	board := aBoard.
@@ -68,6 +74,14 @@ Game >> initializeBoard: aBoard [
 
 { #category : #initialization }
 Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips [ 
+	board := aBoard.
+	ships := someShips.
+	dice := someDice.
+]
+
+{ #category : #initialization }
+Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps [
+	maxLaps := someLaps.
 	board := aBoard.
 	ships := someShips.
 	dice := someDice.
