@@ -22,7 +22,7 @@ BoardTest >> testBoardIsCreatedWithNSquares [
 BoardTest >> testMoveDoesntExceedBoard [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize.
+	aBoard := Board withSize: aBoardSize withWorms: false.
 	aShip := Ship named: 'testShip' withTank: (FuelTank withMax: 10000).
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 14.
