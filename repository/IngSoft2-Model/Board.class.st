@@ -12,7 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> withSize: aSize [ 
-	^((self new) initializeSize: aSize) initializeWormSquares.
+	^((self new) initializeSize: aSize).
 ]
 
 { #category : #'instance creation' }

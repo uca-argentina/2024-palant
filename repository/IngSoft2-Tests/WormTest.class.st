@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 WormTest >> testWormHolesAreInitialized [
 	|aBoard wormPositions|
-	aBoard := Board withSize: 20.
+	aBoard := Board withSize: 20 withWorms: true.
 	wormPositions := aBoard findWormSquares.
 	self assert: (((wormPositions at: 1) isNotNil) and: ((wormPositions at: 2) isNotNil )).
 ]
@@ -15,7 +15,7 @@ WormTest >> testWormHolesAreInitialized [
 { #category : #tests }
 WormTest >> testWormHolesTeleportShips [
 	|aBoard aShip wormPositions|
-	aBoard := Board withSize: 20.
+	aBoard := Board withSize: 20 withWorms: true.
 	aShip := Ship named: 'TestShip'.
 	wormPositions := aBoard findWormSquares.
 	aBoard place: aShip at: (wormPositions at: 1).
