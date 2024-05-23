@@ -46,11 +46,6 @@ Board >> findWormSquares [
 	
 ]
 
-{ #category : #testing }
-Board >> hasWinner [
-	^((squares at: self boardSize) getDockedShips isNotEmpty)
-]
-
 { #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.
@@ -95,10 +90,17 @@ Board >> move: aShip distance: aDistance [
 
 { #category : #accessing }
 Board >> place: aShip at: aPosition [ 
-	(aPosition > squares size) ifTrue: [ (squares at: (self boardSize)) dockShip: aShip ]
-	ifFalse: [ 
-	(squares at: aPosition) dockShip: aShip.
-	].
+	|moveTo|
+	moveTo := aPosition.
+	[moveTo > self boardSize] whileTrue: [	
+			aShip addLap.
+			moveTo := (moveTo - self boardSize)
+			].
+	[moveTo < 0] whileTrue: [	
+			aShip subtractLap.
+			moveTo := (moveTo + self boardSize)
+			].
+	(squares at: moveTo) dockShip: aShip.
 	^true.
 ]
 

@@ -25,8 +25,8 @@ BoardTest >> testMoveDoesntExceedBoard [
 	aBoard := Board withSize: aBoardSize.
 	aShip := Ship named: 'testShip' withTank: (FuelTank withMax: 10000).
 	aBoard place: aShip at: 1. 
-	aBoard move: aShip distance: 20.
-	self assert: ((aBoard findShip: aShip) = (aBoard boardSize)).
+	aBoard move: aShip distance: 14.
+	self assert: ((aBoard findShip: aShip) = 5).
 ]
 
 { #category : #tests }
@@ -47,6 +47,39 @@ BoardTest >> testPlaceReturnsTrueWhenValidPlacement [
 	aBoard := Board withSize: aBoardSize withWorms: false .
 	aBoard place: aShip at: 3.
 	self assert: ((aBoard findShip: aShip) = 3).
+]
+
+{ #category : #tests }
+BoardTest >> testShipCanMoveBackwards [
+	|aShip aBoard|
+	aBoard := Board withSize: 10 withWorms: false.
+	aShip := Ship named: 'PEPE'.
+	aBoard place: aShip at: 5.
+	aBoard move: aShip distance: -3.
+	self assert: ((aBoard findShip: aShip) = 2).  
+]
+
+{ #category : #tests }
+BoardTest >> testShipsCanDoBackwardsLaps [ 
+	|aBoard aBoardSize aShip|
+	aBoardSize := 10.
+	aBoard := Board withSize: aBoardSize withWorms: false.
+	aShip := Ship named: 'testShip' withTank: (FuelTank withMax: 10000).
+	aBoard place: aShip at: 1. 
+	aShip addLap.
+	aBoard move: aShip distance: -3.
+	self assert: ((aBoard findShip: aShip) = 8).
+]
+
+{ #category : #tests }
+BoardTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
+	|aBoard aBoardSize aShip|
+	aBoardSize := 10.
+	aBoard := Board withSize: aBoardSize.
+	aShip := Ship named: 'testShip' withTank: (FuelTank withMax: 10000).
+	aBoard place: aShip at: 1. 
+	aBoard move: aShip distance: 14.
+	self assert: ((aShip getLaps ) = 1).
 ]
 
 { #category : #tests }
