@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'name',
 		'fuelTank',
-		'laps'
+		'laps',
+		'cooldown'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -30,8 +31,25 @@ Ship >> addLap [
 ]
 
 { #category : #accessing }
+Ship >> canPlay [
+	(cooldown > 0) ifTrue: [ 
+			cooldown := cooldown - 1.
+			^false. 
+		] ifFalse:[
+		^true.
+		]
+]
+
+{ #category : #accessing }
 Ship >> consumeFuel: someFuel [
 	^(fuelTank consumeFuel: someFuel).
+]
+
+{ #category : #testing }
+Ship >> decideToPlay [
+	((3 atRandom) = 1) ifFalse: [ ^ true].
+	^false.
+	
 ]
 
 { #category : #testing }
@@ -46,15 +64,30 @@ Ship >> getName [
 
 { #category : #'class initialization' }
 Ship >> initializeName: aName [
+	cooldown:=0.
 	laps := 0.
 	name := aName.
 ]
 
 { #category : #'class initialization' }
 Ship >> initializeName: aName initializeTank: aTank [
+	cooldown:=0.
 	laps := 0.
 	name := aName.
 	fuelTank := aTank.
+]
+
+{ #category : #accessing }
+Ship >> play: someDice [
+	(self canPlay) ifTrue:[
+		(self decideToPlay) ifTrue:[
+			^self rollDice: someDice.
+		] ifFalse:[
+			^self skipTurn.
+		].
+	] ifFalse:[
+		^0.
+	].
 ]
 
 { #category : #accessing }
@@ -63,6 +96,12 @@ Ship >> rollDice: someDice [
 	result := 0.
 	someDice do: [ :die | result:= result  + die throw ].
 	^result.
+]
+
+{ #category : #accessing }
+Ship >> skipTurn [ 
+	fuelTank reset.
+	^0.
 ]
 
 { #category : #testing }

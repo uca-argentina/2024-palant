@@ -39,6 +39,27 @@ ShipTest >> testShipCannotBeCreatedWithEmptyName [
 ]
 
 { #category : #tests }
+ShipTest >> testShipDoesntMoveWhenSkipsTurn [
+	|aShip aBoard|
+	aBoard := Board withSize: 20. 
+	aShip := Ship named: 'Pepe'.
+	aBoard place: aShip at: 1.
+	aBoard move: aShip distance: (aShip skipTurn).
+	self assert: ((aBoard findShip: aShip) = 1). 
+]
+
+{ #category : #tests }
+ShipTest >> testShipGetsRefueledWhenSkipsTurn [
+	|aShip aBoard|
+	aBoard := Board withSize: 20. 
+	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 20).
+	aBoard place: aShip at: 1.
+	aBoard move: aShip distance: 5.
+	aBoard move: aShip distance: (aShip skipTurn).
+	self assert: (aShip tank status = 20). 
+]
+
+{ #category : #tests }
 ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
 	|aShip aBoard|
 	aBoard := Board withSize: 20 withWorms: false. 
