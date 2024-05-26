@@ -120,3 +120,18 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 	aBoard move: aShip distance: (aShip play: someDice).
 	self assert:((aBoard findShip: aShip) = 1). 
 ]
+
+{ #category : #tests }
+EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
+	|someDice aShip aBoard allShips|
+	someDice := OrderedCollection with: (LoadedDie of: 4).
+	aShip := Ship named: 'Pepe'.
+	allShips := OrderedCollection new.
+	allShips add: aShip.
+	aBoard := Board withSize: 20.
+	aBoard initializeEffects.
+	aBoard place: aShip at: 12.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
+	aBoard move: aShip distance: (aShip play: someDice).
+	self assert:((aBoard findShip: aShip) = 13). 
+]
