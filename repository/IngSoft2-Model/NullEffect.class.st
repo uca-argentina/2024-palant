@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-NullEffect >> applyEffect: affectedShip inBoard: aBoard [
+NullEffect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 	^true.
 ]

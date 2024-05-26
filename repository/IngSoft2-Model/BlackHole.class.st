@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-BlackHole >> applyEffect: affectedShip inBoard: aBoard [
-	aBoard move: affectedShip  distance: -4. 
+BlackHole >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+	aBoard move: affectedShip  distance: -4.
 ]

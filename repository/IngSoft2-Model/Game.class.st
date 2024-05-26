@@ -41,7 +41,7 @@ Game >> gameplay [
 	[self hasWinner] whileFalse: [ 
 			ships do: [ :ship | 
 				(self hasWinner) ifFalse: [ 
-					(board move: ship distance: (ship rollDice: dice)) applyEffect: ship inBoard: board. 
+					(board move: ship distance: (ship rollDice: dice)) applyEffect: ship withShips: ships inBoard: board. 
 				].
 			].
 	 ].

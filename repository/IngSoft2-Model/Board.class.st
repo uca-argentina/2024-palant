@@ -49,6 +49,7 @@ Board >> findWormSquares [
 { #category : #initialization }
 Board >> initializeEffects [
 	(squares at: 5) initializeWithEffect: BlackHole new.
+	(squares at: 7) initializeWithEffect: AtomicBomb new.
 ]
 
 { #category : #initialization }
