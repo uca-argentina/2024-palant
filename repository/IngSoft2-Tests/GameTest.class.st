@@ -27,7 +27,7 @@ GameTest >> testValidGameCanBeInitialized [
 GameTest >> testValidGameCanFinish [
 	|game someShips aBoard someDice|
 	
-	someShips := OrderedCollection with: (Ship named: 'Pepe' withTank: (FuelTank withMax: 10000)).	
+	someShips := OrderedCollection with: (Ship named: 'Pepe').	
 	aBoard := Board withSize: 40.
 	someDice := OrderedCollection with: (Die of: 3) with: (Die of: 4).
 	game:= Game new.

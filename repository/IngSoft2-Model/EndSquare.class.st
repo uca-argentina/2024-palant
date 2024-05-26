@@ -6,9 +6,3 @@ Class {
 	#superclass : #Square,
 	#category : #'IngSoft2-Model'
 }
-
-{ #category : #modifying }
-EndSquare >> dockShip: aShip [
-	dockedShips add: aShip.
-	^true.
-]

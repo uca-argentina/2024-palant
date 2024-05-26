@@ -47,6 +47,56 @@ Board >> findWormSquares [
 ]
 
 { #category : #initialization }
+Board >> initializeEffects [
+	(squares at: 5) initializeWithEffect: BlackHole new.
+	(squares at: 7) initializeWithEffect: AtomicBomb new.
+	(squares at: 9) initializeWithEffect: (MoonWalk withDistance: 3).
+	(squares at: 11) initializeWithEffect: (HyperJump withParsecs: (#(4 8) asOrderedCollection)).
+	(squares at: 13) initializeWithEffect: (HyperGravity withNecessaryRolledResult: 3).
+	
+
+	(squares at: 2) initializeWithEffect: BlackHole new.
+	(squares at: 3) initializeWithEffect: (AtomicBomb new).
+	
+]
+
+{ #category : #initialization }
+Board >> initializeRandomEffects: someDice [
+	|probabilityScore|
+	squares do: [ :square | 
+	probabilityScore := 100 atRandom.
+	
+	(probabilityScore <= 40) ifTrue: [ 
+		square initializeWithEffect: NullEffect new.
+		].
+	
+	(probabilityScore > 40) ifTrue: [ 
+		square initializeWithEffect: BlackHole new.
+		].
+	
+	(probabilityScore > 60) ifTrue: [ 
+		|maxRoll|
+		maxRoll := 0.
+		someDice do: [ :dice | maxRoll := maxRoll + (dice getMax ) ].
+		square initializeWithEffect: (HyperGravity withNecessaryRolledResult: (maxRoll atRandom)).
+		].
+	
+	(probabilityScore > 80) ifTrue: [ 
+		square initializeWithEffect: (MoonWalk withDistance: (self boardSize atRandom)).
+		].
+		
+	(probabilityScore > 90) ifTrue: [ 
+		square initializeWithEffect: (HyperJump withParsecs: (#(2 4 3 5 9 10) asOrderedCollection)).
+		].
+	
+	(probabilityScore > 98) ifTrue: [ 
+		square initializeWithEffect: (AtomicBomb new).
+		].
+	
+	].
+]
+
+{ #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.
 	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
@@ -81,10 +131,13 @@ Board >> move: aShip distance: aDistance [
 	shipPosition := self findShip: aShip.
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
-			(self takeOut: aShip) and:
-				(self place: aShip at: shipPosition + aDistance) ]
+			(self takeOut: aShip).
+			^(self place: aShip at: shipPosition + aDistance)
+			 ]
 		ifFalse: [ self resetToStart: aShip.
 					  aShip tank reset.
+					  aShip penalize: (MovePenalization withCooldown: 2).
+					  ^NullEffect new.
 					 ]
 ]
 
@@ -100,8 +153,7 @@ Board >> place: aShip at: aPosition [
 			aShip subtractLap.
 			moveTo := (moveTo + self boardSize)
 			].
-	(squares at: moveTo) dockShip: aShip.
-	^true.
+	^(squares at: moveTo) dockShip: aShip.
 ]
 
 { #category : #'modifier state' }

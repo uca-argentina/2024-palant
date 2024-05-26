@@ -25,6 +25,11 @@ Die class >> of: anAmountOfFaces [
 ]
 
 { #category : #initialization }
+Die >> getMax [
+^faces.
+]
+
+{ #category : #initialization }
 Die >> initializeOf: anAmountOfFaces [
 	faces:=anAmountOfFaces
 
