@@ -122,6 +122,19 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 ]
 
 { #category : #tests }
+EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
+	|aShip downedShip aBoard|
+	aShip := Ship named: 'Pepe'.
+	downedShip := Ship named: 'Mati'.
+	aBoard := Board withSize: 5.
+	aBoard place: aShip at: 1. 
+	aBoard place: downedShip  at: 4. 
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aBoard.
+	self deny:((aBoard findShip: aShip) = 1).
+	self assert: ((aBoard findShip: downedShip ) = 4). 
+]
+
+{ #category : #tests }
 EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
 	|someDice aShip aBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 4).
@@ -134,4 +147,19 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
 	aBoard move: aShip distance: (aShip play: someDice).
 	self assert:((aBoard findShip: aShip) = 13). 
+]
+
+{ #category : #tests }
+EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
+	|someDice aShip aBoard allShips|
+	someDice := OrderedCollection with: (LoadedDie of: 3).
+	aShip := Ship named: 'Pepe'.
+	allShips := OrderedCollection new.
+	allShips add: aShip.
+	aBoard := Board withSize: 20.
+	aBoard initializeEffects.
+	aBoard place: aShip at: 12.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
+	aBoard move: aShip distance: (aShip play: someDice).
+	self assert:((aBoard findShip: aShip) = 16). 
 ]

@@ -8,11 +8,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MovePenalization class >> withCooldown [
-	^(self new) initializeCooldown.
+MovePenalization class >> withCooldown: aCooldown [
+	^(self new) initializeCooldown: aCooldown.
 ]
 
 { #category : #initialization }
-MovePenalization >> initializeCooldown [
-	^cooldown.
+MovePenalization >> canMove: aDistance [
+	(cooldown <= 0) ifFalse:[
+		cooldown := cooldown - 1.
+		^false.
+		].
+	^true.
+]
+
+{ #category : #initialization }
+MovePenalization >> initializeCooldown: aCooldown [
+	cooldown := aCooldown.
 ]

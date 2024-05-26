@@ -6,5 +6,5 @@ Class {
 
 { #category : #testing }
 MoveCondition >> canMove: aDistance [
-	^true.
+	self subclassResponsibility.
 ]
