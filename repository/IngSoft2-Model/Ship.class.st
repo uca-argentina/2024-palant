@@ -78,6 +78,11 @@ Ship >> initializeName: aName initializeTank: aTank [
 ]
 
 { #category : #accessing }
+Ship >> penalize [
+	cooldown := 2.
+]
+
+{ #category : #accessing }
 Ship >> play: someDice [
 	(self canPlay) ifTrue:[
 		(self decideToPlay) ifTrue:[
