@@ -47,6 +47,11 @@ Board >> findWormSquares [
 ]
 
 { #category : #initialization }
+Board >> initializeEffects [
+	(squares at: 5) initializeWithEffect: BlackHole new.
+]
+
+{ #category : #initialization }
 Board >> initializeSize: aSize [ 
 	squares := OrderedCollection new.
 	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
@@ -81,10 +86,12 @@ Board >> move: aShip distance: aDistance [
 	shipPosition := self findShip: aShip.
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
-			(self takeOut: aShip) and:
-				(self place: aShip at: shipPosition + aDistance) ]
+			(self takeOut: aShip).
+			^(self place: aShip at: shipPosition + aDistance)
+			 ]
 		ifFalse: [ self resetToStart: aShip.
 					  aShip tank reset.
+					  ^NullEffect new.
 					 ]
 ]
 
@@ -100,8 +107,7 @@ Board >> place: aShip at: aPosition [
 			aShip subtractLap.
 			moveTo := (moveTo + self boardSize)
 			].
-	(squares at: moveTo) dockShip: aShip.
-	^true.
+	^(squares at: moveTo) dockShip: aShip.
 ]
 
 { #category : #'modifier state' }

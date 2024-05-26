@@ -5,7 +5,8 @@ Class {
 	#name : #Square,
 	#superclass : #Object,
 	#instVars : [
-		'dockedShips'
+		'dockedShips',
+		'myEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,7 +19,7 @@ Square class >> createEmptySquare [
 { #category : #initialization }
 Square >> dockShip: aShip [
 	dockedShips add: aShip.
-	^true.
+	^myEffect.
 ]
 
 { #category : #initialization }
@@ -28,6 +29,13 @@ Square >> getDockedShips [
 
 { #category : #initialization }
 Square >> initializeEmptySquare [
+	myEffect := NullEffect new.
+	dockedShips := OrderedCollection new.
+]
+
+{ #category : #initialization }
+Square >> initializeWithEffect: anEffect [
+	myEffect := anEffect. 
 	dockedShips := OrderedCollection new.
 ]
 
