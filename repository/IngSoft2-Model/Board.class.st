@@ -51,6 +51,7 @@ Board >> initializeEffects [
 	(squares at: 5) initializeWithEffect: BlackHole new.
 	(squares at: 7) initializeWithEffect: AtomicBomb new.
 	(squares at: 9) initializeWithEffect: (MoonWalk withDistance: 3).
+	(squares at: 11) initializeWithEffect: (HyperJump withParsecs: (#(4 8) asOrderedCollection)).
 ]
 
 { #category : #initialization }

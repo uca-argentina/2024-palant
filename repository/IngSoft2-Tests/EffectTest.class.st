@@ -58,6 +58,35 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 ]
 
 { #category : #tests }
+EffectTest >> testHyperJumpMovesShipOneParsecFurther [
+	|aShip aBoard shipList|
+	aShip := Ship named: 'Pepe'.
+	shipList := OrderedCollection new.
+	shipList add: aShip.
+	aBoard := Board withSize: 80.
+	aBoard initializeEffects.
+	aBoard place: aShip at: 10.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	self assert:((aBoard findShip: aShip) = 21). 
+]
+
+{ #category : #tests }
+EffectTest >> testHyperJumpParsecListResets [
+	|aShip aBoard shipList|
+	aShip := Ship named: 'Pepe'.
+	shipList := OrderedCollection new.
+	shipList add: aShip.
+	aBoard := Board withSize: 80.
+	aBoard initializeEffects.
+	aBoard place: aShip at: 10.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	aBoard takeOut: aShip.
+	aBoard place: aShip at: 10.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	self assert:((aBoard findShip: aShip) = 31). 
+]
+
+{ #category : #tests }
 EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	|aShip bShip aBoard allShips|
 	aShip := Ship named: 'Pepe'.
