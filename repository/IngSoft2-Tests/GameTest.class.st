@@ -11,8 +11,8 @@ GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ]
 
 { #category : #tests }
-GameTest >> testGameCanGetRanking [
-	|aShip bShip cShip ships board dice game|
+GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
+	|aShip bShip cShip ships board dice game results|
 	
 	dice := OrderedCollection with: (LoadedDie of: 4).
 	aShip := Ship named: 'Pepe'.
@@ -27,9 +27,9 @@ GameTest >> testGameCanGetRanking [
 	board place: bShip at: 50.
 	board place: cShip at: 1.
 	board move: cShip distance: 120.
-	
 	game getRanking.
-	"self assert:((game getStatus) = 'Over')."
+	"results := game getRanking.
+	self assert:((results at:1) = cShip)."
 ]
 
 { #category : #tests }
