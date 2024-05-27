@@ -11,6 +11,28 @@ GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ]
 
 { #category : #tests }
+GameTest >> testGameCanGetRanking [
+	|aShip bShip cShip ships board dice game|
+	
+	dice := OrderedCollection with: (LoadedDie of: 4).
+	aShip := Ship named: 'Pepe'.
+	bShip := Ship named: 'Pedro'.
+	cShip := Ship named: 'Juan'.
+	ships := OrderedCollection with: aShip with: bShip with: cShip.
+	board := Board withSize: 100.
+	
+	game := Game new.
+	game initializeBoard: board initializeDice: dice initializeShips: ships initializeMaxLaps: 3.
+	board place: aShip at: 10.
+	board place: bShip at: 50.
+	board place: cShip at: 1.
+	board move: cShip distance: 120.
+	
+	game getRanking.
+	"self assert:((game getStatus) = 'Over')."
+]
+
+{ #category : #tests }
 GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
 	

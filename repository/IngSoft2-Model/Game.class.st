@@ -49,6 +49,20 @@ Game >> gameplay [
 		
 ]
 
+{ #category : #action }
+Game >> getRanking [
+	|shipDict sortedShips index|
+	shipDict := Dictionary new.
+	ships do: [ :ship | shipDict at: ship getName put: ((ship getLaps) * (board  boardSize) + (board findShip: ship)) ].
+	sortedShips := shipDict associations asSortedCollection: [ :a :b | a value < b value ].
+	sortedShips := sortedShips reversed.
+	index := 1.
+	sortedShips do: [ :assoc |
+    Transcript show: 'Ship: ', assoc key; show: ' -> Position: ', index asString; cr.
+	index := index + 1.
+].
+]
+
 { #category : #'accessing - attributes' }
 Game >> getStatus [
 	^status.
