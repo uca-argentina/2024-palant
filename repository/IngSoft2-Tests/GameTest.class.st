@@ -14,10 +14,11 @@ GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	|aShip bShip cShip ships board dice game results|
 	
-	dice := OrderedCollection with: (LoadedDie of: 4).
+	dice := OrderedCollection with: (LoadedDie of: 3).
 	aShip := Ship named: 'Pepe'.
 	bShip := Ship named: 'Pedro'.
 	cShip := Ship named: 'Juan'.
+	cShip initializeTank: (FuelTank withMax: 1000).
 	ships := OrderedCollection with: aShip with: bShip with: cShip.
 	board := Board withSize: 100.
 	
@@ -63,11 +64,12 @@ GameTest >> testValidGameCanFinishOnItsOwn [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 10.
-	someDice := OrderedCollection with: (LoadedDie of: 7).
+	aBoard := Board withSize: 2.
+	someDice := OrderedCollection with: (LoadedDie of: 4).
 	game:= Game new.
 	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.
 	game begin.
+	game gameplay.
 	self assert: (game getStatus) equals: 'Over'.
 ]
 

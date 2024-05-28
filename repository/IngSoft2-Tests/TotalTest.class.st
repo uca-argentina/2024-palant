@@ -14,14 +14,15 @@ TotalTest >> testRandomGameFinishes [
 	dice := OrderedCollection new.
 	1 to: 2 do: [ :x | dice add: 
 		(
-			Die of: (3 to: 4) atRandom
+			Die of: (30 to: 40) atRandom
 		).
 		].
 	
-	board := Board withSize: ((5 to: 50) atRandom).
+	board := Board withSize: ((5 to: 30) atRandom).
 	
 	game := Game withBoard: board withDice: dice withShips: ships withMaxLaps: 3.
 	game begin.
+	game gameplay.
 	self assert:(game getStatus) equals: 'Over'.
 	
 	

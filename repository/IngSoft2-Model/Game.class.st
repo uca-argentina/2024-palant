@@ -24,9 +24,8 @@ Game >> begin [
 	status := 'Launching'.
 	(self hasBeenInitialized) ifTrue: [ 
 		ships do: [ :ship |
-			ship initializeTank: (FuelTank withMax: self calculateMaxFuel).
+			ship initializeTank: (FuelTank withMax: (self calculateMaxFuel)).
 			board place: ship at: 1 ].
-		self gameplay.
 	] ifFalse: [ 
 		Error signal: 'Cannot begin an uninitialized game.'.
 	 ]
@@ -38,7 +37,7 @@ Game >> begin [
 Game >> calculateMaxFuel [
 	|maxFuel|
 	maxFuel:= 0.
-	dice do: [ :x | maxFuel := maxFuel + x getMax ].
+	dice do: [ :x | maxFuel := maxFuel + (x getMax) ].
 	maxFuel := maxFuel * 2.
 	^maxFuel.
 ]
@@ -57,7 +56,7 @@ Game >> gameplay [
 	[self hasWinner] whileFalse: [ 
 			ships do: [ :ship | 
 				(self hasWinner) ifFalse: [ 
-					(board move: ship distance: (ship play: dice)) applyEffect: ship withShips: ships inBoard: board. 
+					self playTurn: ship.
 				].
 			].
 	 ].
@@ -98,4 +97,10 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someSh
 	board := aBoard.
 	ships := someShips.
 	dice := someDice.
+]
+
+{ #category : #action }
+Game >> playTurn: aShip [
+	(board move: aShip distance: (aShip play: dice)) applyEffect: aShip withShips: ships inBoard: board.
+	
 ]
