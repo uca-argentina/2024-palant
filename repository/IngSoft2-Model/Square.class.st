@@ -29,18 +29,21 @@ Square >> getDockedShips [
 
 { #category : #initialization }
 Square >> initializeEmptySquare [
+
 	myEffect := NullEffect new.
-	dockedShips := OrderedCollection new.
+	dockedShips := OrderedCollection new
 ]
 
 { #category : #initialization }
 Square >> initializeWithEffect: anEffect [
-	myEffect := anEffect. 
-	dockedShips := OrderedCollection new.
+
+	myEffect := anEffect.
+	dockedShips := OrderedCollection new
 ]
 
 { #category : #modifying }
-Square >> undockShip: aShip [ 
-	dockedShips remove: aShip ifAbsent: [ ^false ]. 
-	^true.
+Square >> undockShip: aShip [
+
+	dockedShips remove: aShip ifAbsent: [ ^ false ].
+	^ true
 ]

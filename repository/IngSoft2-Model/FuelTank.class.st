@@ -15,22 +15,27 @@ FuelTank class >> withMax: someFuelAmmount [
 
 { #category : #initialization }
 FuelTank >> consumeFuel: fuelToBeConsumed [
-	|fuelAmountModule|
+
+	| fuelAmountModule |
 	fuelAmountModule := fuelToBeConsumed abs.
-	currentFuel := currentFuel  - fuelAmountModule.
-	(currentFuel < 0) ifTrue: [currentFuel := 0. ^false].
-	^true.
+	currentFuel := currentFuel - fuelAmountModule.
+	currentFuel < 0 ifTrue: [
+		currentFuel := 0.
+		^ false ].
+	^ true
 ]
 
 { #category : #initialization }
 FuelTank >> initializeWithFuel: someFuelAmmount [
+
 	currentFuel := someFuelAmmount.
-	maxFuel := someFuelAmmount.
+	maxFuel := someFuelAmmount
 ]
 
 { #category : #initialization }
 FuelTank >> reset [
-	currentFuel := maxFuel.
+
+	currentFuel := maxFuel
 ]
 
 { #category : #initialization }
