@@ -58,7 +58,6 @@ Game >> gameplay [
 			ships do: [ :ship | 
 				(self hasWinner) ifFalse: [ 
 					(board move: ship distance: (ship play: dice)) applyEffect: ship withShips: ships inBoard: board. 
-					Transcript show: (board showBoard).
 				].
 			].
 	 ].

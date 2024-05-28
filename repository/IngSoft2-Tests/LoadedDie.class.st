@@ -25,6 +25,11 @@ LoadedDie class >> of: anAmountOfFaces [
 ]
 
 { #category : #initialization }
+LoadedDie >> getMax [ 
+	^faces.
+]
+
+{ #category : #initialization }
 LoadedDie >> initializeOf: anAmountOfFaces [
 	faces:= anAmountOfFaces
 ]

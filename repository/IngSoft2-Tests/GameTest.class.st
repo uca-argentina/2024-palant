@@ -63,10 +63,10 @@ GameTest >> testValidGameCanFinishOnItsOwn [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 20.
-	someDice := OrderedCollection with: (Die of: 4).
+	aBoard := Board withSize: 10.
+	someDice := OrderedCollection with: (LoadedDie of: 7).
 	game:= Game new.
-	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 3.
+	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.
 	game begin.
 	self assert: (game getStatus) equals: 'Over'.
 ]
