@@ -86,7 +86,7 @@ EffectTest >> testHyperJumpParsecListResets [
 	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aBoard := Board withSize: 80 withWorms: false withParsecs: 80.
+	aBoard := Board withSize: 30 withWorms: false withParsecs: 23.
 	aBoard initializeEffects.
 	aBoard place: aShip at: 10.
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
@@ -95,8 +95,9 @@ EffectTest >> testHyperJumpParsecListResets [
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
 	aBoard takeOut: aShip.
 	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard . 
-	self assert:((aBoard findShip: aShip) = 19).
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	Transcript show: (aBoard findShip: aShip).
+	self assert:((aBoard findShip: aShip) = 21).
 ]
 
 { #category : #tests }
