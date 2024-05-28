@@ -78,7 +78,7 @@ Board >> initializeRandomEffects: someDice [
 		|maxRoll|
 		maxRoll := 0.
 		someDice do: [ :dice | maxRoll := maxRoll + (dice getMax ) ].
-		square initializeWithEffect: (HyperGravity withNecessaryRolledResult: (maxRoll atRandom)).
+		square initializeWithEffect: (HyperGravity withNecessaryRolledResult: (someDice size to: maxRoll atRandom)).
 		].
 	
 	(probabilityScore > 80) ifTrue: [ 
