@@ -66,7 +66,7 @@ Game >> gameplay [
 
 { #category : #action }
 Game >> getRanking [
-	|shipDict sortedShips index|
+	|shipDict sortedShips|
 	shipDict := Dictionary new.
 	ships do: [ :ship | shipDict at: ship getName put: ((ship getLaps) * (board  boardSize) + (board findShip: ship)) ].
 	sortedShips := shipDict associations asSortedCollection: [ :a :b | a value < b value ].

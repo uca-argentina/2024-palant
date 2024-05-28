@@ -157,6 +157,7 @@ Board >> move: aShip distance: aDistance [
 
 	| shipPosition |
 	shipPosition := self findShip: aShip.
+	(aShip canMove: aDistance) ifFalse: [^NullEffect new].
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
 			(self takeOut: aShip).
@@ -165,7 +166,8 @@ Board >> move: aShip distance: aDistance [
 		ifFalse: [ self resetToStart: aShip.
 					  aShip penalize: 2.
 					  ^NullEffect new.
-					 ]
+					 ].
+	
 ]
 
 { #category : #accessing }

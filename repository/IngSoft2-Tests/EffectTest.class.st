@@ -153,8 +153,30 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 ]
 
 { #category : #tests }
+EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
+	|aShip bShip aBoard someShips game someDice|
+	someDice := OrderedCollection with: (LoadedDie of: 4).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 12).
+	bShip := Ship named: 'Pedro'.
+	bShip initializeTank: (FuelTank withMax: 12).
+	someShips := OrderedCollection with: aShip with: bShip.
+	aBoard := Board withSize: 8.
+	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
+	
+	aBoard initializeEffect: AtomicBomb new initializeAt: 3.
+	aBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
+	aBoard place: aShip at: 1.
+	aBoard place: bShip at: 1.
+	(aBoard move: bShip distance: 5) applyEffect: aShip withShips: someShips inBoard: aBoard.
+	(aBoard move: aShip distance: 2) applyEffect: aShip withShips: someShips inBoard: aBoard.
+	self assert: (((aBoard findShip: aShip) = 1) and: ((aBoard findShip: bShip) = 6)).
+]
+
+{ #category : #tests }
 EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
-	|someDice aShip aBoard allShips|
+
+	| someDice aShip aBoard allShips |
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
@@ -163,9 +185,12 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 	aBoard := Board withSize: 20.
 	aBoard initializeEffects.
 	aBoard place: aShip at: 12.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
+	(aBoard move: aShip distance: 1)
+		applyEffect: aShip
+		withShips: allShips
+		inBoard: aBoard.
 	aBoard move: aShip distance: (aShip play: someDice).
-	self assert:((aBoard findShip: aShip) = 13). 
+	self assert: (aBoard findShip: aShip) equals: 13.
 ]
 
 { #category : #tests }
