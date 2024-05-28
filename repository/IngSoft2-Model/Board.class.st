@@ -5,7 +5,8 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'squares'
+		'squares',
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,7 +21,15 @@ Board class >> withSize: aSize withWorms: hasWorms [
 	|boardToReturn|
 	boardToReturn := ((self new) initializeSize: aSize).
 	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
-	^boardToReturn 
+	^boardToReturn
+]
+
+{ #category : #'instance creation' }
+Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
+	|boardToReturn|
+	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
+	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
+	^boardToReturn.
 ]
 
 { #category : #accessing }
@@ -44,6 +53,11 @@ Board >> findWormSquares [
 	^positions.
 	
 	
+]
+
+{ #category : #'modifier state' }
+Board >> getParsecs [
+	^parsecs.
 ]
 
 { #category : #initialization }
@@ -97,10 +111,18 @@ Board >> initializeRandomEffects: someDice [
 ]
 
 { #category : #initialization }
-Board >> initializeSize: aSize [ 
+Board >> initializeSize: aSize [
 	squares := OrderedCollection new.
 	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
 	squares add: EndSquare createEmptySquare.
+]
+
+{ #category : #initialization }
+Board >> initializeSize: aSize initializeParsecs: someParsecs [
+	squares := OrderedCollection new.
+	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
+	squares add: EndSquare createEmptySquare.
+	parsecs := someParsecs.
 ]
 
 { #category : #initialization }

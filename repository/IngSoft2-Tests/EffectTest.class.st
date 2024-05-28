@@ -63,17 +63,20 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 ]
 
 { #category : #tests }
-EffectTest >> testHyperJumpMovesShipOneParsecFurther [
-	|aShip aBoard shipList|
+EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
+	|aShip bShip aBoard shipList|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
-	shipList := OrderedCollection new.
-	shipList add: aShip.
-	aBoard := Board withSize: 80.
+	bShip := Ship named: 'Pedro'.
+	bShip initializeTank: (FuelTank withMax: 1000).
+	shipList := OrderedCollection with: aShip with: bShip.
+	aBoard := Board withSize: 80 withWorms: false withParsecs: 20.
 	aBoard initializeEffects.
 	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	self assert:((aBoard findShip: aShip) = 21). 
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard.
+	aBoard place: bShip at: 10.
+	(aBoard move: bShip distance: 1) applyEffect: bShip withShips: shipList inBoard: aBoard.
+	self assert:((aBoard findShip: aShip) = 43 and: (aBoard findShip: bShip) = 27).
 ]
 
 { #category : #tests }
@@ -83,14 +86,17 @@ EffectTest >> testHyperJumpParsecListResets [
 	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aBoard := Board withSize: 80.
+	aBoard := Board withSize: 80 withWorms: false withParsecs: 80.
 	aBoard initializeEffects.
 	aBoard place: aShip at: 10.
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
 	aBoard takeOut: aShip.
 	aBoard place: aShip at: 10.
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	self assert:((aBoard findShip: aShip) = 31). 
+	aBoard takeOut: aShip.
+	aBoard place: aShip at: 10.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard . 
+	self assert:((aBoard findShip: aShip) = 19).
 ]
 
 { #category : #tests }
