@@ -112,7 +112,6 @@ Board >> move: aShip distance: aDistance [
 
 	| shipPosition |
 	shipPosition := self findShip: aShip.
-	(aShip canMove: aDistance) ifFalse: [^NullEffect new].
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
 			(self takeOut: aShip).

@@ -53,8 +53,9 @@ Game >> gameplay [
 
 	status := 'Playing'.
 	[ self hasWinner ] whileFalse: [
-		ships do: [ :ship | self hasWinner ifFalse: [ self playTurn: ship ] ] ].
-	self endGame
+		ships do: [ :ship | self hasWinner ifFalse: [ self playTurn: ship ] ].
+
+		self endGame ]
 ]
 
 { #category : #action }
