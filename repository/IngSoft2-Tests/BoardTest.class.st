@@ -84,7 +84,7 @@ BoardTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
 	aShip initializeTank: (FuelTank withMax: 1000).
 	aBoard place: aShip at: 1. 
 	aBoard move: aShip distance: 14.
-	self assert: ((aShip getLaps ) = 1).
+	self assert: (aShip getLaps ) equals: 1.
 ]
 
 { #category : #tests }

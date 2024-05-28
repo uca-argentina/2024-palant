@@ -58,6 +58,7 @@ Game >> gameplay [
 			ships do: [ :ship | 
 				(self hasWinner) ifFalse: [ 
 					(board move: ship distance: (ship play: dice)) applyEffect: ship withShips: ships inBoard: board. 
+					Transcript show: (board showBoard).
 				].
 			].
 	 ].
@@ -89,7 +90,7 @@ Game >> hasBeenInitialized [
 
 { #category : #action }
 Game >> hasWinner [
-	^(ships anySatisfy: [:x | x getLaps = maxLaps]).
+	^(ships anySatisfy: [:x | x getLaps >= maxLaps]).
 ]
 
 { #category : #initialization }
