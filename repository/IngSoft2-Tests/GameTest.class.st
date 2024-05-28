@@ -20,6 +20,7 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	cShip := Ship named: 'Juan'.
 	cShip initializeTank: (FuelTank withMax: 1000).
 	ships := OrderedCollection with: aShip with: bShip with: cShip.
+	
 	board := Board withSize: 100.
 	
 	game := Game new.
