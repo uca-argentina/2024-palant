@@ -6,35 +6,35 @@ Class {
 
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectFuel [
-	|aShip aBoard shipList|
+	|aShip aLoadedBoard shipList|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 100).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 6.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 6.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
 	self assert:((aShip tank status) = 99). 
 ]
 
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectLaps [
-	|aShip aBoard shipList|
+	|aShip aLoadedBoard shipList|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 6.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 6.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
 	self assert:(aShip getLaps = 0). 
 ]
 
 { #category : #tests }
 EffectTest >> testAtomicBombResetsAllShip [
-	|aShip bShip aBoard allShips|
+	|aShip bShip aLoadedBoard allShips|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	bShip := Ship named: 'Pedro'.
@@ -42,66 +42,66 @@ EffectTest >> testAtomicBombResetsAllShip [
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 4.
-	aBoard place: bShip at: 6.
-	(aBoard move: bShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
-	self assert:(((aBoard findShip: aShip) = 1) and: ((aBoard findShip: bShip) = 1)). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 4.
+	aLoadedBoard place: bShip at: 6.
+	(aLoadedBoard move: bShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aLoadedBoard.
+	self assert:(((aLoadedBoard findShip: aShip) = 1) and: ((aLoadedBoard findShip: bShip) = 1)). 
 ]
 
 { #category : #tests }
 EffectTest >> testBlackHoleEffectMovesShipBackwards [
-	|aShip aBoard|
+	|aShip aLoadedBoard|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 4.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aBoard .
-	self assert:((aBoard findShip: aShip) = 1). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 4.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aLoadedBoard .
+	self assert:((aLoadedBoard findShip: aShip) = 1). 
 ]
 
 { #category : #tests }
 EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
-	|aShip bShip aBoard shipList|
+	|aShip bShip aLoadedBoard shipList|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	bShip := Ship named: 'Pedro'.
 	bShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection with: aShip with: bShip.
-	aBoard := Board withSize: 80 withWorms: false withParsecs: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard.
-	aBoard place: bShip at: 10.
-	(aBoard move: bShip distance: 1) applyEffect: bShip withShips: shipList inBoard: aBoard.
-	self assert:((aBoard findShip: aShip) = 43 and: (aBoard findShip: bShip) = 27).
+	aLoadedBoard := LoadedBoard withSize: 80 withWorms: false withParsecs: 20.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 10.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard.
+	aLoadedBoard place: bShip at: 10.
+	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: shipList inBoard: aLoadedBoard.
+	self assert:((aLoadedBoard findShip: aShip) = 43 and: (aLoadedBoard findShip: bShip) = 27).
 ]
 
 { #category : #tests }
 EffectTest >> testHyperJumpParsecListResets [
-	|aShip aBoard shipList|
+	|aShip aLoadedBoard shipList|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aBoard := Board withSize: 30 withWorms: false withParsecs: 23.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	aBoard takeOut: aShip.
-	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	aBoard takeOut: aShip.
-	aBoard place: aShip at: 10.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	self assert:((aBoard findShip: aShip) = 21).
+	aLoadedBoard := LoadedBoard withSize: 30 withWorms: false withParsecs: 23.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 10.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
+	aLoadedBoard takeOut: aShip.
+	aLoadedBoard place: aShip at: 10.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
+	aLoadedBoard takeOut: aShip.
+	aLoadedBoard place: aShip at: 10.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
+	self assert:((aLoadedBoard findShip: aShip) = 21).
 ]
 
 { #category : #tests }
 EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
-	|aShip bShip aBoard allShips|
+	|aShip bShip aLoadedBoard allShips|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	bShip := Ship named: 'Pedro'.
@@ -109,17 +109,17 @@ EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 4.
-	aBoard place: bShip at: 8.
-	(aBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aBoard.
-	self assert:(((aBoard findShip: aShip) = 1)). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 4.
+	aLoadedBoard place: bShip at: 8.
+	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aLoadedBoard.
+	self assert:(((aLoadedBoard findShip: aShip) = 1)). 
 ]
 
 { #category : #tests }
 EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSkipsTwoTurns [
-	|someDice aShip bShip aBoard allShips|
+	|someDice aShip bShip aLoadedBoard allShips|
 	someDice := OrderedCollection with: (Die of: 4).
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1).
@@ -128,83 +128,84 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 19.
-	aBoard place: bShip at: 8.
-	(aBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aBoard.
-	aBoard move: aShip distance: (aShip play: someDice).
-	aBoard move: aShip distance: (aShip play: someDice).
-	self assert:((aBoard findShip: aShip) = 1). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 19.
+	aLoadedBoard place: bShip at: 8.
+	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aLoadedBoard.
+	aLoadedBoard move: aShip distance: (aShip play: someDice).
+	aLoadedBoard move: aShip distance: (aShip play: someDice).
+	self assert:((aLoadedBoard findShip: aShip) = 1). 
 ]
 
 { #category : #tests }
 EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
-	|aShip downedShip aBoard|
+	|aShip downedShip aLoadedBoard|
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	downedShip := Ship named: 'Mati'.
-	aBoard := Board withSize: 5.
-	aBoard place: aShip at: 1. 
-	aBoard place: downedShip  at: 4. 
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aBoard.
-	self deny:((aBoard findShip: aShip) = 1).
-	self assert: ((aBoard findShip: downedShip ) = 4). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 1. 
+	aLoadedBoard place: downedShip  at: 4. 
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aLoadedBoard.
+	self deny:((aLoadedBoard findShip: aShip) = 1).
+	self assert: ((aLoadedBoard findShip: downedShip ) = 4). 
 ]
 
 { #category : #tests }
 EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
-	|aShip bShip aBoard someShips game someDice|
+	|aShip bShip aLoadedBoard someShips game someDice|
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 12).
 	bShip := Ship named: 'Pedro'.
 	bShip initializeTank: (FuelTank withMax: 12).
 	someShips := OrderedCollection with: aShip with: bShip.
-	aBoard := Board withSize: 8.
-	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	game:= Game withBoard: aLoadedBoard withDice: someDice withShips: someShips withMaxLaps: 3.
 	
-	aBoard initializeEffect: AtomicBomb new initializeAt: 3.
-	aBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
-	aBoard place: aShip at: 1.
-	aBoard place: bShip at: 1.
-	(aBoard move: bShip distance: 5) applyEffect: aShip withShips: someShips inBoard: aBoard.
-	(aBoard move: aShip distance: 2) applyEffect: aShip withShips: someShips inBoard: aBoard.
-	self assert: (((aBoard findShip: aShip) = 1) and: ((aBoard findShip: bShip) = 6)).
+	aLoadedBoard initializeEffect: AtomicBomb new initializeAt: 3.
+	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
+	aLoadedBoard place: aShip at: 1.
+	aLoadedBoard place: bShip at: 1.
+	(aLoadedBoard move: bShip distance: 5) applyEffect: aShip withShips: someShips inBoard: aLoadedBoard.
+	(aLoadedBoard move: aShip distance: 2) applyEffect: aShip withShips: someShips inBoard: aLoadedBoard.
+	self assert: (((aLoadedBoard findShip: aShip) = 1) and: ((aLoadedBoard findShip: bShip) = 6)).
 ]
 
 { #category : #tests }
 EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
 
-	| someDice aShip aBoard allShips |
+	| someDice aShip aLoadedBoard allShips |
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 12.
-	(aBoard move: aShip distance: 1)
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 12.
+	(aLoadedBoard move: aShip distance: 1)
 		applyEffect: aShip
 		withShips: allShips
-		inBoard: aBoard.
-	aBoard move: aShip distance: (aShip play: someDice).
-	self assert: (aBoard findShip: aShip) equals: 13.
+		inBoard: aLoadedBoard.
+	aLoadedBoard move: aShip distance: (aShip play: someDice).
+	self assert: (aLoadedBoard findShip: aShip) equals: 13.
 ]
 
 { #category : #tests }
 EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
-	|someDice aShip aBoard allShips|
+	|someDice aShip aLoadedBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 3).
 	aShip := Ship named: 'Pepe'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
-	aBoard := Board withSize: 20.
-	aBoard initializeEffects.
-	aBoard place: aShip at: 12.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
-	aBoard move: aShip distance: (aShip play: someDice).
-	self assert:((aBoard findShip: aShip) = 16). 
+	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard initializeEffects.
+	aLoadedBoard place: aShip at: 12.
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aLoadedBoard.
+	aLoadedBoard move: aShip distance: (aShip play: someDice).
+	self assert:((aLoadedBoard findShip: aShip) = 16). 
 ]

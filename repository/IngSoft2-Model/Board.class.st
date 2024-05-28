@@ -12,19 +12,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withSize: aSize [ 
-	^((self new) initializeSize: aSize).
-]
-
-{ #category : #'instance creation' }
-Board class >> withSize: aSize withWorms: hasWorms [
-	|boardToReturn|
-	boardToReturn := ((self new) initializeSize: aSize).
-	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
-	^boardToReturn
-]
-
-{ #category : #'instance creation' }
 Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
 	|boardToReturn|
 	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
@@ -61,26 +48,6 @@ Board >> getParsecs [
 ]
 
 { #category : #initialization }
-Board >> initializeEffect: anEffect initializeAt: aSquare [
-	(squares at: aSquare) initializeWithEffect: anEffect.
-	
-]
-
-{ #category : #initialization }
-Board >> initializeEffects [
-	(squares at: 5) initializeWithEffect: BlackHole new.
-	(squares at: 7) initializeWithEffect: AtomicBomb new.
-	(squares at: 9) initializeWithEffect: (MoonWalk withDistance: 3).
-	(squares at: 11) initializeWithEffect: (HyperJump withParsecs: (#(4 8) asOrderedCollection)).
-	(squares at: 13) initializeWithEffect: (HyperGravity withNecessaryRolledResult: 3).
-	
-
-	(squares at: 2) initializeWithEffect: BlackHole new.
-	(squares at: 3) initializeWithEffect: (AtomicBomb new).
-	
-]
-
-{ #category : #initialization }
 Board >> initializeRandomEffects: someDice [
 	|probabilityScore|
 	squares do: [ :square | 
@@ -114,13 +81,6 @@ Board >> initializeRandomEffects: someDice [
 		].
 	
 	].
-]
-
-{ #category : #initialization }
-Board >> initializeSize: aSize [
-	squares := OrderedCollection new.
-	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
-	squares add: EndSquare createEmptySquare.
 ]
 
 { #category : #initialization }

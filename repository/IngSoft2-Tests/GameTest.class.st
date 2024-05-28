@@ -21,7 +21,7 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	cShip initializeTank: (FuelTank withMax: 1000).
 	ships := OrderedCollection with: aShip with: bShip with: cShip.
 	
-	board := Board withSize: 100.
+	board := Board withSize: 100 withWorms: false withParsecs: 0.
 	
 	game := Game new.
 	game initializeBoard: board initializeDice: dice initializeShips: ships initializeMaxLaps: 3.
@@ -38,7 +38,7 @@ GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 20.
+	aBoard := Board withSize: 100 withWorms: false withParsecs: 0.
 	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
 	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
 
@@ -49,7 +49,7 @@ GameTest >> testValidGameCanBeInitialized [
 GameTest >> testValidGameCanFinish [
 	|game aBoard aBoardSize aShip someDice someShips|
 	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize.
+	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
 	aShip := Ship named: 'testShip'.
 	aShip initializeTank: (FuelTank withMax: 1000).
 	aBoard place: aShip at: 1. 
@@ -65,7 +65,7 @@ GameTest >> testValidGameCanFinishOnItsOwn [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 2.
+	aBoard := Board withSize: 2 withWorms: false withParsecs: 0.
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	game:= Game new.
 	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.

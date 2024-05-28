@@ -18,7 +18,7 @@ TotalTest >> testRandomGameFinishes [
 		).
 		].
 	
-	board := Board withSize: ((5 to: 30) atRandom).
+	board := Board withSize: ((5 to: 30) atRandom) withWorms: true withParsecs: 0.
 	
 	game := Game withBoard: board withDice: dice withShips: ships withMaxLaps: 3.
 	game begin.
