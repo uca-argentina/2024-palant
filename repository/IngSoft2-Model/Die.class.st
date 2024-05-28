@@ -37,6 +37,6 @@ Die >> initializeOf: anAmountOfFaces [
 
 { #category : #initialization }
 Die >> throw [
-	^faces atRandom.
+	^(1 to: faces) atRandom.
 
 ]

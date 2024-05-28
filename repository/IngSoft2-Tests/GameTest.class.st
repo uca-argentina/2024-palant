@@ -27,9 +27,8 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	board place: bShip at: 50.
 	board place: cShip at: 1.
 	board move: cShip distance: 120.
-	game getRanking.
-	"results := game getRanking.
-	self assert:((results at:1) = cShip)."
+	results := game getRanking.
+	self assert:((results first key) asString = cShip getName ).
 ]
 
 { #category : #tests }
