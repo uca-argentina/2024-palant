@@ -7,7 +7,8 @@ Class {
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectFuel [
 	|aShip aBoard shipList|
-	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 100).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 100).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aBoard := Board withSize: 20.
@@ -21,6 +22,7 @@ EffectTest >> testAtomicBombDoesNotAffectFuel [
 EffectTest >> testAtomicBombDoesNotAffectLaps [
 	|aShip aBoard shipList|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aBoard := Board withSize: 20.
@@ -34,7 +36,9 @@ EffectTest >> testAtomicBombDoesNotAffectLaps [
 EffectTest >> testAtomicBombResetsAllShip [
 	|aShip bShip aBoard allShips|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	bShip := Ship named: 'Pedro'.
+	bShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -50,6 +54,7 @@ EffectTest >> testAtomicBombResetsAllShip [
 EffectTest >> testBlackHoleEffectMovesShipBackwards [
 	|aShip aBoard|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	aBoard := Board withSize: 20.
 	aBoard initializeEffects.
 	aBoard place: aShip at: 4.
@@ -61,6 +66,7 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 EffectTest >> testHyperJumpMovesShipOneParsecFurther [
 	|aShip aBoard shipList|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aBoard := Board withSize: 80.
@@ -74,6 +80,7 @@ EffectTest >> testHyperJumpMovesShipOneParsecFurther [
 EffectTest >> testHyperJumpParsecListResets [
 	|aShip aBoard shipList|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aBoard := Board withSize: 80.
@@ -90,7 +97,9 @@ EffectTest >> testHyperJumpParsecListResets [
 EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	|aShip bShip aBoard allShips|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	bShip := Ship named: 'Pedro'.
+	bShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -106,8 +115,10 @@ EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSkipsTwoTurns [
 	|someDice aShip bShip aBoard allShips|
 	someDice := OrderedCollection with: (Die of: 4).
-	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 1).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1).
 	bShip := Ship named: 'Pedro'.
+	bShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -125,6 +136,7 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 	|aShip downedShip aBoard|
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	downedShip := Ship named: 'Mati'.
 	aBoard := Board withSize: 5.
 	aBoard place: aShip at: 1. 
@@ -139,6 +151,7 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 	|someDice aShip aBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	aBoard := Board withSize: 20.
@@ -154,6 +167,7 @@ EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
 	|someDice aShip aBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 3).
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	aBoard := Board withSize: 20.

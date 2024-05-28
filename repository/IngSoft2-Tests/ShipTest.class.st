@@ -15,7 +15,8 @@ ShipTest >> testIsValidWhenShipsFuelReducesProportionallyToMovement [
 
 	| aShip aBoard |
 	aBoard := Board withSize: 20 withWorms: false.
-	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 10).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 10).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: 5.
 	self assert: aShip tank status = 5
@@ -29,6 +30,7 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 	dice add: (LoadedDie of: 4).
 	dice add: (LoadedDie of: 5).
 	aShip := Ship named: 'Nave1'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	aShip rollDice: dice.
 	self assert: ((aShip rollDice: dice) = 9).
 ]
@@ -43,6 +45,7 @@ ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 	|aShip aBoard|
 	aBoard := Board withSize: 20. 
 	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 1000).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: (aShip skipTurn).
 	self assert: ((aBoard findShip: aShip) = 1). 
@@ -52,7 +55,8 @@ ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 	|aShip aBoard|
 	aBoard := Board withSize: 20. 
-	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 20).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 20).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: 5.
 	aBoard move: aShip distance: (aShip skipTurn).
@@ -62,8 +66,9 @@ ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 { #category : #tests }
 ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
 	|aShip aBoard|
-	aBoard := Board withSize: 20 withWorms: false. 
-	aShip := Ship named: 'Pepe' withTank: (FuelTank withMax: 3).
+	aBoard := Board withSize: 20. 
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 3).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: 10.
 	self assert: ((aBoard findShip: aShip) = 1). 

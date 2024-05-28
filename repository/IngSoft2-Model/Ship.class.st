@@ -8,7 +8,8 @@ Class {
 		'name',
 		'fuelTank',
 		'laps',
-		'moveConditions'
+		'penalization',
+		'gravityLevel'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,13 +17,7 @@ Class {
 { #category : #'instance creation' }
 Ship class >> named: aName [
 	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
-	^(self new) initializeName: aName initializeTank: (FuelTank withMax: 10000000000).
-]
-
-{ #category : #'instance creation' }
-Ship class >> named: aName withTank: aTank [
-	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
-	^(self new) initializeName: aName initializeTank: aTank.
+	^(self new) initializeName: aName.
 ]
 
 { #category : #testing }
@@ -31,9 +26,23 @@ Ship >> addLap [
 ]
 
 { #category : #accessing }
-Ship >> canPlay: distance [
-	(moveConditions anySatisfy: [ :aCondition | ((aCondition canMove: distance) = false) ]) ifFalse: [ ^true ].
-	^false. 
+Ship >> canMove: aDistance [
+	(aDistance = gravityLevel) ifTrue:[
+			gravityLevel := 0.
+		].
+	^(gravityLevel = 0).
+]
+
+{ #category : #accessing }
+Ship >> canPlay [
+	(penalization = 0) ifFalse: [ 
+		penalization := penalization - 1.
+		(penalization = 0) ifTrue: [ 
+				fuelTank reset.
+			].
+		^false.
+		 ].
+	^true.
 ]
 
 { #category : #accessing }
@@ -59,39 +68,34 @@ Ship >> getName [
 
 { #category : #'class initialization' }
 Ship >> initializeName: aName [
-	moveConditions := OrderedCollection new.
+	penalization := 0.
+	gravityLevel := 0.
 	laps := 0.
 	name := aName.
 ]
 
 { #category : #'class initialization' }
-Ship >> initializeName: aName initializeTank: aTank [
-	moveConditions := OrderedCollection new.
-	laps := 0.
-	name := aName.
+Ship >> initializeTank: aTank [
 	fuelTank := aTank.
 ]
 
 { #category : #accessing }
-Ship >> penalize: newCondition [.
-	moveConditions add: newCondition.
+Ship >> penalize: penalizationAmount [
+	penalization := penalization + penalizationAmount.
 ]
 
 { #category : #accessing }
 Ship >> play: someDice [
 	|rollResult|
-	(self decideToPlay) ifTrue:[
-			rollResult := self rollDice: someDice.
-			(self canPlay: rollResult) ifTrue:[
+	(self canPlay) ifTrue:[
+		(self decideToPlay) ifTrue: [ 
+				rollResult := self rollDice: someDice.
+				(self canMove: rollResult) ifTrue:[
 				^rollResult.
-				] ifFalse:[
-				^0
-				]
-		] ifFalse: [ 
-		 self canPlay: 0.
-		 ^self skipTurn.
+				].
+			 ] ifFalse: [ self skipTurn ].
 		].
-	
+		^0.
 ]
 
 { #category : #accessing }
@@ -100,6 +104,11 @@ Ship >> rollDice: someDice [
 	result := 0.
 	someDice do: [ :die | result:= result  + die throw ].
 	^result.
+]
+
+{ #category : #testing }
+Ship >> setGravity: someLevel [
+	gravityLevel := someLevel.
 ]
 
 { #category : #accessing }

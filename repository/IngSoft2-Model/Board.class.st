@@ -136,7 +136,7 @@ Board >> move: aShip distance: aDistance [
 			 ]
 		ifFalse: [ self resetToStart: aShip.
 					  aShip tank reset.
-					  aShip penalize: (MovePenalization withCooldown: 2).
+					  aShip penalize: 2.
 					  ^NullEffect new.
 					 ]
 ]
