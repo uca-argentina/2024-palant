@@ -14,7 +14,12 @@ HyperJump class >> withParsecs: parsecs [
 
 { #category : #'as yet unclassified' }
 HyperJump >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	aBoard move: affectedShip distance: ( self cycleParsec * ( aBoard boardSize / aBoard getParsecs ) ) truncated .
+
+	aBoard
+		move: affectedShip
+		distance:
+		(self cycleParsec * (aBoard boardSize / aBoard getParsecs))
+			truncated
 ]
 
 { #category : #'as yet unclassified' }

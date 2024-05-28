@@ -14,7 +14,8 @@ HyperGravity class >> withNecessaryRolledResult: someResult [
 
 { #category : #'as yet unclassified' }
 HyperGravity >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	affectedShip setGravity: necessaryRolledResult.
+
+	affectedShip setGravity: necessaryRolledResult
 ]
 
 { #category : #'as yet unclassified' }

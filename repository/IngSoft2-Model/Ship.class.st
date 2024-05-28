@@ -27,27 +27,25 @@ Ship >> addLap [
 
 { #category : #accessing }
 Ship >> canMove: aDistance [
-	(aDistance = gravityLevel) ifTrue:[
-			gravityLevel := 0.
-		].
-	^(gravityLevel = 0).
+
+	aDistance = gravityLevel ifTrue: [ gravityLevel := 0 ].
+	^ gravityLevel = 0
 ]
 
 { #category : #accessing }
 Ship >> canPlay [
-	(penalization = 0) ifFalse: [ 
+
+	penalization = 0 ifFalse: [
 		penalization := penalization - 1.
-		(penalization = 0) ifTrue: [ 
-				fuelTank reset.
-			].
-		^false.
-		 ].
-	^true.
+		penalization = 0 ifTrue: [ fuelTank reset ].
+		^ false ].
+	^ true
 ]
 
 { #category : #accessing }
 Ship >> consumeFuel: someFuel [
-	^(fuelTank consumeFuel: someFuel).
+
+	^ fuelTank consumeFuel: someFuel
 ]
 
 { #category : #testing }
@@ -73,61 +71,68 @@ Ship >> getName [
 
 { #category : #'class initialization' }
 Ship >> initializeName: aName [
+
 	penalization := 0.
 	gravityLevel := 0.
 	laps := 0.
-	name := aName.
+	name := aName
 ]
 
 { #category : #'class initialization' }
 Ship >> initializeTank: aTank [
-	fuelTank := aTank.
+
+	fuelTank := aTank
 ]
 
 { #category : #accessing }
 Ship >> penalize: penalizationAmount [
-	penalization := penalization + penalizationAmount.
+
+	penalization := penalization + penalizationAmount
 ]
 
 { #category : #accessing }
 Ship >> play: someDice [
-	|rollResult|
-	(self canPlay) ifTrue:[
-		(self decideToPlay) ifTrue: [ 
+
+	| rollResult |
+	self canPlay ifTrue: [
+		self decideToPlay
+			ifTrue: [
 				rollResult := self rollDice: someDice.
-				(self canMove: rollResult) ifTrue:[
-				^rollResult.
-				].
-			 ] ifFalse: [ self skipTurn ].
-		].
-		^0.
+				(self canMove: rollResult) ifTrue: [ ^ rollResult ] ]
+			ifFalse: [ self skipTurn ] ].
+	^ 0
 ]
 
 { #category : #accessing }
-Ship >> rollDice: someDice [ 
-	|result|
+Ship >> rollDice: someDice [
+
+	| result |
 	result := 0.
-	someDice do: [ :die | result:= result  + die throw ].
-	^result.
+	someDice do: [ :die | result := result + die throw ].
+	^ result
 ]
 
 { #category : #testing }
 Ship >> setGravity: someLevel [
-	gravityLevel := someLevel.
+
+	gravityLevel := someLevel
 ]
 
 { #category : #accessing }
-Ship >> skipTurn [ 
+Ship >> skipTurn [
+
 	fuelTank reset.
-	^0.
+	^ 0
 ]
 
 { #category : #testing }
 Ship >> subtractLap [
-	laps := laps - 1.
+
+	laps := laps - 1
 ]
 
 { #category : #accessing }
 Ship >> tank [
-	^fuelTank.
+
+	^ fuelTank
 ]

@@ -14,11 +14,10 @@ MoonWalk class >> withDistance: aDistance [
 
 { #category : #'as yet unclassified' }
 MoonWalk >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	someShips do: [ :aShip | 
-			(affectedShip = aShip) ifFalse: [ 
-					aBoard move: aShip distance: (myDistance)*(-1). 
-				 ]
-		 ].
+
+	someShips do: [ :aShip |
+		affectedShip = aShip ifFalse: [
+			aBoard move: aShip distance: myDistance * -1 ] ]
 ]
 
 { #category : #'as yet unclassified' }
