@@ -14,17 +14,33 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'as yet unclassified' }
+Game class >> withBoard: aBoard withDice: someDice withShips: someShips  withMaxLaps: someLaps [
+^(self new) initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps.
+]
+
 { #category : #action }
 Game >> begin [
 	status := 'Launching'.
 	(self hasBeenInitialized) ifTrue: [ 
-		ships do: [ :ship | board place: ship at: 1 ].
+		ships do: [ :ship |
+			ship initializeTank: (FuelTank withMax: self calculateMaxFuel).
+			board place: ship at: 1 ].
 		self gameplay.
 	] ifFalse: [ 
 		Error signal: 'Cannot begin an uninitialized game.'.
 	 ]
 		
 	
+]
+
+{ #category : #'modifier state' }
+Game >> calculateMaxFuel [
+	|maxFuel|
+	maxFuel:= 0.
+	dice do: [ :x | maxFuel := maxFuel + x getMax ].
+	maxFuel := maxFuel * 2.
+	^maxFuel.
 ]
 
 { #category : #'modifier state' }
@@ -41,7 +57,7 @@ Game >> gameplay [
 	[self hasWinner] whileFalse: [ 
 			ships do: [ :ship | 
 				(self hasWinner) ifFalse: [ 
-					(board move: ship distance: (ship rollDice: dice)) applyEffect: ship withShips: ships inBoard: board. 
+					(board move: ship distance: (ship play: dice)) applyEffect: ship withShips: ships inBoard: board. 
 				].
 			].
 	 ].
@@ -68,7 +84,7 @@ Game >> getStatus [
 
 { #category : #accessing }
 Game >> hasBeenInitialized [
-	^(((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil).
+	^((((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil)) and: (maxLaps isNotNil).
 ]
 
 { #category : #action }
@@ -77,31 +93,9 @@ Game >> hasWinner [
 ]
 
 { #category : #initialization }
-Game >> initializeBoard: aBoard [ 
-	board := aBoard.
-]
-
-{ #category : #initialization }
-Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips [ 
-	board := aBoard.
-	ships := someShips.
-	dice := someDice.
-]
-
-{ #category : #initialization }
 Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps [
 	maxLaps := someLaps.
 	board := aBoard.
 	ships := someShips.
 	dice := someDice.
-]
-
-{ #category : #initialization }
-Game >> initializeDice: someDice [ 
-	dice := someDice.
-]
-
-{ #category : #initialization }
-Game >> initializeShips: someShips [
-	ships := someShips.
 ]
