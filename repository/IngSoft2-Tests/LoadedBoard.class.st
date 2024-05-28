@@ -56,8 +56,7 @@ LoadedBoard >> initializeEffects [
 { #category : #initialization }
 LoadedBoard >> initializeSize: aSize initializeParsecs: someParsecs [
 	squares := OrderedCollection new.
-	1 to: (aSize - 1) do: [:x | squares add: Square createEmptySquare ].
-	squares add: EndSquare createEmptySquare.
+	1 to: aSize do: [:x | squares add: Square createEmptySquare ].
 	parsecs := someParsecs.
 	
 ]
