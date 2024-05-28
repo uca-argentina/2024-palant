@@ -96,7 +96,6 @@ EffectTest >> testHyperJumpParsecListResets [
 	aBoard takeOut: aShip.
 	aBoard place: aShip at: 10.
 	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aBoard .
-	Transcript show: (aBoard findShip: aShip).
 	self assert:((aBoard findShip: aShip) = 21).
 ]
 

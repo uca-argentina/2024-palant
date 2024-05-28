@@ -34,6 +34,23 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 ]
 
 { #category : #tests }
+GameTest >> testShipsGetsResetWithCorrectAmountOfLapsAfterLandingInBlackHole [
+	|aShip aBoard someShips game someDice|
+	someDice := OrderedCollection with: (LoadedDie of: 4).
+	aShip := Ship named: 'Pepe'.
+	aShip initializeTank: (FuelTank withMax: 12).
+	someShips := OrderedCollection with: aShip.
+	aBoard := Board withSize: 8.
+	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
+	
+	aBoard initializeEffect: BlackHole new initializeAt: 3.
+	aBoard place: aShip at: 1.
+	aBoard move: aShip distance: 7.
+	(aBoard move: aShip distance: 3) applyEffect: aShip withShips: someShips inBoard: aBoard.
+	self assert: (((aBoard findShip: aShip) = 1) and: (aShip getLaps = 0)).
+]
+
+{ #category : #tests }
 GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
 	
