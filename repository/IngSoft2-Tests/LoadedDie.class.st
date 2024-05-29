@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'faces'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #testing }
@@ -22,6 +22,11 @@ LoadedDie class >> of: anAmountOfFaces [
 	self isValid: anAmountOfFaces.
 	^ self new initializeOf: anAmountOfFaces
 
+]
+
+{ #category : #initialization }
+LoadedDie >> getMax [ 
+	^faces.
 ]
 
 { #category : #initialization }

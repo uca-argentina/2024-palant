@@ -12,17 +12,20 @@ Class {
 
 { #category : #initialization }
 WormSquare >> dockShip: aShip [
+
 	linkedSquare landShip: aShip.
-	^true.
+	^ NullEffect new
 ]
 
 { #category : #initialization }
 WormSquare >> initializeLink: aWormSquare [
-	linkedSquare := aWormSquare.
+
+	linkedSquare := aWormSquare
 ]
 
 { #category : #modifying }
 WormSquare >> landShip: aShip [
+
 	dockedShips add: aShip.
-	^true.
+	^ NullEffect new
 ]
