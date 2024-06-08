@@ -92,6 +92,7 @@ BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 4.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
+	
 	aBoard place: aShip at: 3.
 	aBoard takeOut: aShip.
 	self assert: ((aBoard findShip: aShip) = -1).
