@@ -15,10 +15,9 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	|aShip bShip cShip ships board dice game results|
 	
 	dice := OrderedCollection with: (LoadedDie of: 3).
-	aShip := Ship named: 'Pepe'.
-	bShip := Ship named: 'Pedro'.
-	cShip := Ship named: 'Juan'.
-	cShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
+	cShip := Ship named: 'Juan' withFuel: 1000.
 	ships := OrderedCollection with: aShip with: bShip with: cShip.
 	
 	board := Board withSize: 100 withWorms: false withParsecs: 0.
@@ -37,7 +36,7 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
 	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
+	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
 	aBoard := Board withSize: 100 withWorms: false withParsecs: 0.
 	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
 	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
@@ -50,8 +49,7 @@ GameTest >> testValidGameCanFinish [
 	|game aBoard aBoardSize aShip someDice someShips|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
-	aShip := Ship named: 'testShip'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'testShip' withFuel: 1000.
 	aBoard place: aShip at: 1. 
 	someShips := (OrderedCollection with: aShip) .
 	someDice := OrderedCollection with: (LoadedDie of: 23). 
@@ -64,7 +62,7 @@ GameTest >> testValidGameCanFinish [
 GameTest >> testValidGameCanFinishOnItsOwn [
 	|game someShips aBoard someDice|
 	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
+	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
 	aBoard := Board withSize: 2 withWorms: false withParsecs: 0.
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	game:= Game new.

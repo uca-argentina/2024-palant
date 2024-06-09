@@ -7,22 +7,20 @@ Class {
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectFuel [
 	|aShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 100).
+	aShip := Ship named: 'Pepe' withFuel: 100.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 6.
 	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
-	self assert:((aShip tank status) = 99). 
+	self assert: aShip getFuel equals: 99. 
 ]
 
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectLaps [
 	|aShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
@@ -35,10 +33,8 @@ EffectTest >> testAtomicBombDoesNotAffectLaps [
 { #category : #tests }
 EffectTest >> testAtomicBombResetsAllShip [
 	|aShip bShip aLoadedBoard allShips|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	bShip := Ship named: 'Pedro'.
-	bShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -54,8 +50,7 @@ EffectTest >> testAtomicBombResetsAllShip [
 { #category : #tests }
 EffectTest >> testBlackHoleEffectMovesShipBackwards [
 	|aShip aLoadedBoard|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 4.
@@ -66,10 +61,8 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 { #category : #tests }
 EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
 	|aShip bShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	bShip := Ship named: 'Pedro'.
-	bShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
 	shipList := OrderedCollection with: aShip with: bShip.
 	aLoadedBoard := LoadedBoard withSize: 80 withWorms: false withParsecs: 20.
 	aLoadedBoard initializeEffects.
@@ -84,8 +77,7 @@ EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
 { #category : #tests }
 EffectTest >> testHyperJumpParsecListResets [
 	|aShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
 	aLoadedBoard := LoadedBoard withSize: 30 withWorms: false withParsecs: 23.
@@ -104,10 +96,8 @@ EffectTest >> testHyperJumpParsecListResets [
 { #category : #tests }
 EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	|aShip bShip aLoadedBoard allShips|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	bShip := Ship named: 'Pedro'.
-	bShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -123,10 +113,8 @@ EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSkipsTwoTurns [
 	|someDice aShip bShip aLoadedBoard allShips|
 	someDice := OrderedCollection with: (Die of: 4).
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1).
-	bShip := Ship named: 'Pedro'.
-	bShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
@@ -143,9 +131,8 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 { #category : #tests }
 EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 	|aShip downedShip aLoadedBoard|
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	downedShip := Ship named: 'Mati'.
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	downedShip := Ship named: 'Mati' withFuel: 1000.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 1. 
@@ -159,10 +146,8 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
 	|aShip bShip aLoadedBoard someShips game someDice|
 	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	bShip := Ship named: 'Pedro'.
-	bShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	bShip := Ship named: 'Pedro' withFuel: 1000.
 	someShips := OrderedCollection with: aShip with: bShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
 	game:= Game withBoard: aLoadedBoard withDice: someDice withShips: someShips withMaxLaps: 3.
@@ -182,8 +167,7 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 
 	| someDice aShip aLoadedBoard allShips |
 	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
@@ -201,8 +185,7 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
 	|someDice aShip aLoadedBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 3).
-	aShip := Ship named: 'Pepe'.
-	aShip initializeTank: (FuelTank withMax: 1000).
+	aShip := Ship named: 'Pepe' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.

@@ -6,11 +6,12 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'fuelTank',
 		'laps',
 		'penalization',
 		'gravityLevel',
-		'position'
+		'position',
+		'fuel',
+		'maxFuel'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,6 +20,12 @@ Class {
 Ship class >> named: aName [
 	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
 	^(self new) initializeName: aName.
+]
+
+{ #category : #'instance creation' }
+Ship class >> named: aName withFuel: someFuel [
+	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
+	^(self new) initializeName: aName initializeFuel: someFuel.
 ]
 
 { #category : #testing }
@@ -38,7 +45,7 @@ Ship >> canPlay [
 
 	penalization = 0 ifFalse: [
 		penalization := penalization - 1.
-		penalization = 0 ifTrue: [ fuelTank reset ].
+		penalization = 0 ifTrue: [ self resetFuelTank ].
 		^ false ].
 	^ true
 ]
@@ -46,13 +53,24 @@ Ship >> canPlay [
 { #category : #accessing }
 Ship >> consumeFuel: someFuel [
 
-	^ fuelTank consumeFuel: someFuel
+	| fuelAmountModule |
+	fuelAmountModule := someFuel abs.
+	fuel := fuel - fuelAmountModule.
+	fuel < 0 ifTrue: [
+		fuel := 0.
+		^ false ].
+	^ true
 ]
 
 { #category : #testing }
 Ship >> decideToPlay [
 	^true.
 	
+]
+
+{ #category : #testing }
+Ship >> getFuel [
+	^fuel 
 ]
 
 { #category : #testing }
@@ -76,18 +94,20 @@ Ship >> getShipPosition [
 ]
 
 { #category : #'class initialization' }
-Ship >> initializeName: aName [
+Ship >> initializeFuel: someFuel [
+
+	fuel := someFuel
+]
+
+{ #category : #'class initialization' }
+Ship >> initializeName: aName initializeFuel: someFuel [
 
 	penalization := 0.
 	gravityLevel := 0.
 	laps := 0.
-	name := aName
-]
-
-{ #category : #'class initialization' }
-Ship >> initializeTank: aTank [
-
-	fuelTank := aTank
+	name := aName.
+	fuel := someFuel.
+	maxFuel := someFuel
 ]
 
 { #category : #accessing }
@@ -110,12 +130,25 @@ Ship >> play: someDice [
 ]
 
 { #category : #accessing }
+Ship >> resetFuelTank [
+
+	self setFuel: maxFuel.
+	^ 0.
+]
+
+{ #category : #accessing }
 Ship >> rollDice: someDice [
 
 	| result |
 	result := 0.
 	someDice do: [ :die | result := result + die throw ].
 	^ result
+]
+
+{ #category : #testing }
+Ship >> setFuel: someFuel [
+
+	fuel := someFuel
 ]
 
 { #category : #testing }
@@ -133,18 +166,12 @@ Ship >> setShipPosition:  someSquare [
 { #category : #accessing }
 Ship >> skipTurn [
 
-	fuelTank reset.
-	^ 0
+	self setFuel: maxFuel.
+	^ 0.
 ]
 
 { #category : #testing }
 Ship >> subtractLap [
 
 	laps := laps - 1
-]
-
-{ #category : #accessing }
-Ship >> tank [
-
-	^ fuelTank
 ]

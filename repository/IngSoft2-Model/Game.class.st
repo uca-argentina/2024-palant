@@ -26,7 +26,7 @@ Game >> begin [
 	self hasBeenInitialized
 		ifTrue: [
 			ships do: [ :ship |
-				ship initializeTank: (FuelTank withMax: self calculateMaxFuel).
+				ship initializeFuel: self calculateMaxFuel.
 				board place: ship at: 1 ] ]
 		ifFalse: [ Error signal: 'Cannot begin an uninitialized game.' ]
 ]

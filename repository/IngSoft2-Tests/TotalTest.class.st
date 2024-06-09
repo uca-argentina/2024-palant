@@ -9,7 +9,7 @@ TotalTest >> testRandomGameFinishes [
 	|ships board dice game|
 	
 	ships := OrderedCollection new.
-	1 to: 5 do: [ :x | ships add: (Ship named: x asString)].
+	1 to: 5 do: [ :x | ships add: (Ship named: x asString withFuel: 1000)].
 		
 	dice := OrderedCollection new.
 	1 to: 5 do: [ :x | dice add: 
