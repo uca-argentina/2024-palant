@@ -55,11 +55,6 @@ Ship >> decideToPlay [
 ]
 
 { #category : #testing }
-Ship >> getGravity [
-	^gravityLevel.
-]
-
-{ #category : #testing }
 Ship >> getLaps [
 	^laps.
 ]

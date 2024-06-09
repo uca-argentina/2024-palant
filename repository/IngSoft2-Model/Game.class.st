@@ -108,3 +108,12 @@ Game >> playTurn: aShip [
 		withShips: ships
 		inBoard: board
 ]
+
+{ #category : #action }
+Game >> playTurn: aShip withCard: aCard [
+
+	(board move: aShip distance: (aShip play: dice))
+		applyEffect: aShip
+		withShips: ships
+		inBoard: board
+]

@@ -32,16 +32,6 @@ Board >> findShip: aShip [
 	^ -1
 ]
 
-{ #category : #accessing }
-Board >> findWormSquares [
-
-	| positions |
-	positions := OrderedCollection new.
-	1 to: self boardSize do: [ :x |
-		(squares at: x) class == WormSquare ifTrue: [ positions add: x ] ].
-	^ positions
-]
-
 { #category : #'modifier state' }
 Board >> getParsecs [
 	^parsecs.
