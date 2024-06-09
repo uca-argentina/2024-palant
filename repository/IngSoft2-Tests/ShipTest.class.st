@@ -48,7 +48,7 @@ ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 	aShip initializeTank: (FuelTank withMax: 1000).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: (aShip skipTurn).
-	self assert: ((aBoard findShip: aShip) = 1). 
+	self assert: aShip getShipPosition equals: 1. 
 ]
 
 { #category : #tests }
@@ -71,5 +71,5 @@ ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
 	aShip initializeTank: (FuelTank withMax: 3).
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: 10.
-	self assert: ((aBoard findShip: aShip) = 1). 
+	self assert: aShip getShipPosition equals: 1. 
 ]

@@ -65,32 +65,33 @@ LoadedBoard >> initializeSize: aSize initializeParsecs: someParsecs [
 LoadedBoard >> move: aShip distance: aDistance [
 
 	| shipPosition |
-	shipPosition := self findShip: aShip.
-	(aShip canMove: aDistance) ifFalse: [^NullEffect new].
+	shipPosition := aShip getShipPosition.
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
 			(self takeOut: aShip).
+			aShip setShipPosition: shipPosition + aDistance.
 			^(self place: aShip at: shipPosition + aDistance)
 			 ]
 		ifFalse: [ self resetToStart: aShip.
 					  aShip penalize: 2.
 					  ^NullEffect new.
 					 ].
+	
 ]
 
 { #category : #initialization }
-LoadedBoard >> place: aShip at: aPosition [ 
-	|moveTo|
+LoadedBoard >> place: aShip at: aPosition [
+
+	| moveTo |
 	moveTo := aPosition.
-	[moveTo > self boardSize] whileTrue: [	
-			aShip addLap.
-			moveTo := (moveTo - self boardSize)
-			].
-	[moveTo < 0] whileTrue: [	
-			aShip subtractLap.
-			moveTo := (moveTo + self boardSize)
-			].
-	^(squares at: moveTo) dockShip: aShip.
+	[ moveTo > self boardSize ] whileTrue: [
+		aShip addLap.
+		moveTo := moveTo - self boardSize ].
+	[ moveTo < 0 ] whileTrue: [
+		aShip subtractLap.
+		moveTo := moveTo + self boardSize ].
+	aShip setShipPosition: moveTo.
+	^ (squares at: moveTo) dockShip: aShip
 ]
 
 { #category : #initialization }
@@ -101,7 +102,9 @@ LoadedBoard >> resetToStart: aShip [
 
 { #category : #initialization }
 LoadedBoard >> takeOut: aShip [
-	|shipPosition|
-	shipPosition := (self findShip: aShip).
-	^(squares at: shipPosition) undockShip: aShip. 
+
+	| shipPosition |
+	shipPosition := aShip getShipPosition.
+	aShip setShipPosition: -1.
+	^ (squares at: shipPosition) undockShip: aShip
 ]

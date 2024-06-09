@@ -111,10 +111,11 @@ Board >> initializeWormSquares [
 Board >> move: aShip distance: aDistance [
 
 	| shipPosition |
-	shipPosition := self findShip: aShip.
+	shipPosition := aShip getShipPosition.
 	(aShip consumeFuel: aDistance)
 		ifTrue: [
 			(self takeOut: aShip).
+			aShip setShipPosition: shipPosition + aDistance.
 			^(self place: aShip at: shipPosition + aDistance)
 			 ]
 		ifFalse: [ self resetToStart: aShip.
@@ -135,6 +136,7 @@ Board >> place: aShip at: aPosition [
 	[ moveTo < 0 ] whileTrue: [
 		aShip subtractLap.
 		moveTo := moveTo + self boardSize ].
+	aShip setShipPosition: moveTo.
 	^ (squares at: moveTo) dockShip: aShip
 ]
 
@@ -164,6 +166,7 @@ Board >> showBoard [
 Board >> takeOut: aShip [
 
 	| shipPosition |
-	shipPosition := self findShip: aShip.
+	shipPosition := aShip getShipPosition.
+	aShip setShipPosition: -1.
 	^ (squares at: shipPosition) undockShip: aShip
 ]

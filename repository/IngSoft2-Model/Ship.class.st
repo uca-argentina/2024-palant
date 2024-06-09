@@ -9,7 +9,8 @@ Class {
 		'fuelTank',
 		'laps',
 		'penalization',
-		'gravityLevel'
+		'gravityLevel',
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -69,6 +70,11 @@ Ship >> getName [
 	^name.
 ]
 
+{ #category : #testing }
+Ship >> getShipPosition [
+	^position 
+]
+
 { #category : #'class initialization' }
 Ship >> initializeName: aName [
 
@@ -116,6 +122,12 @@ Ship >> rollDice: someDice [
 Ship >> setGravity: someLevel [
 
 	gravityLevel := someLevel
+]
+
+{ #category : #testing }
+Ship >> setShipPosition:  someSquare [
+
+	position := someSquare
 ]
 
 { #category : #accessing }

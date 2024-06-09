@@ -66,7 +66,7 @@ Game >> getRanking [
 	ships do: [ :ship |
 		shipDict
 			at: ship getName
-			put: ship getLaps * board boardSize + (board findShip: ship) ].
+			put: ship getLaps * board boardSize + ship getShipPosition].
 	sortedShips := shipDict associations asSortedCollection: [ :a :b |
 		               a value < b value ].
 	sortedShips := sortedShips reversed.
