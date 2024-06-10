@@ -37,7 +37,7 @@ GameTest >> testValidGameCanBeInitialized [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
-	aBoard := Board withSize: 100 withWorms: false withParsecs: 0.
+	aBoard := Board withSize: 100 withWorms: true withParsecs: 0.
 	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
 	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
 
@@ -63,7 +63,7 @@ GameTest >> testValidGameCanFinishOnItsOwn [
 	|game someShips aBoard someDice|
 	
 	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
-	aBoard := Board withSize: 2 withWorms: false withParsecs: 0.
+	aBoard := Board withSize: 5 withWorms: true withParsecs: 0.
 	someDice := OrderedCollection with: (LoadedDie of: 4).
 	game:= Game new.
 	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.

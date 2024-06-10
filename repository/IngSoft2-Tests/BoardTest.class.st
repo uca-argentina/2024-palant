@@ -19,6 +19,14 @@ BoardTest >> testBoardIsCreatedWithNSquares [
 ]
 
 { #category : #tests }
+BoardTest >> testBoardSizeCanBeExpressedWithParsecs [
+
+	|aBoard|
+	aBoard := Board withSize: 10 withWorms: false withParsecs: 5.
+	self assert: aBoard getParsecs equals: 5.
+]
+
+{ #category : #tests }
 BoardTest >> testMoveReturnsTrueWhenValidMovement [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 10.
@@ -81,4 +89,15 @@ BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
 	aBoard place: aShip at: 3.
 	aBoard takeOut: aShip.
 	self assert: (aShip getShipPosition = -1).
+]
+
+{ #category : #tests }
+BoardTest >> testValidWhenShipGetsResetToStart [
+
+	|aShip aBoard|
+	aShip := Ship named: 'Pepe' withFuel: 1000.
+	aBoard := Board withSize: 100 withWorms: false withParsecs: 0.
+	aBoard place: aShip at: 5.
+	aBoard resetToStart: aShip.
+	self assert: (aShip getShipPosition = 1).  
 ]
