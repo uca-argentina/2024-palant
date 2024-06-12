@@ -6,6 +6,7 @@ Class {
 
 { #category : #tests }
 WormTest >> testWormHolesAreInitialized [
+
 	|aBoard testingBoard wormPositions|
 	aBoard := Board withSize: 20 withWorms: true withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	testingBoard := LoadedBoard clone: aBoard.

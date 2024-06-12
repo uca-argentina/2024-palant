@@ -52,6 +52,7 @@ Ship >> decideToPlay [
 	
 ]
 
+
 { #category : #getsAndSets }
 Ship >> getFuel [
 	^fuel 
@@ -63,6 +64,7 @@ Ship >> getGravity [
 ]
 
 { #category : #getsAndSets }
+
 Ship >> getLaps [
 	^laps.
 ]

@@ -72,6 +72,7 @@ BoardTest >> testShipsCanExceedBoardGoingBackwards [
 BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
 	|aBoard aBoardSize aShip|
 	aBoardSize := 4.
+
 	aShip := Ship named: 'testShip' withFuel: 1000.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aBoard place: aShip at: 3.
