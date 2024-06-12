@@ -43,14 +43,14 @@ GameTest >> testValidGameCanFinish [
 	someShips := game getShips. 
 	myShip := someShips at: 1.
 	game playTurn: (myShip).
-	myShip resetFuelTank.
+	myShip skipTurn.
 	game playTurn: (myShip).
-	myShip resetFuelTank.
+	myShip skipTurn.
 	game playTurn: (myShip).
-	myShip resetFuelTank.
+	myShip skipTurn.
 	game playTurn: (myShip).
-	myShip resetFuelTank.
+	myShip skipTurn.
 	game playTurn: (myShip).
-	myShip resetFuelTank.
+	myShip skipTurn.
 	self assert: (game hasWinner) equals: true.
 ]
