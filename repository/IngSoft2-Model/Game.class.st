@@ -58,6 +58,15 @@ Game >> getShips [
 ]
 
 { #category : #action }
+Game >> giveTurn: aShip [
+
+	(self canPlay: aShip) ifTrue: [
+		aShip decideToPlay
+			ifTrue: [ self playTurn: aShip ]
+			ifFalse: [ self skipTurn: aShip ] ]
+]
+
+{ #category : #action }
 Game >> hasWinner [
 
 	^ ships anySatisfy: [ :x | x getLaps >= maxLaps ]
@@ -75,10 +84,14 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: shipsA
 
 { #category : #action }
 Game >> playTurn: aShip [
-	(self canPlay: aShip) ifTrue:[ 
+
 	(board move: aShip distance: (aShip play: dice))
 		applyEffect: aShip
 		withShips: ships
 		inBoard: board
-		]
+]
+
+{ #category : #action }
+Game >> skipTurn: aShip [
+	aShip resetFuelTank.
 ]

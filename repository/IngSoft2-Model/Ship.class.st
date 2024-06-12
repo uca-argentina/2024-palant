@@ -104,11 +104,8 @@ Ship >> penalize: penalizationAmount [
 Ship >> play: someDice [
 
 	| rollResult |
-		self decideToPlay
-			ifTrue: [
-				rollResult := self rollDice: someDice.
-				(self canMove: rollResult) ifTrue: [ ^ rollResult ] ]
-			ifFalse: [ self skipTurn ].
+	rollResult := self rollDice: someDice.
+	(self canMove: rollResult) ifTrue: [ ^ rollResult ].
 	^ 0
 ]
 
@@ -116,7 +113,6 @@ Ship >> play: someDice [
 Ship >> resetFuelTank [
 
 	fuel := maxFuel.
-	^ 0.
 ]
 
 { #category : #accessing }
