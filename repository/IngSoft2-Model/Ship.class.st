@@ -115,7 +115,7 @@ Ship >> play: someDice [
 { #category : #accessing }
 Ship >> resetFuelTank [
 
-	self setFuel: maxFuel.
+	fuel := maxFuel.
 	^ 0.
 ]
 
@@ -126,12 +126,6 @@ Ship >> rollDice: someDice [
 	result := 0.
 	someDice do: [ :die | result := result + die throw ].
 	^ result
-]
-
-{ #category : #testing }
-Ship >> setFuel: someFuel [
-
-	fuel := someFuel
 ]
 
 { #category : #testing }
@@ -149,6 +143,6 @@ Ship >> setShipPosition:  someSquare [
 { #category : #accessing }
 Ship >> skipTurn [
 
-	self setFuel: maxFuel.
+	self resetFuelTank.
 	^ 0.
 ]
