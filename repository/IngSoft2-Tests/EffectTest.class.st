@@ -12,8 +12,8 @@ EffectTest >> testAtomicBombDoesNotAffectFuel [
 	shipList add: aShip.
 	aBoard := Board withSize: 100 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aTestBoard := LoadedBoard clone: aBoard.
-	((aTestBoard findSquareWithEffect: AtomicBomb) = -1) ifTrue:[ aTestBoard initializeEffect: AtomicBomb new initializeAt:  15].
-	aTestBoard place: aShip at: (aTestBoard findSquareWithEffect: AtomicBomb) - 1.
+	aTestBoard initializeEffect: (AtomicBomb new) initializeAt:  15.
+	aTestBoard place: aShip at: 14.
 	(aTestBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aTestBoard .
 	self assert: aShip getFuel equals: 99. 
 ]
