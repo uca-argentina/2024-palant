@@ -6,23 +6,25 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'fuelTank',
 		'laps',
 		'penalization',
-		'gravityLevel'
+		'gravityLevel',
+		'position',
+		'fuel',
+		'maxFuel'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Ship class >> named: aName [
+Ship class >> named: aName withFuel: someFuel [
 	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
-	^(self new) initializeName: aName.
+	^(self new) initializeName: aName initializeFuel: someFuel.
 ]
 
-{ #category : #testing }
-Ship >> addLap [
-	laps:= laps +1.
+{ #category : #accessing }
+Ship >> addLaps: lapAmount [ 
+	laps:= laps + lapAmount.
 ]
 
 { #category : #accessing }
@@ -33,50 +35,65 @@ Ship >> canMove: aDistance [
 ]
 
 { #category : #accessing }
-Ship >> canPlay [
+Ship >> consumeFuel: someFuel [
 
-	penalization = 0 ifFalse: [
-		penalization := penalization - 1.
-		penalization = 0 ifTrue: [ fuelTank reset ].
+	| fuelAmountModule |
+	fuelAmountModule := someFuel abs.
+	fuel := fuel - fuelAmountModule.
+	fuel < 0 ifTrue: [
+		fuel := 0.
 		^ false ].
 	^ true
 ]
 
 { #category : #accessing }
-Ship >> consumeFuel: someFuel [
-
-	^ fuelTank consumeFuel: someFuel
-]
-
-{ #category : #testing }
 Ship >> decideToPlay [
 	^true.
 	
 ]
 
-{ #category : #testing }
+
+{ #category : #getsAndSets }
+Ship >> getFuel [
+	^fuel 
+]
+
+{ #category : #getsAndSets }
+Ship >> getGravity [
+	^gravityLevel.
+]
+
+{ #category : #getsAndSets }
+
 Ship >> getLaps [
 	^laps.
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getName [
 	^name.
 ]
 
-{ #category : #'class initialization' }
-Ship >> initializeName: aName [
+{ #category : #getsAndSets }
+Ship >> getPenalization [
+	^penalization.
+]
 
-	penalization := 0.
-	gravityLevel := 0.
-	laps := 0.
-	name := aName
+{ #category : #getsAndSets }
+Ship >> getShipPosition [
+	^position 
 ]
 
 { #category : #'class initialization' }
-Ship >> initializeTank: aTank [
+Ship >> initializeName: aName initializeFuel: someFuel [
 
-	fuelTank := aTank
+	penalization := 0.
+	gravityLevel := 0.
+	position := 1.
+	laps := 0.
+	name := aName.
+	fuel := someFuel.
+	maxFuel := someFuel
 ]
 
 { #category : #accessing }
@@ -89,13 +106,15 @@ Ship >> penalize: penalizationAmount [
 Ship >> play: someDice [
 
 	| rollResult |
-	self canPlay ifTrue: [
-		self decideToPlay
-			ifTrue: [
-				rollResult := self rollDice: someDice.
-				(self canMove: rollResult) ifTrue: [ ^ rollResult ] ]
-			ifFalse: [ self skipTurn ] ].
+	rollResult := self rollDice: someDice.
+	(self canMove: rollResult) ifTrue: [ ^ rollResult ].
 	^ 0
+]
+
+{ #category : #accessing }
+Ship >> resetFuelTank [
+
+	fuel := maxFuel.
 ]
 
 { #category : #accessing }
@@ -107,27 +126,14 @@ Ship >> rollDice: someDice [
 	^ result
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> setGravity: someLevel [
 
 	gravityLevel := someLevel
 ]
 
-{ #category : #accessing }
-Ship >> skipTurn [
+{ #category : #getsAndSets }
+Ship >> setShipPosition:  someSquare [
 
-	fuelTank reset.
-	^ 0
-]
-
-{ #category : #testing }
-Ship >> subtractLap [
-
-	laps := laps - 1
-]
-
-{ #category : #accessing }
-Ship >> tank [
-
-	^ fuelTank
+	position := someSquare
 ]

@@ -12,7 +12,7 @@ HyperJump class >> withParsecs: parsecs [
 	^(self new) initializeParsecs: parsecs.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 HyperJump >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 
 	aBoard
@@ -22,7 +22,7 @@ HyperJump >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 			truncated
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utility }
 HyperJump >> cycleParsec [
 
 	| temp |
@@ -32,7 +32,7 @@ HyperJump >> cycleParsec [
 	^ temp
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 HyperJump >> initializeParsecs: aParsecList [
 	parsecList := aParsecList.
 	parsecList sort.

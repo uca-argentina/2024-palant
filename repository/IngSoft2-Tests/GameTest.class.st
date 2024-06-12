@@ -12,69 +12,34 @@ GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 
 { #category : #tests }
 GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
-	|aShip bShip cShip ships board dice game results|
-	
-	dice := OrderedCollection with: (LoadedDie of: 3).
-	aShip := Ship named: 'Pepe'.
-	bShip := Ship named: 'Pedro'.
-	cShip := Ship named: 'Juan'.
-	cShip initializeTank: (FuelTank withMax: 1000).
-	ships := OrderedCollection with: aShip with: bShip with: cShip.
-	
-	board := Board withSize: 100 withWorms: false withParsecs: 0.
-	
-	game := Game new.
-	game initializeBoard: board initializeDice: dice initializeShips: ships initializeMaxLaps: 3.
-	board place: aShip at: 10.
-	board place: bShip at: 50.
-	board place: cShip at: 1.
-	board move: cShip distance: 120.
-	results := game getRanking.
-	self assert:((results first key) asString = cShip getName ).
-]
-
-{ #category : #tests }
-GameTest >> testValidGameCanBeInitialized [
-	|game someShips aBoard someDice|
-	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 100 withWorms: false withParsecs: 0.
-	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
-	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
-
-	self assert: (game hasBeenInitialized).
+	|aGame aBoard someDice ships|
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	aBoard := Board withSize: 30 withWorms: false withParsecs: 0 withDice: someDice.
+	aGame := Game withBoard: aBoard withDice: someDice  withShips: 3 withMaxLaps: 10.
+	ships := aGame getShips.
+	aBoard place: (ships at: 1) at: 3.
+	aBoard place: (ships at: 2) at: 19.
+	aBoard place: (ships at: 3) at: 29.
+	self assert: (aGame getRanking at: 1) equals: (ships at: 3).
 ]
 
 { #category : #tests }
 GameTest >> testValidGameCanFinish [
-	|game aBoard aBoardSize aShip someDice someShips|
-	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
-	aShip := Ship named: 'testShip'.
-	aShip initializeTank: (FuelTank withMax: 1000).
-	aBoard place: aShip at: 1. 
-	someShips := (OrderedCollection with: aShip) .
-	someDice := OrderedCollection with: (LoadedDie of: 23). 
-	game := Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 2. 
-	aBoard move: aShip distance: (aShip play: someDice).
+	|game aBoard someDice myShip|
+	someDice := OrderedCollection with: (LoadedDie of: 11).
+	aBoard := LoadedBoard clone: (Board withSize: 10 withWorms: false withParsecs: 0 withDice: someDice).
+	aBoard removeEffects.
+	game := Game withBoard: aBoard withDice: someDice withShips: 1 withMaxLaps: 2.
+	myShip := (game getShips) at: 1.
+	game giveTurn: (myShip).
+	game skipTurn: myShip.
+	game giveTurn: (myShip).
+	game skipTurn: myShip.
+	game giveTurn: (myShip).
+	game skipTurn: myShip.
+	game giveTurn: (myShip).
+	game skipTurn: myShip.
+	game giveTurn: (myShip).
+	game skipTurn: myShip.
 	self assert: (game hasWinner) equals: true.
-]
-
-{ #category : #tests }
-GameTest >> testValidGameCanFinishOnItsOwn [
-	|game someShips aBoard someDice|
-	
-	someShips := OrderedCollection with: (Ship named: 'Pepe').	
-	aBoard := Board withSize: 2 withWorms: false withParsecs: 0.
-	someDice := OrderedCollection with: (LoadedDie of: 4).
-	game:= Game new.
-	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.
-	game begin.
-	game gameplay.
-	self assert: (game getStatus) equals: 'Over'.
-]
-
-{ #category : #tests }
-GameTest >> testValidGameCannotBeginWhenUninitialized [
-	self should:[(Game new) begin.] raise: Error withMessage: 'Cannot begin an uninitialized game.'.
 ]

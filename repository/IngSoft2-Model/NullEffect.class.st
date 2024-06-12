@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 NullEffect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 
 	^ true
