@@ -12,7 +12,7 @@ MoonWalk class >> withDistance: aDistance [
  ^(self new) initializeDistance: aDistance.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 MoonWalk >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 
 	someShips do: [ :aShip |
@@ -21,7 +21,7 @@ MoonWalk >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 				aBoard move: aShip distance: myDistance * -1 ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MoonWalk >> initializeDistance: aDistance [
  myDistance := aDistance.
 ]

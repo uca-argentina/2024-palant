@@ -12,13 +12,13 @@ WormEffect class >> withLink: linkPos [
 	^(self new) initializeLink: linkPos.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 WormEffect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 	aBoard takeOut: affectedShip.
 	aBoard place: affectedShip at: linkPosition.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 WormEffect >> initializeLink: linkPos [
 	linkPosition := linkPos.
 ]

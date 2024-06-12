@@ -25,14 +25,12 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 
 { #category : #tests }
 GameTest >> testValidGameCanFinish [
-	|game aBoard someDice someShips myShip|
-	aBoard := Board withSize: 10 withWorms: false withParsecs: 0.
+	|game aBoard someDice myShip|
 	someDice := OrderedCollection with: (LoadedDie of: 11).
-	aBoard initializeRandomEffects: someDice. 
-	
+	aBoard := LoadedBoard clone: (Board withSize: 10 withWorms: false withParsecs: 0 withDice: someDice).
+	aBoard removeEffects.
 	game := Game withBoard: aBoard withDice: someDice withShips: 1 withMaxLaps: 2.
-	someShips := game getShips. 
-	myShip := someShips at: 1.
+	myShip := (game getShips) at: 1.
 	game giveTurn: (myShip).
 	game skipTurn: myShip.
 	game giveTurn: (myShip).

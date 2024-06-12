@@ -22,7 +22,7 @@ Ship class >> named: aName withFuel: someFuel [
 	^(self new) initializeName: aName initializeFuel: someFuel.
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 Ship >> addLaps: lapAmount [ 
 	laps:= laps + lapAmount.
 ]
@@ -46,38 +46,38 @@ Ship >> consumeFuel: someFuel [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 Ship >> decideToPlay [
 	^true.
 	
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getFuel [
 	^fuel 
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getGravity [
 	^gravityLevel.
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getLaps [
 	^laps.
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getName [
 	^name.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Ship >> getPenalization [
 	^penalization.
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> getShipPosition [
 	^position 
 ]
@@ -124,13 +124,13 @@ Ship >> rollDice: someDice [
 	^ result
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> setGravity: someLevel [
 
 	gravityLevel := someLevel
 ]
 
-{ #category : #testing }
+{ #category : #getsAndSets }
 Ship >> setShipPosition:  someSquare [
 
 	position := someSquare

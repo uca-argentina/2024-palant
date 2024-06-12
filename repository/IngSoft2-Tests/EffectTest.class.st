@@ -6,27 +6,29 @@ Class {
 
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectFuel [
-	|aShip aLoadedBoard shipList|
+	|aShip aBoard aTestBoard shipList|
 	aShip := Ship named: 'Pepe' withFuel: 100.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 6.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
+	aBoard := Board withSize: 100 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aTestBoard := LoadedBoard clone: aBoard.
+	((aTestBoard findSquareWithEffect: AtomicBomb) = -1) ifTrue:[ aTestBoard initializeEffect: AtomicBomb new initializeAt:  15].
+	aTestBoard place: aShip at: (aTestBoard findSquareWithEffect: AtomicBomb) - 1.
+	(aTestBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aTestBoard .
 	self assert: aShip getFuel equals: 99. 
 ]
 
 { #category : #tests }
 EffectTest >> testAtomicBombDoesNotAffectLaps [
-	|aShip aLoadedBoard shipList|
+	|aShip aLoadedBoard aBoard shipList|
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
-	aLoadedBoard initializeEffects.
+	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aLoadedBoard := LoadedBoard clone: aBoard.
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 7.
 	aLoadedBoard place: aShip at: 6.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
+	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard.
 	self assert:(aShip getLaps = 0). 
 ]
 
@@ -38,7 +40,7 @@ EffectTest >> testAtomicBombResetsAllShip [
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 4.
 	aLoadedBoard place: bShip at: 6.
@@ -51,7 +53,7 @@ EffectTest >> testAtomicBombResetsAllShip [
 EffectTest >> testBlackHoleEffectMovesShipBackwards [
 	|aShip aLoadedBoard|
 	aShip := Ship named: 'Pepe' withFuel: 1000.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 4.
 	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aLoadedBoard .
@@ -64,7 +66,7 @@ EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	bShip := Ship named: 'Pedro' withFuel: 1000.
 	shipList := OrderedCollection with: aShip with: bShip.
-	aLoadedBoard := LoadedBoard withSize: 80 withWorms: false withParsecs: 20.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 80 withWorms: false withParsecs: 20 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 10.
 	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard.
@@ -80,7 +82,7 @@ EffectTest >> testHyperJumpParsecListResets [
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	shipList := OrderedCollection new.
 	shipList add: aShip.
-	aLoadedBoard := LoadedBoard withSize: 30 withWorms: false withParsecs: 23.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 30 withWorms: false withParsecs: 23 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 10.
 	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
@@ -101,7 +103,7 @@ EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 4.
 	aLoadedBoard place: bShip at: 8.
@@ -118,7 +120,7 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 	allShips := OrderedCollection new.
 	allShips add: aShip.
 	allShips add: bShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 19.
 	aLoadedBoard place: bShip at: 8.
@@ -133,7 +135,7 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 	|aShip downedShip aLoadedBoard|
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	downedShip := Ship named: 'Mati' withFuel: 1000.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 1. 
 	aLoadedBoard place: downedShip  at: 4. 
@@ -149,7 +151,7 @@ EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
 	bShip := Ship named: '2' withFuel: 1000.
 	someShips := OrderedCollection with: aShip with: bShip. 
 	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffect: AtomicBomb new initializeAt: 3.
 	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
 	aLoadedBoard place: aShip at: 1.
@@ -168,7 +170,7 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aLoadedBoard initializeEffects.
 	aLoadedBoard place: aShip at: 12.
 	(aLoadedBoard move: aShip distance: 1)

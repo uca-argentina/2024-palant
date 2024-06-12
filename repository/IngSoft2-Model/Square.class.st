@@ -13,7 +13,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 Square class >> createEmptySquare [
-	^(self new) initializeEmptySquare.
+	^(self new) initializeWithEffect: NullEffect new.
 ]
 
 { #category : #initialization }
@@ -30,13 +30,6 @@ Square >> getDockedShips [
 { #category : #initialization }
 Square >> getEffect [
 	^myEffect.
-]
-
-{ #category : #initialization }
-Square >> initializeEmptySquare [
-
-	myEffect := NullEffect new.
-	dockedShips := OrderedCollection new
 ]
 
 { #category : #initialization }

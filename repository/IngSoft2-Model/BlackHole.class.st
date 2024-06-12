@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 BlackHole >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 	aBoard move: affectedShip  distance: -4.
 ]

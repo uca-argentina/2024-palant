@@ -12,19 +12,12 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
-	|boardToReturn|
-	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
-	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
-	^boardToReturn.
-]
-
-{ #category : #'instance creation' }
 Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs withDice: someDice [
 	|boardToReturn|
 	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
+	boardToReturn initializeRandomEffects: someDice.
 	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
-	^boardToReturn initializeRandomEffects: someDice.
+	^boardToReturn.
 ]
 
 { #category : #accessing }
@@ -87,10 +80,10 @@ Board >> initializeSize: aSize initializeParsecs: someParsecs [
 Board >> initializeWormSquares [
 
 	| worm1Position worm1 worm2Position worm2 |
-	worm1Position := (self boardSize - 1) atRandom.
-	worm2Position := (self boardSize - 1) atRandom.
+	worm1Position := (self boardSize) atRandom.
+	worm2Position := (self boardSize) atRandom.
 	[ worm1Position = worm2Position ] whileTrue: [
-		worm2Position := (self boardSize - 1) atRandom ].
+		worm2Position := (self boardSize) atRandom ].
 	worm1 := WormEffect withLink: worm2Position.
 	worm2 := WormEffect withLink: worm1Position.
 	(squares at: worm1Position) initializeWithEffect: worm1. 
@@ -123,7 +116,7 @@ Board >> place: aShip at: aPosition [
 	[ moveTo > self boardSize ] whileTrue: [
 		aShip addLaps: 1.
 		moveTo := moveTo - self boardSize ].
-	[ moveTo < 0 ] whileTrue: [
+	[ moveTo <= 0 ] whileTrue: [
 		aShip addLaps: -1.
 		moveTo := moveTo + self boardSize ].
 	aShip setShipPosition: moveTo.

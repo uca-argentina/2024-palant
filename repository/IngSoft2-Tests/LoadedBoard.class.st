@@ -13,14 +13,6 @@ LoadedBoard class >> clone: aBoard [
 	^(self new) copyBoard: aBoard.
 ]
 
-{ #category : #'instance creation' }
-LoadedBoard class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
-	|boardToReturn|
-	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
-	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
-	^boardToReturn.
-]
-
 { #category : #initialization }
 LoadedBoard >> boardSize [
 	^(squares size).
@@ -35,6 +27,7 @@ LoadedBoard >> copyBoard: aBoard [
 { #category : #accessing }
 LoadedBoard >> findSquareWithEffect: anEffect [
 	1 to: self boardSize do: [ :x | (((squares at: x) getEffect) class = anEffect) ifTrue:[ ^x] ].
+	^-1.
 ]
 
 { #category : #accessing }
@@ -72,21 +65,13 @@ LoadedBoard >> initializeEffects [
 ]
 
 { #category : #initialization }
-LoadedBoard >> initializeSize: aSize initializeParsecs: someParsecs [
-	squares := OrderedCollection new.
-	1 to: aSize do: [:x | squares add: Square createEmptySquare ].
-	parsecs := someParsecs.
-	
-]
-
-{ #category : #initialization }
 LoadedBoard >> initializeWormSquares [
 
 	| worm1Position worm1 worm2Position worm2 |
-	worm1Position := (self boardSize - 1) atRandom.
-	worm2Position := (self boardSize - 1) atRandom.
+	worm1Position := (self boardSize) atRandom.
+	worm2Position := (self boardSize) atRandom.
 	[ worm1Position = worm2Position ] whileTrue: [
-		worm2Position := (self boardSize - 1) atRandom ].
+		worm2Position := (self boardSize) atRandom ].
 	worm1 := WormEffect withLink: worm2Position.
 	worm2 := WormEffect withLink: worm1Position.
 	(squares at: worm1Position) initializeWithEffect: worm1. 
@@ -124,6 +109,11 @@ LoadedBoard >> place: aShip at: aPosition [
 		moveTo := moveTo + self boardSize ].
 	aShip setShipPosition: moveTo.
 	^ (squares at: moveTo) dockShip: aShip
+]
+
+{ #category : #initialization }
+LoadedBoard >> removeEffects [
+	squares do: [ :square | square initializeWithEffect: NullEffect new ]
 ]
 
 { #category : #initialization }
