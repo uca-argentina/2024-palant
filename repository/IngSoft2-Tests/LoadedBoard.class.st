@@ -21,13 +21,6 @@ LoadedBoard >> boardSize [
 	^(squares size).
 ]
 
-{ #category : #initialization }
-LoadedBoard >> findShip: aShip [
-
-	1 to: (self boardSize) do: [:x | ((squares at: x) getDockedShips includes: aShip)  ifTrue: [ ^x ] ].
-	^-1.
-]
-
 { #category : #accessing }
 LoadedBoard >> findWormSquares [
 
@@ -83,8 +76,8 @@ LoadedBoard >> initializeWormSquares [
 	worm1 := WormSquare createEmptySquare.
 	worm2 := WormSquare createEmptySquare.
 
-	worm1 initializeLink: worm2.
-	worm2 initializeLink: worm1.
+	worm1 initializeLink: worm2 withPosition: worm2Position.
+	worm2 initializeLink: worm1 withPosition: worm1Position.
 
 	squares at: worm1Position put: worm1.
 	squares at: worm2Position put: worm2

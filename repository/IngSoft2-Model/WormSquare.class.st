@@ -5,7 +5,8 @@ Class {
 	#name : #WormSquare,
 	#superclass : #Square,
 	#instVars : [
-		'linkedSquare'
+		'linkedSquare',
+		'linkPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,14 +14,16 @@ Class {
 { #category : #initialization }
 WormSquare >> dockShip: aShip [
 
+	aShip setShipPosition: linkPosition.
 	linkedSquare landShip: aShip.
 	^ NullEffect new
 ]
 
 { #category : #initialization }
-WormSquare >> initializeLink: aWormSquare [
+WormSquare >> initializeLink: aWormSquare withPosition: aPosition [
 
-	linkedSquare := aWormSquare
+	linkedSquare := aWormSquare.
+	linkPosition := aPosition.
 ]
 
 { #category : #modifying }

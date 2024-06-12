@@ -19,5 +19,5 @@ WormTest >> testWormHolesTeleportShips [
 	aShip := Ship named: 'TestShip' withFuel: 1000.
 	wormPositions := aBoard findWormSquares.
 	aBoard place: aShip at: (wormPositions at: 1).
-	self assert: (aBoard findShip: aShip) equals: (wormPositions at: 2).
+	self assert: (aShip getShipPosition ) equals: (wormPositions at: 2).
 ]
