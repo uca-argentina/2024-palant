@@ -26,9 +26,8 @@ LoadedBoard >> findWormSquares [
 
 	| positions |
 	positions := OrderedCollection new.
-	1 to: self boardSize do: [ :x |
-		(squares at: x) class == WormSquare ifTrue: [ positions add: x ] ].
-	^ positions
+	1 to: (self boardSize) do: [ :x | (((squares at: x) getEffect) class = WormEffect)ifTrue:[ positions add: x ] ].
+	^positions.
 ]
 
 { #category : #initialization }
@@ -72,15 +71,10 @@ LoadedBoard >> initializeWormSquares [
 	worm2Position := (self boardSize - 1) atRandom.
 	[ worm1Position = worm2Position ] whileTrue: [
 		worm2Position := (self boardSize - 1) atRandom ].
-
-	worm1 := WormSquare createEmptySquare.
-	worm2 := WormSquare createEmptySquare.
-
-	worm1 initializeLink: worm2 withPosition: worm2Position.
-	worm2 initializeLink: worm1 withPosition: worm1Position.
-
-	squares at: worm1Position put: worm1.
-	squares at: worm2Position put: worm2
+	worm1 := WormEffect withLink: worm2Position.
+	worm2 := WormEffect withLink: worm1Position.
+	(squares at: worm1Position) initializeWithEffect: worm1. 
+	(squares at: worm2Position) initializeWithEffect: worm2.
 ]
 
 { #category : #initialization }

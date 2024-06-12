@@ -28,6 +28,11 @@ Square >> getDockedShips [
 ]
 
 { #category : #initialization }
+Square >> getEffect [
+	^myEffect.
+]
+
+{ #category : #initialization }
 Square >> initializeEmptySquare [
 
 	myEffect := NullEffect new.

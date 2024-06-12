@@ -18,6 +18,7 @@ WormTest >> testWormHolesTeleportShips [
 	aBoard := LoadedBoard withSize: 20 withWorms: true withParsecs: 0.
 	aShip := Ship named: 'TestShip' withFuel: 1000.
 	wormPositions := aBoard findWormSquares.
-	aBoard place: aShip at: (wormPositions at: 1).
-	self assert: (aShip getShipPosition ) equals: (wormPositions at: 2).
+	aBoard place: aShip at: (wormPositions at: 1) - 1.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: (OrderedCollection with: aShip) inBoard: aBoard .
+	self assert: (aShip getShipPosition ) equals: (wormPositions at: 2)
 ]
