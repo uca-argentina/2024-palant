@@ -135,10 +135,3 @@ Ship >> setShipPosition:  someSquare [
 
 	position := someSquare
 ]
-
-{ #category : #accessing }
-Ship >> skipTurn [
-
-	self resetFuelTank.
-	^ 0.
-]
