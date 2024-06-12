@@ -17,20 +17,14 @@ Class {
 }
 
 { #category : #'instance creation' }
-Ship class >> named: aName [
-	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
-	^(self new) initializeName: aName.
-]
-
-{ #category : #'instance creation' }
 Ship class >> named: aName withFuel: someFuel [
 	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
 	^(self new) initializeName: aName initializeFuel: someFuel.
 ]
 
 { #category : #testing }
-Ship >> addLap [
-	laps:= laps +1.
+Ship >> addLaps: lapAmount [ 
+	laps:= laps + lapAmount.
 ]
 
 { #category : #accessing }
@@ -38,16 +32,6 @@ Ship >> canMove: aDistance [
 
 	aDistance = gravityLevel ifTrue: [ gravityLevel := 0 ].
 	^ gravityLevel = 0
-]
-
-{ #category : #accessing }
-Ship >> canPlay [
-
-	penalization = 0 ifFalse: [
-		penalization := penalization - 1.
-		penalization = 0 ifTrue: [ self resetFuelTank ].
-		^ false ].
-	^ true
 ]
 
 { #category : #accessing }
@@ -88,15 +72,14 @@ Ship >> getName [
 	^name.
 ]
 
+{ #category : #accessing }
+Ship >> getPenalization [
+	^penalization.
+]
+
 { #category : #testing }
 Ship >> getShipPosition [
 	^position 
-]
-
-{ #category : #'class initialization' }
-Ship >> initializeFuel: someFuel [
-
-	fuel := someFuel
 ]
 
 { #category : #'class initialization' }
@@ -104,6 +87,7 @@ Ship >> initializeName: aName initializeFuel: someFuel [
 
 	penalization := 0.
 	gravityLevel := 0.
+	position := 1.
 	laps := 0.
 	name := aName.
 	fuel := someFuel.
@@ -120,12 +104,11 @@ Ship >> penalize: penalizationAmount [
 Ship >> play: someDice [
 
 	| rollResult |
-	self canPlay ifTrue: [
 		self decideToPlay
 			ifTrue: [
 				rollResult := self rollDice: someDice.
 				(self canMove: rollResult) ifTrue: [ ^ rollResult ] ]
-			ifFalse: [ self skipTurn ] ].
+			ifFalse: [ self skipTurn ].
 	^ 0
 ]
 
@@ -168,10 +151,4 @@ Ship >> skipTurn [
 
 	self setFuel: maxFuel.
 	^ 0.
-]
-
-{ #category : #testing }
-Ship >> subtractLap [
-
-	laps := laps - 1
 ]

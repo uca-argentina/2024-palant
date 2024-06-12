@@ -64,7 +64,7 @@ BoardTest >> testShipsCanDoBackwardsLaps [
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
 	aShip := Ship named: 'testShip' withFuel: 1000.
 	aBoard place: aShip at: 1. 
-	aShip addLap.
+	aShip addLaps: 1.
 	aBoard move: aShip distance: -3.
 	self assert: (aShip getShipPosition = 8).
 ]

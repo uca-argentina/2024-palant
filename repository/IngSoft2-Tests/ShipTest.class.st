@@ -35,7 +35,7 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 
 { #category : #tests }
 ShipTest >> testShipCannotBeCreatedWithEmptyName [
-	self should:[Ship named: ''] raise: Error withMessage: 'Ship must have a name'
+	self should:[Ship named: '' withFuel: 1010] raise: Error withMessage: 'Ship must have a name'
 ]
 
 { #category : #tests }

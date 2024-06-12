@@ -144,14 +144,12 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 
 { #category : #tests }
 EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
-	|aShip bShip aLoadedBoard someShips game someDice|
+	|aShip bShip aLoadedBoard someShips someDice|
+	aShip := Ship named: '1' withFuel: 1000.
+	bShip := Ship named: '2' withFuel: 1000.
+	someShips := OrderedCollection with: aShip with: bShip. 
 	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	bShip := Ship named: 'Pedro' withFuel: 1000.
-	someShips := OrderedCollection with: aShip with: bShip.
 	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
-	game:= Game withBoard: aLoadedBoard withDice: someDice withShips: someShips withMaxLaps: 3.
-	
 	aLoadedBoard initializeEffect: AtomicBomb new initializeAt: 3.
 	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
 	aLoadedBoard place: aShip at: 1.

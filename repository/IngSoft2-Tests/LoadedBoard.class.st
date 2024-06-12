@@ -107,10 +107,10 @@ LoadedBoard >> place: aShip at: aPosition [
 	| moveTo |
 	moveTo := aPosition.
 	[ moveTo > self boardSize ] whileTrue: [
-		aShip addLap.
+		aShip addLaps: 1.
 		moveTo := moveTo - self boardSize ].
 	[ moveTo < 0 ] whileTrue: [
-		aShip subtractLap.
+		aShip addLaps: -1.
 		moveTo := moveTo + self boardSize ].
 	aShip setShipPosition: moveTo.
 	^ (squares at: moveTo) dockShip: aShip
@@ -120,6 +120,21 @@ LoadedBoard >> place: aShip at: aPosition [
 LoadedBoard >> resetToStart: aShip [
 	self takeOut: aShip.
 	self place: aShip at: 1.
+]
+
+{ #category : #initialization }
+LoadedBoard >> showBoard [
+
+	| dockedHere |
+	squares do: [ :square |
+		square getDockedShips isEmpty
+			ifTrue: [ Transcript show: '#' ]
+			ifFalse: [
+				square getDockedShips do: [ :thisShip |
+					Transcript show: thisShip getName ].
+				Transcript show: '.' ] ].
+	Transcript
+		show: ''.
 ]
 
 { #category : #initialization }

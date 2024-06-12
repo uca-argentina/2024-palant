@@ -8,7 +8,6 @@ Class {
 		'board',
 		'dice',
 		'ships',
-		'status',
 		'maxLaps'
 	],
 	#category : #'IngSoft2-Model'
@@ -17,18 +16,6 @@ Class {
 { #category : #'as yet unclassified' }
 Game class >> withBoard: aBoard withDice: someDice withShips: someShips  withMaxLaps: someLaps [
 ^(self new) initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps.
-]
-
-{ #category : #action }
-Game >> begin [
-
-	status := 'Launching'.
-	self hasBeenInitialized
-		ifTrue: [
-			ships do: [ :ship |
-				ship initializeFuel: self calculateMaxFuel.
-				board place: ship at: 1 ] ]
-		ifFalse: [ Error signal: 'Cannot begin an uninitialized game.' ]
 ]
 
 { #category : #'modifier state' }
@@ -41,21 +28,15 @@ Game >> calculateMaxFuel [
 	^ maxFuel
 ]
 
-{ #category : #'modifier state' }
-Game >> endGame [
-
-	status := 'Over'.
-	board showBoard
-]
-
 { #category : #action }
-Game >> gameplay [
-
-	status := 'Playing'.
-	[ self hasWinner ] whileFalse: [
-		ships do: [ :ship | self hasWinner ifFalse: [ self playTurn: ship ] ].
-
-		self endGame ]
+Game >> canPlay: aShip [
+|penalization|
+	penalization := aShip getPenalization.
+	penalization = 0 ifFalse: [
+		penalization := penalization - 1.
+		penalization = 0 ifTrue: [ aShip resetFuelTank ].
+		^ false ].
+	^ true
 ]
 
 { #category : #action }
@@ -73,16 +54,9 @@ Game >> getRanking [
 	^ sortedShips
 ]
 
-{ #category : #'accessing - attributes' }
-Game >> getStatus [
-	^status.
-		
-	
-]
-
-{ #category : #accessing }
-Game >> hasBeenInitialized [
-	^((((board isNotNil) and: (dice isNotNil))) and: (ships isNotNil)) and: (maxLaps isNotNil).
+{ #category : #action }
+Game >> getShips [
+	^ships.
 ]
 
 { #category : #action }
@@ -92,19 +66,21 @@ Game >> hasWinner [
 ]
 
 { #category : #initialization }
-Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: someLaps [
+Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: shipsAmount initializeMaxLaps: someLaps [
 
 	maxLaps := someLaps.
 	board := aBoard.
-	ships := someShips.
-	dice := someDice
+	dice := someDice.
+	ships := OrderedCollection new.
+	(1 to: shipsAmount) do: [ :x | ships add: (Ship named: (x asString) withFuel: self calculateMaxFuel ) ].
 ]
 
 { #category : #action }
 Game >> playTurn: aShip [
-
+	(self canPlay: aShip) ifTrue:[ 
 	(board move: aShip distance: (aShip play: dice))
 		applyEffect: aShip
 		withShips: ships
 		inBoard: board
+		]
 ]

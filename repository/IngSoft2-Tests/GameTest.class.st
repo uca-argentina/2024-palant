@@ -33,46 +33,24 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 ]
 
 { #category : #tests }
-GameTest >> testValidGameCanBeInitialized [
-	|game someShips aBoard someDice|
-	
-	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
-	aBoard := Board withSize: 100 withWorms: true withParsecs: 0.
-	someDice := OrderedCollection with: (Die of: 6) with: (Die of: 5).
-	game:= Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 3.
-
-	self assert: (game hasBeenInitialized).
-]
-
-{ #category : #tests }
 GameTest >> testValidGameCanFinish [
-	|game aBoard aBoardSize aShip someDice someShips|
-	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0.
-	aShip := Ship named: 'testShip' withFuel: 1000.
-	aBoard place: aShip at: 1. 
-	someShips := (OrderedCollection with: aShip) .
-	someDice := OrderedCollection with: (LoadedDie of: 23). 
-	game := Game withBoard: aBoard withDice: someDice withShips: someShips withMaxLaps: 2. 
-	aBoard move: aShip distance: (aShip play: someDice).
-	self assert: (game hasWinner) equals: true.
-]
-
-{ #category : #tests }
-GameTest >> testValidGameCanFinishOnItsOwn [
-	|game someShips aBoard someDice|
+	|game aBoard someDice someShips myShip|
+	aBoard := Board withSize: 10 withWorms: false withParsecs: 0.
+	someDice := OrderedCollection with: (LoadedDie of: 11).
+	aBoard initializeRandomEffects: someDice. 
 	
-	someShips := OrderedCollection with: (Ship named: 'Pepe' withFuel: 1000).	
-	aBoard := Board withSize: 5 withWorms: true withParsecs: 0.
-	someDice := OrderedCollection with: (LoadedDie of: 4).
-	game:= Game new.
-	game initializeBoard: aBoard initializeDice: someDice initializeShips: someShips initializeMaxLaps: 2.
-	game begin.
-	game gameplay.
-	self assert: (game getStatus) equals: 'Over'.
-]
-
-{ #category : #tests }
-GameTest >> testValidGameCannotBeginWhenUninitialized [
-	self should:[(Game new) begin.] raise: Error withMessage: 'Cannot begin an uninitialized game.'.
+	game := Game withBoard: aBoard withDice: someDice withShips: 1 withMaxLaps: 2.
+	someShips := game getShips. 
+	myShip := someShips at: 1.
+	game playTurn: (myShip).
+	myShip resetFuelTank.
+	game playTurn: (myShip).
+	myShip resetFuelTank.
+	game playTurn: (myShip).
+	myShip resetFuelTank.
+	game playTurn: (myShip).
+	myShip resetFuelTank.
+	game playTurn: (myShip).
+	myShip resetFuelTank.
+	self assert: (game hasWinner) equals: true.
 ]

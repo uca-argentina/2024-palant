@@ -19,6 +19,14 @@ Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
 	^boardToReturn.
 ]
 
+{ #category : #'instance creation' }
+Board class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs withDice: someDice [
+	|boardToReturn|
+	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
+	(hasWorms) ifTrue: [boardToReturn initializeWormSquares].
+	^boardToReturn initializeRandomEffects: someDice.
+]
+
 { #category : #accessing }
 Board >> boardSize [
 	^(squares size).
@@ -113,10 +121,10 @@ Board >> place: aShip at: aPosition [
 	| moveTo |
 	moveTo := aPosition.
 	[ moveTo > self boardSize ] whileTrue: [
-		aShip addLap.
+		aShip addLaps: 1.
 		moveTo := moveTo - self boardSize ].
 	[ moveTo < 0 ] whileTrue: [
-		aShip subtractLap.
+		aShip addLaps: -1.
 		moveTo := moveTo + self boardSize ].
 	aShip setShipPosition: moveTo.
 	^ (squares at: moveTo) dockShip: aShip
@@ -126,22 +134,6 @@ Board >> place: aShip at: aPosition [
 Board >> resetToStart: aShip [
 	self takeOut: aShip.
 	self place: aShip at: 1.
-]
-
-{ #category : #action }
-Board >> showBoard [
-
-	| dockedHere |
-	squares do: [ :square |
-		square getDockedShips isEmpty
-			ifTrue: [ Transcript show: '#' ]
-			ifFalse: [
-				square getDockedShips do: [ :thisShip |
-					Transcript show: thisShip getName ].
-				Transcript show: '.' ] ].
-	Transcript
-		show: '';
-		cr
 ]
 
 { #category : #'modifier state' }
