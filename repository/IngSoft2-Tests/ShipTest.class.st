@@ -34,11 +34,6 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 ]
 
 { #category : #tests }
-ShipTest >> testShipCannotBeCreatedWithEmptyName [
-	self should:[Ship named: '' withFuel: 1010] raise: Error withMessage: 'Ship must have a name'
-]
-
-{ #category : #tests }
 ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 	|aShip aBoard|
 	aBoard := Board withSize: 20 withWorms: false withParsecs: 0. 
@@ -67,4 +62,10 @@ ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
 	aBoard place: aShip at: 1.
 	aBoard move: aShip distance: 10.
 	self assert: aShip getShipPosition equals: 1. 
+]
+
+{ #category : #tests }
+ShipTest >> testWhenCreatingShipCannotHaveEmptyNameButStoresNameIfValid [
+	self should:[Ship named: '' withFuel: 1010] raise: Error withMessage: 'Ship must have a name'.
+	self assert: ((Ship named: 'Pepe' withFuel: 1010) getName = 'Pepe').
 ]

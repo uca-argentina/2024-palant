@@ -181,15 +181,15 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 
 { #category : #tests }
 EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
-	|someDice aShip aLoadedBoard allShips|
+	|someDice aShip aBoard aLoadedBoard allShips|
 	someDice := OrderedCollection with: (LoadedDie of: 3).
 	aShip := Ship named: 'Pepe' withFuel: 1000.
 	allShips := OrderedCollection new.
 	allShips add: aShip.
-	aLoadedBoard := LoadedBoard withSize: 20 withWorms: false withParsecs: 0.
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 12.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aLoadedBoard.
-	aLoadedBoard move: aShip distance: (aShip play: someDice).
-	self assert: aShip getShipPosition equals: 16. 
+	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: someDice.
+	aLoadedBoard := LoadedBoard clone: aBoard.
+	aBoard place: aShip at: (aLoadedBoard findSquareWithEffect: HyperGravity) - 1.
+	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
+	aBoard move: aShip distance: 3.
+	self deny: ((aShip getShipPosition) = (aLoadedBoard findSquareWithEffect: HyperGravity)). 
 ]

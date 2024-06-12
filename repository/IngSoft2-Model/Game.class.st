@@ -42,16 +42,14 @@ Game >> canPlay: aShip [
 { #category : #action }
 Game >> getRanking [
 
-	| shipDict sortedShips |
-	shipDict := Dictionary new.
-	ships do: [ :ship |
-		shipDict
-			at: ship getName
-			put: ship getLaps * board boardSize + ship getShipPosition].
-	sortedShips := shipDict associations asSortedCollection: [ :a :b |
-		               a value < b value ].
-	sortedShips := sortedShips reversed.
-	^ sortedShips
+    | sortedShips |
+
+    sortedShips := ships.
+
+    ^ sortedShips asSortedCollection: [ :shipA :shipB |
+          ((shipA getLaps ) * board boardSize + shipA getShipPosition)
+          >=
+          ((shipB getLaps ) * board boardSize + shipB getShipPosition) ]
 ]
 
 { #category : #action }

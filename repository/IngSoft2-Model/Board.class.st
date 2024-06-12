@@ -37,6 +37,11 @@ Board >> getParsecs [
 	^parsecs.
 ]
 
+{ #category : #'modifier state' }
+Board >> getSquares [
+	^squares.
+]
+
 { #category : #initialization }
 Board >> initializeRandomEffects: someDice [
 

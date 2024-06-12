@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+LoadedBoard class >> clone: aBoard [
+	^(self new) copyBoard: aBoard.
+]
+
+{ #category : #'instance creation' }
 LoadedBoard class >> withSize: aSize withWorms: hasWorms withParsecs: someParsecs [
 	|boardToReturn|
 	boardToReturn := ((self new) initializeSize: aSize initializeParsecs: someParsecs).
@@ -19,6 +24,17 @@ LoadedBoard class >> withSize: aSize withWorms: hasWorms withParsecs: someParsec
 { #category : #initialization }
 LoadedBoard >> boardSize [
 	^(squares size).
+]
+
+{ #category : #initialization }
+LoadedBoard >> copyBoard: aBoard [
+	squares := aBoard getSquares.
+	parsecs := aBoard getParsecs.
+]
+
+{ #category : #accessing }
+LoadedBoard >> findSquareWithEffect: anEffect [
+	1 to: self boardSize do: [ :x | (((squares at: x) getEffect) class = anEffect) ifTrue:[ ^x] ].
 ]
 
 { #category : #accessing }
