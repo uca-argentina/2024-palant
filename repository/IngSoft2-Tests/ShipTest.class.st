@@ -47,7 +47,7 @@ ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 { #category : #tests }
 ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 	|aShip aBoard aGame|
-	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 3)) withShips: 1  withMaxLaps: 1.
 	aShip := (aGame getShips) at: 1.
 	aBoard place: aShip at: 1.
