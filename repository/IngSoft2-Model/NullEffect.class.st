@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #application }
-NullEffect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+NullEffect >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
 	^ true
 ]
