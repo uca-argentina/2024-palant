@@ -41,6 +41,14 @@ Game >> canPlay: aPlayer [
 ]
 
 { #category : #action }
+Game >> getLeaderboard [
+   | sortedPlayers |
+	sortedPlayers := OrderedCollection new.
+	(self getRanking) do: [ :player | sortedPlayers add: (player getName)]	.
+	^sortedPlayers.
+]
+
+{ #category : #action }
 Game >> getPlayers [
  ^players.
 ]

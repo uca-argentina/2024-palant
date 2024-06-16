@@ -21,6 +21,7 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	aBoard place: (players at: 2) at: 19.
 	aBoard place: (players at: 3) at: 29.
 	self assert: (aGame getRanking at: 1) equals: (players at: 3).
+	self assert: (aGame getLeaderboard at: 1) equals: '3'.
 ]
 
 { #category : #tests }
