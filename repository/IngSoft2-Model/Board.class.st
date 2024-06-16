@@ -91,49 +91,49 @@ Board >> initializeWormSquares [
 ]
 
 { #category : #action }
-Board >> move: aShip distance: aDistance [
+Board >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	(aShip consumeFuel: aDistance)
+	shipPosition := aPlayer ship getShipPosition.
+	(aPlayer ship consumeFuel: aDistance)
 		ifTrue: [
-			(self takeOut: aShip).
-			aShip setShipPosition: shipPosition + aDistance.
-			^(self place: aShip at: shipPosition + aDistance)
+			(self takeOut: aPlayer).
+			aPlayer ship setShipPosition: shipPosition + aDistance.
+			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aShip.
-					  aShip penalize: 2.
+		ifFalse: [ self resetToStart: aPlayer ship.
+					  aPlayer ship penalize: 2.
 					  ^NullEffect new.
 					 ].
 	
 ]
 
 { #category : #accessing }
-Board >> place: aShip at: aPosition [
+Board >> place: aPlayer at: aPosition [
 
 	| moveTo |
 	moveTo := aPosition.
 	[ moveTo > self boardSize ] whileTrue: [
-		aShip addLaps: 1.
+		aPlayer ship addLaps: 1.
 		moveTo := moveTo - self boardSize ].
 	[ moveTo <= 0 ] whileTrue: [
-		aShip addLaps: -1.
+		aPlayer ship addLaps: -1.
 		moveTo := moveTo + self boardSize ].
-	aShip setShipPosition: moveTo.
-	^ (squares at: moveTo) dockShip: aShip
+	aPlayer ship setShipPosition: moveTo.
+	^ (squares at: moveTo) dockShip: aPlayer ship.
 ]
 
 { #category : #'modifier state' }
-Board >> resetToStart: aShip [
-	self takeOut: aShip.
-	self place: aShip at: 1.
+Board >> resetToStart: aPlayer [
+	self takeOut: aPlayer.
+	self place: aPlayer at: 1.
 ]
 
 { #category : #'modifier state' }
-Board >> takeOut: aShip [
+Board >> takeOut: aPlayer [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	aShip setShipPosition: -1.
-	^ (squares at: shipPosition) undockShip: aShip
+	shipPosition := aPlayer ship getShipPosition.
+	aPlayer ship setShipPosition: -1.
+	^ (squares at: shipPosition) undockShip: aPlayer ship
 ]

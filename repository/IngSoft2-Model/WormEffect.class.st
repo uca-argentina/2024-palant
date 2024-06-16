@@ -13,9 +13,10 @@ WormEffect class >> withLink: linkPos [
 ]
 
 { #category : #application }
-WormEffect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	aBoard takeOut: affectedShip.
-	aBoard place: affectedShip at: linkPosition.
+WormEffect >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+
+	aBoard takeOut: affectedPlayer.
+	aBoard place: affectedPlayer at: linkPosition
 ]
 
 { #category : #initialization }

@@ -12,32 +12,35 @@ BoardTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage
 
 { #category : #tests }
 BoardTest >> testBoardCanMoveShip [
-	|aBoard aBoardSize aShip|
+	|aBoard aBoardSize aShip aPlayer|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aShip := Ship named: 'TestShip' withFuel: 1000.
-	aBoard place: aShip at: 1. 
-	aBoard move: aShip distance: 4.
+	aShip := Ship withFuel: 1000.
+	aPlayer := Player named: 'Pepe' withShip: aShip. 
+	aBoard place: aPlayer at: 1. 
+	aBoard move: aPlayer distance: 4.
 	self assert: (aShip getShipPosition = 5).
 ]
 
 { #category : #tests }
 BoardTest >> testBoardCanMoveShipBackwards [
-	|aShip aBoard|
+	|aShip aBoard aPlayer|
 	aBoard := Board withSize: 10 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aShip := Ship named: 'PEPE' withFuel: 1000.
-	aBoard place: aShip at: 5.
-	aBoard move: aShip distance: -3.
+	aShip := Ship withFuel: 1000.
+	aPlayer := Player named: 'Pepe' withShip: aShip.
+	aBoard place: aPlayer at: 5.
+	aBoard move: aPlayer distance: -3.
 	self assert: (aShip getShipPosition = 2).  
 ]
 
 { #category : #tests }
 BoardTest >> testBoardCanPlaceShip [
-	|aBoard aBoardSize aShip|
+	|aBoard aBoardSize aShip aPlayer|
 	aBoardSize := 4.
-	aShip := Ship named: 'TestShip' withFuel: 1000.
+	aShip := Ship withFuel: 1000.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aBoard place: aShip at: 3.
+	aPlayer := Player named: 'Pepe' withShip: aShip.
+	aBoard place: aPlayer at: 3.
 	self assert: (aShip getShipPosition = 3).
 ]
 
@@ -59,34 +62,37 @@ BoardTest >> testBoardSizeCanBeExpressedWithParsecs [
 
 { #category : #tests }
 BoardTest >> testShipsCanExceedBoardGoingBackwards [ 
-	|aBoard aBoardSize aShip|
+	|aBoard aBoardSize aShip aPlayer|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aShip := Ship named: 'testShip' withFuel: 1000.
-	aBoard place: aShip at: 1. 
-	aBoard move: aShip distance: -3.
+	aShip := Ship withFuel: 1000.
+	aPlayer := Player named: 'Pepe' withShip: aShip.
+	aBoard place: aPlayer at: 1. 
+	aBoard move: aPlayer distance: -3.
 	self assert: (aShip getShipPosition = 8).
 ]
 
 { #category : #tests }
 BoardTest >> testTakeOutReturnsTrueWhenShipGetsRemoved [
-	|aBoard aBoardSize aShip|
+	|aBoard aBoardSize aShip aPlayer|
 	aBoardSize := 4.
 
-	aShip := Ship named: 'testShip' withFuel: 1000.
+	aShip := Ship withFuel: 1000.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aBoard place: aShip at: 3.
-	aBoard takeOut: aShip.
+	aPlayer := Player named: 'Pepe' withShip: aShip.
+	aBoard place: aPlayer at: 3.
+	aBoard takeOut: aPlayer.
 	self assert: (aShip getShipPosition = -1).
 ]
 
 { #category : #tests }
 BoardTest >> testValidWhenShipGetsResetToStart [
 
-	|aShip aBoard|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
+	|aShip aBoard aPlayer|
+	aShip := Ship withFuel: 1000.
 	aBoard := Board withSize: 100 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aBoard place: aShip at: 5.
-	aBoard resetToStart: aShip.
+	aPlayer := Player named: 'Pepe' withShip: aShip.
+	aBoard place: aPlayer at: 5.
+	aBoard resetToStart: aPlayer.
 	self assert: (aShip getShipPosition = 1).  
 ]

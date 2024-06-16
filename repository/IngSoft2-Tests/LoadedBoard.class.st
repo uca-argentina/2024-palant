@@ -40,16 +40,6 @@ LoadedBoard >> findWormSquares [
 ]
 
 { #category : #initialization }
-LoadedBoard >> findWormSquares [
-
-	| positions |
-	positions := OrderedCollection new.
-	1 to: self boardSize do: [ :x |
-		(squares at: x) class == WormSquare ifTrue: [ positions add: x ] ].
-	^ positions
-]
-
-{ #category : #initialization }
 LoadedBoard >> getParsecs [
 	^parsecs.
 ]
@@ -89,55 +79,36 @@ LoadedBoard >> initializeWormSquares [
 ]
 
 { #category : #initialization }
-LoadedBoard >> initializeWormSquares [
-
-	| worm1Position worm1 worm2Position worm2 |
-	worm1Position := (self boardSize - 1) atRandom.
-	worm2Position := (self boardSize - 1) atRandom.
-	[ worm1Position = worm2Position ] whileTrue: [
-		worm2Position := (self boardSize - 1) atRandom ].
-
-	worm1 := WormSquare createEmptySquare.
-	worm2 := WormSquare createEmptySquare.
-
-	worm1 initializeLink: worm2.
-	worm2 initializeLink: worm1.
-
-	squares at: worm1Position put: worm1.
-	squares at: worm2Position put: worm2
-]
-
-{ #category : #initialization }
-LoadedBoard >> move: aShip distance: aDistance [
+LoadedBoard >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	(aShip consumeFuel: aDistance)
+	shipPosition := aPlayer ship getShipPosition.
+	(aPlayer ship consumeFuel: aDistance)
 		ifTrue: [
-			(self takeOut: aShip).
-			aShip setShipPosition: shipPosition + aDistance.
-			^(self place: aShip at: shipPosition + aDistance)
+			(self takeOut: aPlayer).
+			aPlayer ship setShipPosition: shipPosition + aDistance.
+			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aShip.
-					  aShip penalize: 2.
+		ifFalse: [ self resetToStart: aPlayer.
+					  aPlayer penalize: 2.
 					  ^NullEffect new.
 					 ].
 	
 ]
 
 { #category : #initialization }
-LoadedBoard >> place: aShip at: aPosition [
+LoadedBoard >> place: aPlayer at: aPosition [
 
 	| moveTo |
 	moveTo := aPosition.
 	[ moveTo > self boardSize ] whileTrue: [
-		aShip addLaps: 1.
+		aPlayer ship addLaps: 1.
 		moveTo := moveTo - self boardSize ].
-	[ moveTo < 0 ] whileTrue: [
-		aShip addLaps: -1.
+	[ moveTo <= 0 ] whileTrue: [
+		aPlayer ship addLaps: -1.
 		moveTo := moveTo + self boardSize ].
-	aShip setShipPosition: moveTo.
-	^ (squares at: moveTo) dockShip: aShip
+	aPlayer ship setShipPosition: moveTo.
+	^ (squares at: moveTo) dockShip: aPlayer ship.
 ]
 
 { #category : #initialization }
@@ -146,9 +117,9 @@ LoadedBoard >> removeEffects [
 ]
 
 { #category : #initialization }
-LoadedBoard >> resetToStart: aShip [
-	self takeOut: aShip.
-	self place: aShip at: 1.
+LoadedBoard >> resetToStart: aPlayer [
+	self takeOut: aPlayer.
+	self place: aPlayer at: 1.
 ]
 
 { #category : #initialization }
@@ -167,10 +138,10 @@ LoadedBoard >> showBoard [
 ]
 
 { #category : #initialization }
-LoadedBoard >> takeOut: aShip [
+LoadedBoard >> takeOut: aPlayer [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	aShip setShipPosition: -1.
-	^ (squares at: shipPosition) undockShip: aShip
+	shipPosition := aPlayer ship getShipPosition.
+	aPlayer ship setShipPosition: -1.
+	^ (squares at: shipPosition) undockShip: aPlayer ship
 ]

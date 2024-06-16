@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 SquareTest >> testSquareCanDockAShip [
 	|aSquare aShip|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
+	aShip := Ship withFuel: 1000.
 	aSquare := Square createEmptySquare.
 	aSquare dockShip: aShip.
 	self assert: ((aSquare getDockedShips) includes: aShip)

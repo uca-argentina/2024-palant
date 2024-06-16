@@ -13,10 +13,10 @@ HyperJump class >> withParsecs: parsecs [
 ]
 
 { #category : #application }
-HyperJump >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+HyperJump >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
 	aBoard
-		move: affectedShip
+		move: affectedPlayer
 		distance:
 		(self cycleParsec * (aBoard boardSize / aBoard getParsecs))
 			truncated

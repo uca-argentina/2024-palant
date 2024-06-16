@@ -8,14 +8,15 @@ Class {
 		'board',
 		'dice',
 		'ships',
-		'maxLaps'
+		'maxLaps',
+		'players'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'as yet unclassified' }
-Game class >> withBoard: aBoard withDice: someDice withShips: someShips  withMaxLaps: someLaps [
-^(self new) initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps.
+Game class >> withBoard: aBoard withDice: someDice withPlayers: somePlayers  withMaxLaps: someLaps [
+^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps.
 ]
 
 { #category : #'modifier state' }
@@ -29,69 +30,68 @@ Game >> calculateMaxFuel [
 ]
 
 { #category : #action }
-Game >> canPlay: aShip [
+Game >> canPlay: aPlayer [
 |penalization|
-	penalization := aShip getPenalization.
+	penalization := aPlayer getPenalization.
 	penalization = 0 ifFalse: [
 		penalization := penalization - 1.
-		penalization = 0 ifTrue: [ aShip resetFuelTank ].
+		penalization = 0 ifTrue: [ aPlayer ship resetFuelTank ].
 		^ false ].
 	^ true
 ]
 
 { #category : #action }
+Game >> getPlayers [
+ ^players.
+]
+
+{ #category : #action }
 Game >> getRanking [
 
-    | sortedShips |
+    | sortedPlayers |
 
-    sortedShips := ships.
+    sortedPlayers := players.
 
-    ^ sortedShips asSortedCollection: [ :shipA :shipB |
-          ((shipA getLaps ) * board boardSize + shipA getShipPosition)
+    ^ sortedPlayers asSortedCollection: [ :playerA :playerB |
+          ((playerA ship getLaps ) * board boardSize + playerA ship getShipPosition)
           >=
-          ((shipB getLaps ) * board boardSize + shipB getShipPosition) ]
+          ((playerB ship getLaps ) * board boardSize + playerB ship getShipPosition) ]
 ]
 
 { #category : #action }
-Game >> getShips [
-	^ships.
-]
+Game >> giveTurn: aPlayer [
 
-{ #category : #action }
-Game >> giveTurn: aShip [
-
-	(self canPlay: aShip) ifTrue: [
-		aShip decideToPlay
-			ifTrue: [ self playTurn: aShip ]
-			ifFalse: [ self skipTurn: aShip ] ]
+	(self canPlay: aPlayer) ifTrue: [
+		aPlayer decideToPlay
+			ifTrue: [ self playTurn: aPlayer ]
+			ifFalse: [ self skipTurn: aPlayer ] ]
 ]
 
 { #category : #action }
 Game >> hasWinner [
 
-	^ ships anySatisfy: [ :x | x getLaps >= maxLaps ]
+	^ players anySatisfy: [ :x | x ship getLaps >= maxLaps ]
 ]
 
 { #category : #initialization }
-Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: shipsAmount initializeMaxLaps: someLaps [
+Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: playerAmount initializeMaxLaps: someLaps [
 
 	maxLaps := someLaps.
 	board := aBoard.
 	dice := someDice.
-	ships := OrderedCollection new.
-	(1 to: shipsAmount) do: [ :x | ships add: (Ship named: (x asString) withFuel: self calculateMaxFuel ) ].
+	players := OrderedCollection new.
+	(1 to: playerAmount) do: [ :x | players add: (Player named: (x asString) withShip: (Ship withFuel: self calculateMaxFuel)) ].
 ]
 
 { #category : #action }
-Game >> playTurn: aShip [
-
-	(board move: aShip distance: (aShip play: dice))
-		applyEffect: aShip
-		withShips: ships
+Game >> playTurn: player [
+	(board move: player distance: (player play: dice))
+		applyEffect: player
+		withPlayers: players
 		inBoard: board
 ]
 
 { #category : #action }
-Game >> skipTurn: aShip [
-	aShip resetFuelTank.
+Game >> skipTurn: player [
+	player ship resetFuelTank.
 ]
