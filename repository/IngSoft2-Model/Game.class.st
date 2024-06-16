@@ -41,6 +41,16 @@ Game >> canPlay: aPlayer [
 ]
 
 { #category : #action }
+Game >> checkBounty: rollRes for: player [
+	| prob |
+	(rollRes = (self calculateMaxFuel / 2)) ifTrue: [
+		prob := 100 atRandom.
+		prob > 20
+			ifTrue: [ player ship addFuelCapacity: 1 ]
+			ifFalse: [ player ship addFuelCapacity: -1 ] ]
+]
+
+{ #category : #action }
 Game >> getLeaderboard [
    | sortedPlayers |
 	sortedPlayers := OrderedCollection new.
@@ -93,7 +103,10 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 
 { #category : #action }
 Game >> playTurn: player [
-	(board move: player distance: (player play: dice))
+	|rollRes|
+	rollRes := player play: dice.
+	self checkBounty: rollRes for: player.
+	(board move: player distance: rollRes)
 		applyEffect: player
 		withPlayers: players
 		inBoard: board

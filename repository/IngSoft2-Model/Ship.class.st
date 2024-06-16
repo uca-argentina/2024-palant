@@ -20,6 +20,11 @@ Ship class >> withFuel: someFuel [
 ]
 
 { #category : #getsAndSets }
+Ship >> addFuelCapacity: someExtraCapacity [
+	maxFuel := maxFuel + someExtraCapacity.
+]
+
+{ #category : #getsAndSets }
 Ship >> addLaps: lapAmount [ 
 	laps:= laps + lapAmount.
 ]

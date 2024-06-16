@@ -52,7 +52,7 @@ ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 3)) withPlayers: 1  withMaxLaps: 1.
 	aPlayer := (aGame getPlayers) at: 1.
 	aBoard place: aPlayer at: 1.
-	aGame playTurn: aPlayer.
+	aBoard move: aPlayer distance: 3.
 	aGame skipTurn: aPlayer.
 	self assert: (aPlayer ship getFuel) equals: 6. 
 ]

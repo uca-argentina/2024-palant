@@ -55,7 +55,6 @@ Player >> play: someDice [
 
 { #category : #accessing }
 Player >> rollDice: someDice [
-
 	| result |
 	result := 0.
 	someDice do: [ :die | result := result + die throw ].
