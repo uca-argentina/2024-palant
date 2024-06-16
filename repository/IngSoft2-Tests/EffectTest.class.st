@@ -224,6 +224,7 @@ EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
 	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 5) initializeAt: 10.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
