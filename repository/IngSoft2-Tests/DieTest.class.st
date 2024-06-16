@@ -11,6 +11,13 @@ DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
+DieTest >> testDiceReturnsLessOrEqualsThanMaxThrow [
+|myDice|
+myDice:=Die of: 7.
+self assert: (myDice throw) <= myDice getMax.
+]
+
+{ #category : #tests }
 DieTest >> testDieCanBeCreatedWithAnAmountOfFaces [
 	| aDie |
 	aDie:= Die of:3.

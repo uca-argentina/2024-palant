@@ -4,8 +4,8 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #application }
 AtomicBomb >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
 
-	someShips do: [ :aShip | aBoard resetToStart: aShip ]
+	someShips do: [ :aShip | (aShip getGravity > 0) ifFalse: [aBoard resetToStart: aShip] ]
 ]
