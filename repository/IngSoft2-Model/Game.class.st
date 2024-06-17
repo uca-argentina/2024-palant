@@ -114,8 +114,13 @@ Game >> playTurn: player [
 
 { #category : #action }
 Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
-	aPlayer useCard: (aCard withPlayers: players withTarget: aTarget withLast: lastEffect withBoard: board).
-	aPlayer removeCard: aCard.
+	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
+		aPlayer useCard: (aCard
+				 withPlayers: players
+				 withTarget: aTarget
+				 withLast: lastEffect
+				 withBoard: board).
+		aPlayer removeCard: aCard ].
 ]
 
 { #category : #action }

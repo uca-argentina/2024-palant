@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Card class >> canBeUsedAnytime [
+	self subclassResponsibility.
+]
+
+{ #category : #'as yet unclassified' }
 Card class >> withPlayers: allPlayers withTarget: aTarget withLast: lastEffect withBoard: aBoard [
 	^(self new) initializePlayers: allPlayers initializeTarget: aTarget initializeLast: lastEffect initializeBoard: aBoard.
 ]
