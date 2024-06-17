@@ -53,6 +53,7 @@ ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 	aPlayer := (aGame getPlayers) at: 1.
 	aBoard place: aPlayer at: 1.
 	aBoard move: aPlayer distance: 3.
+	aGame giveTurn: aPlayer.
 	aGame skipTurn: aPlayer.
 	self assert: (aPlayer ship getFuel) equals: 6. 
 ]

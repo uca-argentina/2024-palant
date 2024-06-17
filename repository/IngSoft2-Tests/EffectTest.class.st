@@ -149,6 +149,7 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
 	aLoadedBoard initializeEffect: (MoonWalk withDistance: 100) initializeAt: 10.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.

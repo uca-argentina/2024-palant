@@ -10,7 +10,8 @@ Class {
 		'ships',
 		'maxLaps',
 		'players',
-		'turnHolder'
+		'turnHolder',
+		'lastEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -103,13 +104,18 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 Game >> playTurn: player [
 
 	turnHolder = player ifTrue: [
-		| rollRes |
+		| rollRes thisEffect |
 		rollRes := player play: dice.
 		self checkBounty: rollRes for: player.
-		(board move: player distance: rollRes)
-			applyEffect: player
-			withPlayers: players
-			inBoard: board ]
+		thisEffect := board move: player distance: rollRes.
+		thisEffect applyEffect: player withPlayers: players inBoard: board.
+		lastEffect := thisEffect ]
+]
+
+{ #category : #action }
+Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
+	aPlayer useCard: (aCard withPlayers: players withTarget: aTarget withLast: lastEffect withBoard: board).
+	aPlayer removeCard: aCard.
 ]
 
 { #category : #action }

@@ -25,6 +25,19 @@ Board >> boardSize [
 	^(squares size).
 ]
 
+{ #category : #accessing }
+Board >> canReach: aPlayer distance: aDistance [
+
+	(aPlayer ship consumeFuel: aDistance) ifFalse: [
+		| missingFuel |
+		missingFuel := aDistance - aPlayer getAlly ship getFuel.
+		(aPlayer getAlly ship consumeFuel: missingFuel) ifFalse: [
+			self resetToStart: aPlayer getAlly.
+			aPlayer getAlly penalize: 2.
+			^ false ] ].
+	^ true
+]
+
 { #category : #'modifier state' }
 Board >> getParsecs [
 	^parsecs.
@@ -95,13 +108,16 @@ Board >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
 	shipPosition := aPlayer ship getShipPosition.
-	(aPlayer ship consumeFuel: aDistance)
+	(self canReach: aPlayer distance: aDistance )
 		ifTrue: [
 			(self takeOut: aPlayer).
 			aPlayer ship setShipPosition: shipPosition + aDistance.
 			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aPlayer ship.
+		ifFalse: [
+			
+			
+			 self resetToStart: aPlayer ship.
 					  aPlayer ship penalize: 2.
 					  ^NullEffect new.
 					 ].

@@ -5,7 +5,8 @@ Class {
 		'name',
 		'penalization',
 		'ship',
-		'cards'
+		'cards',
+		'ally'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,6 +21,11 @@ Player class >> named: aName withShip: aShip [
 Player >> addCards: someCards [
 
 	someCards do: [ :card | cards add: card ]
+]
+
+{ #category : #accessing }
+Player >> getAlly [ 
+	^ally.
 ]
 
 { #category : #accessing }
@@ -64,7 +70,7 @@ Player >> play: someDice [
 Player >> removeCard: aCard [
 	| cardIndex |
 	1 to: cards size do: [ :x |
-	(cards at: x) class = aCard class ifTrue: [ cardIndex := x ] ].
+	(cards at: x) = aCard ifTrue: [ cardIndex := x ] ].
 	cards removeAt: cardIndex
 ]
 
@@ -77,6 +83,16 @@ Player >> rollDice: someDice [
 ]
 
 { #category : #accessing }
+Player >> setAlly: aPlayer [
+	ally := aPlayer.
+]
+
+{ #category : #accessing }
 Player >> ship [
 ^ship
+]
+
+{ #category : #accessing }
+Player >> useCard: aCard [
+	aCard applyCardEffect.
 ]

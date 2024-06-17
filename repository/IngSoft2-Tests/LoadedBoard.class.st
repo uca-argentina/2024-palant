@@ -19,6 +19,19 @@ LoadedBoard >> boardSize [
 ]
 
 { #category : #initialization }
+LoadedBoard >> canReach: aPlayer distance: aDistance [
+	| missingFuel |
+	(aPlayer ship consumeFuel: aDistance) ifFalse: [
+		(aPlayer getAlly isNil) ifTrue: [^false].
+		missingFuel := aDistance - aPlayer getAlly ship getFuel.
+		(aPlayer getAlly ship consumeFuel: missingFuel) ifFalse: [
+			self resetToStart: aPlayer getAlly.
+			aPlayer getAlly penalize: 2.
+			^ false ] ].
+	^ true
+]
+
+{ #category : #initialization }
 LoadedBoard >> copyBoard: aBoard [
 	squares := aBoard getSquares.
 	parsecs := aBoard getParsecs.
@@ -83,13 +96,16 @@ LoadedBoard >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
 	shipPosition := aPlayer ship getShipPosition.
-	(aPlayer ship consumeFuel: aDistance)
+	(self canReach: aPlayer distance: aDistance )
 		ifTrue: [
 			(self takeOut: aPlayer).
 			aPlayer ship setShipPosition: shipPosition + aDistance.
 			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aPlayer.
+		ifFalse: [
+			
+			
+			 self resetToStart: aPlayer.
 					  aPlayer penalize: 2.
 					  ^NullEffect new.
 					 ].
