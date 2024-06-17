@@ -15,6 +15,7 @@ EffectTest >> testAtomicBombDoesNotAffectFuel [
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
 	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	self assert: (aPlayer ship getFuel) equals: 5. 
 	
@@ -53,6 +54,7 @@ EffectTest >> testAtomicBombResetsAllShip [
 	
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 2.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	
 	self assert: (aPlayer ship getShipPosition) equals: 1. 
@@ -72,6 +74,7 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
 	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	self assert: (aPlayer ship getShipPosition) equals: 6. 
 ]
@@ -88,6 +91,7 @@ EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
 	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	self assert: (aPlayer ship getShipPosition) equals: 3. 
 ]
@@ -105,6 +109,7 @@ EffectTest >> testHyperJumpParsecListResets [
 	aPlayer := aGame getPlayers at: 1.
 	aPlayer ship initializeFuel: 100101012.
 	aLoadedBoard place: aPlayer at: 10.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aLoadedBoard takeOut: aPlayer.
 		aLoadedBoard place: aPlayer at: 10.
@@ -129,6 +134,7 @@ EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
 	
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	
 	self assert: (aPlayer ship getShipPosition) equals: 10. 
@@ -152,6 +158,7 @@ EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSk
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
 	
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	self assert: (bPlayer ship getShipPosition) equals: 1.
 	
@@ -174,6 +181,7 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
 	
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	self assert: (bPlayer ship getShipPosition) equals: 4.
 ]
@@ -194,7 +202,9 @@ EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
 	aLoadedBoard place: aPlayer at: 1.
 	aLoadedBoard place: bPlayer at: 5.
 	
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
+	aGame giveTurn: bPlayer.
 	aGame playTurn: bPlayer.
 	self assert: (aPlayer ship getShipPosition) equals: 6.
 	
@@ -211,6 +221,7 @@ EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRoll
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
 	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.
@@ -230,6 +241,7 @@ EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
 	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aGame skipTurn: aPlayer.
 	aGame playTurn: aPlayer.

@@ -16,12 +16,6 @@ Player class >> named: aName withShip: aShip [
 ]
 
 { #category : #accessing }
-Player >> decideToPlay [
-	^true.
-	
-]
-
-{ #category : #accessing }
 Player >> getName [
 	^name.
 

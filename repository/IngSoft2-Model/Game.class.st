@@ -9,7 +9,8 @@ Class {
 		'dice',
 		'ships',
 		'maxLaps',
-		'players'
+		'players',
+		'turnHolder'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -79,10 +80,7 @@ Game >> getRanking [
 { #category : #action }
 Game >> giveTurn: aPlayer [
 
-	(self canPlay: aPlayer) ifTrue: [
-		aPlayer decideToPlay
-			ifTrue: [ self playTurn: aPlayer ]
-			ifFalse: [ self skipTurn: aPlayer ] ]
+	(self canPlay: aPlayer) ifTrue: [ turnHolder := aPlayer ]
 ]
 
 { #category : #action }
@@ -103,16 +101,19 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 
 { #category : #action }
 Game >> playTurn: player [
-	|rollRes|
-	rollRes := player play: dice.
-	self checkBounty: rollRes for: player.
-	(board move: player distance: rollRes)
-		applyEffect: player
-		withPlayers: players
-		inBoard: board
+
+	turnHolder = player ifTrue: [
+		| rollRes |
+		rollRes := player play: dice.
+		self checkBounty: rollRes for: player.
+		(board move: player distance: rollRes)
+			applyEffect: player
+			withPlayers: players
+			inBoard: board ]
 ]
 
 { #category : #action }
 Game >> skipTurn: player [
-	player ship resetFuelTank.
+
+	turnHolder = player ifTrue: [ player ship resetFuelTank ]
 ]

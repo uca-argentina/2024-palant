@@ -26,22 +26,32 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 
 { #category : #tests }
 GameTest >> testValidGameCanFinish [
-	|game aBoard someDice myPlayer|
+
+	| game aBoard someDice myPlayer |
 	someDice := OrderedCollection with: (LoadedDie of: 11).
-	aBoard := LoadedBoard clone: (Board withSize: 10 withWorms: false withParsecs: 0 withDice: someDice).
+	aBoard := LoadedBoard clone: (Board
+			           withSize: 10
+			           withWorms: false
+			           withParsecs: 0
+			           withDice: someDice).
 	aBoard removeEffects.
-	game := Game withBoard: aBoard withDice: someDice withPlayers: 1 withMaxLaps: 2.
-	myPlayer := (game getPlayers) at: 1.
-	aBoard place: myPlayer at: 1. 
-	game giveTurn: (myPlayer).
+	game := Game
+		        withBoard: aBoard
+		        withDice: someDice
+		        withPlayers: 1
+		        withMaxLaps: 2.
+	myPlayer := game getPlayers at: 1.
+	aBoard place: myPlayer at: 1.
+	game giveTurn: myPlayer.
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	self assert: (game hasWinner) equals: true.
+	self assert: game hasWinner equals: true
 ]
