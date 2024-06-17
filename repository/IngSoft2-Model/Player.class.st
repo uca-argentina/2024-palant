@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'name',
 		'penalization',
-		'ship'
+		'ship',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,6 +14,17 @@ Class {
 Player class >> named: aName withShip: aShip [
 	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
 	^(self new) initializeName: aName initializeShip: aShip.
+]
+
+{ #category : #accessing }
+Player >> addCards: someCards [
+
+	someCards do: [ :card | cards add: card ]
+]
+
+{ #category : #accessing }
+Player >> getCards [
+	^cards.
 ]
 
 { #category : #accessing }
@@ -28,6 +40,7 @@ Player >> getPenalization [
 
 { #category : #accessing }
 Player >> initializeName: aName initializeShip: aShip [
+	cards := OrderedCollection new.
 	penalization := 0.
 	name:=aName.
 	ship := aShip.
@@ -45,6 +58,14 @@ Player >> play: someDice [
 	rollResult := self rollDice: someDice.
 	(ship canMove: rollResult) ifTrue: [ ^ rollResult ].
 	^ 0
+]
+
+{ #category : #accessing }
+Player >> removeCard: aCard [
+	| cardIndex |
+	1 to: cards size do: [ :x |
+	(cards at: x) class = aCard class ifTrue: [ cardIndex := x ] ].
+	cards removeAt: cardIndex
 ]
 
 { #category : #accessing }

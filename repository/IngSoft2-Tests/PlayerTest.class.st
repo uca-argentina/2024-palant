@@ -5,6 +5,27 @@ Class {
 }
 
 { #category : #tests }
+PlayerTest >> testPlayerCanReceiveCards [
+	|aPlayer aCard|
+	aPlayer := Player named: 'Pepe' withShip: (Ship withFuel: 10).
+	aCard := Card new.
+	aPlayer addCards: (OrderedCollection with: aCard).
+	self assert: (aPlayer getCards ) equals: (OrderedCollection with: aCard). 
+	 
+]
+
+{ #category : #tests }
+PlayerTest >> testPlayerCardsCanBeRemoved [
+	|aPlayer aCard|
+	aPlayer := Player named: 'Pepe' withShip: (Ship withFuel: 10).
+	aCard := Card new.
+	aPlayer addCards: (OrderedCollection with: aCard).
+	aPlayer removeCard: (aCard).
+	self assert: (aPlayer getCards ) equals: (OrderedCollection new). 
+	 
+]
+
+{ #category : #tests }
 PlayerTest >> testPlayersFuelCapacityChangesWhenRollsMaxRoll [
 |aPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
