@@ -6,7 +6,8 @@ Class {
 		'penalization',
 		'ship',
 		'cards',
-		'ally'
+		'ally',
+		'activeCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,9 +19,19 @@ Player class >> named: aName withShip: aShip [
 ]
 
 { #category : #accessing }
+Player >> activateCard: aCard [
+	activeCards add: aCard.
+]
+
+{ #category : #accessing }
 Player >> addCards: someCards [
 
 	someCards do: [ :card | cards add: card ]
+]
+
+{ #category : #accessing }
+Player >> getActiveCards [
+	^activeCards.
 ]
 
 { #category : #accessing }
@@ -47,6 +58,7 @@ Player >> getPenalization [
 { #category : #accessing }
 Player >> initializeName: aName initializeShip: aShip [
 	cards := OrderedCollection new.
+	activeCards := OrderedCollection new.
 	penalization := 0.
 	name:=aName.
 	ship := aShip.

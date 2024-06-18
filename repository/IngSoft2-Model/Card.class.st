@@ -17,7 +17,7 @@ Card class >> canBeUsedAnytime [
 
 { #category : #'as yet unclassified' }
 Card class >> withPlayers: allPlayers withTarget: aTarget withLast: lastEffect withBoard: aBoard [
-	^(self new) initializePlayers: allPlayers initializeTarget: aTarget initializeLast: (lastEffect at: 1) initializeBoard: aBoard.
+	^(self new) initializePlayers: allPlayers initializeTarget: aTarget initializeLast: lastEffect initializeBoard: aBoard.
 ]
 
 { #category : #initialization }
