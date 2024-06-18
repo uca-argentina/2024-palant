@@ -8,6 +8,7 @@ Class {
 		'board',
 		'dice',
 		'ships',
+		'deck',
 		'maxLaps',
 		'players',
 		'turnHolder',
@@ -20,6 +21,11 @@ Class {
 { #category : #'as yet unclassified' }
 Game class >> withBoard: aBoard withDice: someDice withPlayers: somePlayers  withMaxLaps: someLaps [
 ^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps.
+]
+
+{ #category : #'as yet unclassified' }
+Game class >> withBoard: aBoard withDice: someDice withPlayers: somePlayers  withMaxLaps: someLaps withDeck: aDeck [
+^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps initializeDeck: aDeck.
 ]
 
 { #category : #'modifier state' }
@@ -84,6 +90,16 @@ Game >> getRanking [
           ((playerB ship getLaps ) * board boardSize + playerB ship getShipPosition) ]
 ]
 
+{ #category : #initialization }
+Game >> giveRandomCards: someAmount [
+
+	| cardsToReturn |
+	cardsToReturn := OrderedCollection new.
+	(1 to: someAmount) do: [ :index |
+		cardsToReturn add: ((deck getCardTypes) at: ( (1 to: deck getCardTypes size) atRandom) ) ].
+	^ cardsToReturn
+]
+
 { #category : #action }
 Game >> giveTurn: aPlayer [
 
@@ -106,6 +122,19 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 	lastCard := NullCard.
 	lastEffect := NullEffect new.
 	(1 to: playerAmount) do: [ :x | players add: (Player named: (x asString) withShip: (Ship withFuel: self calculateMaxFuel)) ].
+]
+
+{ #category : #initialization }
+Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: playerAmount initializeMaxLaps: someLaps initializeDeck: aDeck [
+
+	maxLaps := someLaps.
+	board := aBoard.
+	dice := someDice.
+	deck := aDeck.
+	players := OrderedCollection new.
+	lastCard := NullCard.
+	lastEffect := NullEffect new.
+	(1 to: playerAmount) do: [ :x | players add: (Player named: (x asString) withShip: (Ship withFuel: self calculateMaxFuel) withCards: (self giveRandomCards: 2)) ].
 ]
 
 { #category : #action }

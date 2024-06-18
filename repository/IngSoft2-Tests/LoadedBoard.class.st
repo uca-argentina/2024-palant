@@ -64,20 +64,6 @@ LoadedBoard >> initializeEffect: anEffect initializeAt: aSquare [
 ]
 
 { #category : #initialization }
-LoadedBoard >> initializeEffects [
-	(squares at: 5) initializeWithEffect: BlackHole new.
-	(squares at: 7) initializeWithEffect: AtomicBomb new.
-	(squares at: 9) initializeWithEffect: (MoonWalk withDistance: 3).
-	(squares at: 11) initializeWithEffect: (HyperJump withParsecs: (#(4 8) asOrderedCollection)).
-	(squares at: 13) initializeWithEffect: (HyperGravity withNecessaryRolledResult: 3).
-	
-
-	(squares at: 2) initializeWithEffect: BlackHole new.
-	(squares at: 3) initializeWithEffect: (AtomicBomb new).
-	
-]
-
-{ #category : #initialization }
 LoadedBoard >> initializeWormSquares [
 
 	| worm1Position worm1 worm2Position worm2 |

@@ -58,6 +58,35 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 ]
 
 { #category : #tests }
+GameTest >> testPlayerStartsGameWithSomeAmountOfCards [
+
+	| aPlayer someDice aLoadedBoard aGame aDeck|
+	aDeck := Deck withCardTypes: (OrderedCollection with: Ally with: Cancellation).
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	aLoadedBoard := LoadedBoard clone: (Board
+			                 withSize: 20
+			                 withWorms: false
+			                 withParsecs: 1
+			                 withDice: someDice).
+	aLoadedBoard removeEffects.
+	aGame := Game
+		         withBoard: aLoadedBoard
+		         withDice: someDice
+		         withPlayers: 2
+		         withMaxLaps: 100
+					withDeck: aDeck.
+	aPlayer := aGame getPlayers at: 1.
+	self assert: aPlayer getCards size equals: 2.
+	
+	
+	
+	
+	
+
+
+]
+
+{ #category : #tests }
 GameTest >> testValidGameCanFinish [
 
 	| game aBoard someDice myPlayer |

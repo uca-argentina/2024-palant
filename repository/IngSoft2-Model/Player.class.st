@@ -18,6 +18,12 @@ Player class >> named: aName withShip: aShip [
 	^(self new) initializeName: aName initializeShip: aShip.
 ]
 
+{ #category : #'instance creation' }
+Player class >> named: aName withShip: aShip withCards: someCards [
+	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
+	^(self new) initializeName: aName initializeShip: aShip initializeCards: someCards.
+]
+
 { #category : #accessing }
 Player >> activateCard: aCard [
 	activeCards add: aCard.
@@ -64,6 +70,16 @@ Player >> getPenalization [
 { #category : #accessing }
 Player >> initializeName: aName initializeShip: aShip [
 	cards := OrderedCollection new.
+	activeCards := OrderedCollection new.
+	penalization := 0.
+	name:=aName.
+	ship := aShip.
+]
+
+{ #category : #accessing }
+Player >> initializeName: aName initializeShip: aShip initializeCards: someCards [
+	cards := OrderedCollection new.
+	self addCards: someCards.
 	activeCards := OrderedCollection new.
 	penalization := 0.
 	name:=aName.
