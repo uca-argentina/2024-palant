@@ -14,7 +14,7 @@ GameTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 	|aGame aBoard someDice players|
 	someDice := OrderedCollection with: (LoadedDie of: 5).
-	aBoard := Board withSize: 30 withWorms: false withParsecs: 0 withDice: someDice.
+	aBoard := Board withSize: 30 withWorms: false withParsecs: 3 withDice: someDice.
 	aGame := Game withBoard: aBoard withDice: someDice  withPlayers: 3 withMaxLaps: 10.
 	players := aGame getPlayers.
 	aBoard place: (players at: 1) at: 3.
@@ -25,23 +25,60 @@ GameTest >> testGameCanGetRankingAndOrdersShipsCorrectly [
 ]
 
 { #category : #tests }
+GameTest >> testPlayerStartsGameWithSomeAmountOfCards [
+
+	| aPlayer someDice aLoadedBoard aGame|
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	aLoadedBoard := LoadedBoard clone: (Board
+			                 withSize: 20
+			                 withWorms: false
+			                 withParsecs: 1
+			                 withDice: someDice).
+	aLoadedBoard removeEffects.
+	aGame := Game
+		         withBoard: aLoadedBoard
+		         withDice: someDice
+		         withPlayers: 2
+		         withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	self assert: aPlayer getCards size equals: 2.
+	
+	
+	
+	
+	
+
+
+]
+
+{ #category : #tests }
 GameTest >> testValidGameCanFinish [
-	|game aBoard someDice myPlayer|
+
+	| game aBoard someDice myPlayer |
 	someDice := OrderedCollection with: (LoadedDie of: 11).
-	aBoard := LoadedBoard clone: (Board withSize: 10 withWorms: false withParsecs: 0 withDice: someDice).
+	aBoard := LoadedBoard clone: (Board
+			           withSize: 10
+			           withWorms: false
+			           withParsecs: 3
+			           withDice: someDice).
 	aBoard removeEffects.
-	game := Game withBoard: aBoard withDice: someDice withPlayers: 1 withMaxLaps: 2.
-	myPlayer := (game getPlayers) at: 1.
-	aBoard place: myPlayer at: 1. 
-	game giveTurn: (myPlayer).
+	game := Game
+		        withBoard: aBoard
+		        withDice: someDice
+		        withPlayers: 1
+		        withMaxLaps: 2.
+	myPlayer := game getPlayers at: 1.
+	aBoard place: myPlayer at: 1.
+	game giveTurn: myPlayer.
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	game giveTurn: (myPlayer).
+	game playTurn: myPlayer.
 	game skipTurn: myPlayer.
-	self assert: (game hasWinner) equals: true.
+	self assert: game hasWinner equals: true
 ]

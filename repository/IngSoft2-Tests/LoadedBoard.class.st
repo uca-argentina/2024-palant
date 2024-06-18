@@ -19,6 +19,19 @@ LoadedBoard >> boardSize [
 ]
 
 { #category : #initialization }
+LoadedBoard >> canReach: aPlayer distance: aDistance [
+	| missingFuel |
+	(aPlayer ship consumeFuel: aDistance) ifFalse: [
+		(aPlayer getAlly isNil) ifTrue: [^false].
+		missingFuel := aDistance - aPlayer getAlly ship getFuel.
+		(aPlayer getAlly ship consumeFuel: missingFuel) ifFalse: [
+			self resetToStart: aPlayer getAlly.
+			aPlayer getAlly penalize: 2.
+			^ false ] ].
+	^ true
+]
+
+{ #category : #initialization }
 LoadedBoard >> copyBoard: aBoard [
 	squares := aBoard getSquares.
 	parsecs := aBoard getParsecs.
@@ -51,20 +64,6 @@ LoadedBoard >> initializeEffect: anEffect initializeAt: aSquare [
 ]
 
 { #category : #initialization }
-LoadedBoard >> initializeEffects [
-	(squares at: 5) initializeWithEffect: BlackHole new.
-	(squares at: 7) initializeWithEffect: AtomicBomb new.
-	(squares at: 9) initializeWithEffect: (MoonWalk withDistance: 3).
-	(squares at: 11) initializeWithEffect: (HyperJump withParsecs: (#(4 8) asOrderedCollection)).
-	(squares at: 13) initializeWithEffect: (HyperGravity withNecessaryRolledResult: 3).
-	
-
-	(squares at: 2) initializeWithEffect: BlackHole new.
-	(squares at: 3) initializeWithEffect: (AtomicBomb new).
-	
-]
-
-{ #category : #initialization }
 LoadedBoard >> initializeWormSquares [
 
 	| worm1Position worm1 worm2Position worm2 |
@@ -83,13 +82,16 @@ LoadedBoard >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
 	shipPosition := aPlayer ship getShipPosition.
-	(aPlayer ship consumeFuel: aDistance)
+	(self canReach: aPlayer distance: aDistance )
 		ifTrue: [
 			(self takeOut: aPlayer).
 			aPlayer ship setShipPosition: shipPosition + aDistance.
 			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aPlayer.
+		ifFalse: [
+			
+			
+			 self resetToStart: aPlayer.
 					  aPlayer penalize: 2.
 					  ^NullEffect new.
 					 ].

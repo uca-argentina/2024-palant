@@ -8,7 +8,7 @@ Class {
 WormTest >> testWormHolesAreInitialized [
 
 	|aBoard testingBoard wormPositions|
-	aBoard := Board withSize: 20 withWorms: true withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: 20 withWorms: true withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	testingBoard := LoadedBoard clone: aBoard.
 	wormPositions := testingBoard findWormSquares.
 	self assert: (((wormPositions at: 1) isNotNil) and: ((wormPositions at: 2) isNotNil )).
@@ -17,7 +17,7 @@ WormTest >> testWormHolesAreInitialized [
 { #category : #tests }
 WormTest >> testWormHolesTeleportShips [
 	|aBoard testingBoard aShip aPlayer wormPositions|
-	aBoard := Board withSize: 20 withWorms: true withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: 20 withWorms: true withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	testingBoard := LoadedBoard clone: aBoard.
 	aShip := Ship withFuel: 1000.
 	aPlayer := Player named: 'Pepe' withShip: aShip.

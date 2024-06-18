@@ -25,6 +25,19 @@ Board >> boardSize [
 	^(squares size).
 ]
 
+{ #category : #accessing }
+Board >> canReach: aPlayer distance: aDistance [
+	| missingFuel |
+	(aPlayer ship consumeFuel: aDistance) ifFalse: [
+		(aPlayer getAlly isNil) ifTrue: [^false].
+		missingFuel := aDistance - aPlayer getAlly ship getFuel.
+		(aPlayer getAlly ship consumeFuel: missingFuel) ifFalse: [
+			self resetToStart: aPlayer getAlly.
+			aPlayer getAlly penalize: 2.
+			^ false ] ].
+	^ true
+]
+
 { #category : #'modifier state' }
 Board >> getParsecs [
 	^parsecs.
@@ -42,8 +55,12 @@ Board >> initializeRandomEffects: someDice [
 	squares do: [ :square |
 		probabilityScore := 100 atRandom.
 
-		probabilityScore <= 40 ifTrue: [
+		probabilityScore <= 30 ifTrue: [
 			square initializeWithEffect: NullEffect new ].
+
+		probabilityScore > 30 ifTrue: [
+			square initializeWithEffect: (CardDealer new)
+			 ].
 
 		probabilityScore > 40 ifTrue: [
 			square initializeWithEffect: BlackHole new ].
@@ -61,8 +78,11 @@ Board >> initializeRandomEffects: someDice [
 				(MoonWalk withDistance: self boardSize atRandom) ].
 
 		probabilityScore > 90 ifTrue: [
+			|unitList|
+			unitList := OrderedCollection with: (LightYear withUnits: 2) with:(Parsec withUnits: 1) with: (LightYear withUnits: 1).
 			square initializeWithEffect:
-				(HyperJump withParsecs: #( 2 4 3 5 9 10 ) asOrderedCollection) ].
+				(HyperJump withUnits: unitList withBoard: self)
+				].
 
 		probabilityScore > 98 ifTrue: [
 			square initializeWithEffect: AtomicBomb new ] ]
@@ -95,13 +115,16 @@ Board >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
 	shipPosition := aPlayer ship getShipPosition.
-	(aPlayer ship consumeFuel: aDistance)
+	(self canReach: aPlayer distance: aDistance )
 		ifTrue: [
 			(self takeOut: aPlayer).
 			aPlayer ship setShipPosition: shipPosition + aDistance.
 			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aPlayer ship.
+		ifFalse: [
+			
+			
+			 self resetToStart: aPlayer ship.
 					  aPlayer ship penalize: 2.
 					  ^NullEffect new.
 					 ].

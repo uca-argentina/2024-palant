@@ -8,15 +8,19 @@ Class {
 		'board',
 		'dice',
 		'ships',
+		'deck',
 		'maxLaps',
-		'players'
+		'players',
+		'turnHolder',
+		'lastEffect',
+		'lastCard'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'as yet unclassified' }
 Game class >> withBoard: aBoard withDice: someDice withPlayers: somePlayers  withMaxLaps: someLaps [
-^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps.
+^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps initializeDeck: (Deck getDeck).
 ]
 
 { #category : #'modifier state' }
@@ -50,6 +54,11 @@ Game >> checkBounty: rollRes for: player [
 			ifFalse: [ player ship addFuelCapacity: -1 ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> getLastCard [
+	^lastCard.
+]
+
 { #category : #action }
 Game >> getLeaderboard [
    | sortedPlayers |
@@ -79,10 +88,7 @@ Game >> getRanking [
 { #category : #action }
 Game >> giveTurn: aPlayer [
 
-	(self canPlay: aPlayer) ifTrue: [
-		aPlayer decideToPlay
-			ifTrue: [ self playTurn: aPlayer ]
-			ifFalse: [ self skipTurn: aPlayer ] ]
+	(self canPlay: aPlayer) ifTrue: [ turnHolder := aPlayer ]
 ]
 
 { #category : #action }
@@ -92,27 +98,48 @@ Game >> hasWinner [
 ]
 
 { #category : #initialization }
-Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: playerAmount initializeMaxLaps: someLaps [
+Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: playerAmount initializeMaxLaps: someLaps initializeDeck: aDeck [
 
+	deck := aDeck.
 	maxLaps := someLaps.
 	board := aBoard.
 	dice := someDice.
 	players := OrderedCollection new.
-	(1 to: playerAmount) do: [ :x | players add: (Player named: (x asString) withShip: (Ship withFuel: self calculateMaxFuel)) ].
+	lastCard := NullCard.
+	lastEffect := NullEffect new.
+	(1 to: playerAmount) do: [ :x |
+		players add: ((Player
+				  named: x asString
+				  withShip: (Ship withFuel: self calculateMaxFuel)) addCards:
+				 (Deck getRandomCards: 2)) ]
 ]
 
 { #category : #action }
 Game >> playTurn: player [
-	|rollRes|
-	rollRes := player play: dice.
-	self checkBounty: rollRes for: player.
-	(board move: player distance: rollRes)
-		applyEffect: player
-		withPlayers: players
-		inBoard: board
+
+	turnHolder = player ifTrue: [
+		| rollRes thisEffect |
+		rollRes := player play: dice.
+		self checkBounty: rollRes for: player.
+		thisEffect := board move: player distance: rollRes.
+		thisEffect applyEffect: player withPlayers: players inBoard: board.
+		lastEffect := thisEffect ]
+]
+
+{ #category : #action }
+Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
+	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
+		aPlayer useCard: (aCard
+				 withPlayers: players
+				 withTarget: aTarget
+				 withLast: (OrderedCollection with: lastEffect with: lastCard)
+				 withBoard: board).
+		aPlayer removeCard: aCard ].
+	lastCard := aCard.
 ]
 
 { #category : #action }
 Game >> skipTurn: player [
-	player ship resetFuelTank.
+
+	turnHolder = player ifTrue: [ player ship resetFuelTank ]
 ]
