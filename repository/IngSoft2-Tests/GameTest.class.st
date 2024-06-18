@@ -35,7 +35,7 @@ GameTest >> testAllyCardSetsAnAlly [
 	
 	aPlayer addCards: (OrderedCollection with: (Ally)).	
 	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Ally for: bPlayer in: aLoadedBoard.
+	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer) in: aLoadedBoard.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.

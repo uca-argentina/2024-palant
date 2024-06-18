@@ -30,6 +30,12 @@ Player >> addCards: someCards [
 ]
 
 { #category : #accessing }
+Player >> deactivateCard: aCard [
+	aCard removeCardEffect.
+	activeCards remove: aCard.
+]
+
+{ #category : #accessing }
 Player >> getActiveCards [
 	^activeCards.
 ]
@@ -91,6 +97,7 @@ Player >> rollDice: someDice [
 	| result |
 	result := 0.
 	someDice do: [ :die | result := result + die throw ].
+	activeCards do: [ :card | result := result + card affectRollResult ].
 	^ result
 ]
 
