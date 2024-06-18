@@ -55,8 +55,14 @@ Board >> initializeRandomEffects: someDice [
 	squares do: [ :square |
 		probabilityScore := 100 atRandom.
 
-		probabilityScore <= 40 ifTrue: [
+		probabilityScore <= 30 ifTrue: [
 			square initializeWithEffect: NullEffect new ].
+
+		probabilityScore > 30 ifTrue: [
+			square initializeWithEffect: (CardDealer withTypes: #(
+			Cancellation Repeat Acceleration Ally Overload Redo
+			) asOrderedCollection)
+			 ].
 
 		probabilityScore > 40 ifTrue: [
 			square initializeWithEffect: BlackHole new ].
