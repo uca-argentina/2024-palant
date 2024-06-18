@@ -59,9 +59,7 @@ Board >> initializeRandomEffects: someDice [
 			square initializeWithEffect: NullEffect new ].
 
 		probabilityScore > 30 ifTrue: [
-			square initializeWithEffect: (CardDealer withTypes: #(
-			Cancellation Repeat Acceleration Ally Overload Redo
-			) asOrderedCollection)
+			square initializeWithEffect: (CardDealer new)
 			 ].
 
 		probabilityScore > 40 ifTrue: [
@@ -80,8 +78,11 @@ Board >> initializeRandomEffects: someDice [
 				(MoonWalk withDistance: self boardSize atRandom) ].
 
 		probabilityScore > 90 ifTrue: [
+			|unitList|
+			unitList := OrderedCollection with: (LightYear withUnits: 2) with:(Parsec withUnits: 1) with: (LightYear withUnits: 1).
 			square initializeWithEffect:
-				(HyperJump withParsecs: #( 2 4 3 5 9 10 ) asOrderedCollection) ].
+				(HyperJump withUnits: unitList withBoard: self)
+				].
 
 		probabilityScore > 98 ifTrue: [
 			square initializeWithEffect: AtomicBomb new ] ]

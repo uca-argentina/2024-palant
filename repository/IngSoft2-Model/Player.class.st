@@ -18,12 +18,6 @@ Player class >> named: aName withShip: aShip [
 	^(self new) initializeName: aName initializeShip: aShip.
 ]
 
-{ #category : #'instance creation' }
-Player class >> named: aName withShip: aShip withCards: someCards [
-	(aName isEmpty) ifTrue: [ Error signal: 'Ship must have a name' ].
-	^(self new) initializeName: aName initializeShip: aShip initializeCards: someCards.
-]
-
 { #category : #accessing }
 Player >> activateCard: aCard [
 	activeCards add: aCard.

@@ -80,13 +80,36 @@ EffectTest >> testBlackHoleEffectMovesShipBackwards [
 ]
 
 { #category : #tests }
+EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToLightYears [
+	|aPlayer someDice aLoadedBoard aGame myUnits|
+	someDice := OrderedCollection with: (LoadedDie of: 10).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 30 withWorms: false  withParsecs: 10  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	
+	
+	myUnits := OrderedCollection with: (LightYear withUnits: 1).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 16. 
+]
+
+{ #category : #tests }
 EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
-	|aPlayer someDice aLoadedBoard aGame |
+	|aPlayer someDice aLoadedBoard aGame myUnits|
 	someDice := OrderedCollection with: (LoadedDie of: 10).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 10  withDice: someDice ).
 	aLoadedBoard removeEffects.
-	aLoadedBoard initializeEffect: (HyperJump withParsecs:(#(2 4) asOrderedCollection)) initializeAt: 15.
+	
+	
+	myUnits := OrderedCollection with: (Parsec withUnits: 2) with: (Parsec withUnits: 4).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
@@ -98,12 +121,13 @@ EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
 
 { #category : #tests }
 EffectTest >> testHyperJumpParsecListResets [
-	|aPlayer someDice aLoadedBoard aGame |
+	|aPlayer someDice aLoadedBoard aGame myUnits |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 10  withDice: someDice ).
 	aLoadedBoard removeEffects.
-	aLoadedBoard initializeEffect: (HyperJump withParsecs:(#(2 4) asOrderedCollection)) initializeAt: 15.
+	myUnits := OrderedCollection with: (Parsec withUnits: 2) with: (Parsec withUnits: 4).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.
@@ -194,7 +218,7 @@ EffectTest >> testPlayerGetsACardWhenItLandsOnCardDealer [
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
 	aLoadedBoard removeEffects.
-	aLoadedBoard initializeEffect: (CardDealer withTypes: (OrderedCollection with: Repeat with:Redo with: Ally)) initializeAt: 10.
+	aLoadedBoard initializeEffect: (CardDealer new) initializeAt: 10.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
 	aPlayer := aGame getPlayers at: 1.

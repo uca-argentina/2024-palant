@@ -14,7 +14,7 @@ ShipTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ShipTest >> testIsValidWhenShipsFuelReducesProportionallyToMovement [
 
 	| aShip aPlayer aBoard |
-	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aShip := Ship withFuel: 10.
 	aPlayer := Player named: 'Pepe' withShip: aShip.
 	aBoard place: aPlayer at: 1.
@@ -36,7 +36,7 @@ ShipTest >> testPassesWhenShipCanRollMultipleDice [
 { #category : #tests }
 ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 	|aPlayer aBoard aGame|
-	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 3)) withPlayers: 1  withMaxLaps: 1.
 	aPlayer := (aGame getPlayers) at: 1.
 	aBoard place: aPlayer at: 1.
@@ -62,7 +62,7 @@ ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 ShipTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
 	|aBoard aBoardSize aPlayer|
 	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aPlayer := Player named: 'Pepe' withShip: (Ship withFuel: 1000).
 	aBoard place: aPlayer at: 1. 
 	aBoard move: aPlayer distance: 14.
@@ -73,7 +73,7 @@ ShipTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
 ShipTest >> testShipsLapsReduceWhenExceedsBoardGoingBackwards [
 	|aBoard aBoardSize aPlayer|
 	aBoardSize := 10.
-	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
+	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aPlayer := Player named: 'Pepe' withShip: (Ship withFuel: 1000).
 	aBoard place: aPlayer at: 1. 
 	aBoard move: aPlayer distance: -5.

@@ -8,17 +8,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Deck class >> withCardTypes: someCardTypes [
-
-	^(self new) initializeCardTypes: someCardTypes.
+Deck class >> getDeck [
+	^(#(Cancellation Repeat Acceleration Ally Overload Redo) asOrderedCollection).
+	
 ]
 
-{ #category : #initialization }
-Deck >> getCardTypes [
-	^cardTypes.
-]
-
-{ #category : #initialization }
-Deck >> initializeCardTypes: someCardTypes [
-	cardTypes := someCardTypes
+{ #category : #'as yet unclassified' }
+Deck class >> getRandomCards: cardAmount [
+	|deck hand|
+	hand := OrderedCollection new.
+	deck := self getDeck.
+	(1 to: cardAmount) do: [:x | hand add: (deck at: ((1 to: deck size) atRandom))] .
+	^hand.
 ]
