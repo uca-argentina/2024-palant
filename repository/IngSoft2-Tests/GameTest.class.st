@@ -33,9 +33,9 @@ GameTest >> testAllyCardSetsAnAlly [
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
 	
-	aPlayer addCards: (OrderedCollection with: (Ally)).
-	aGame player: aPlayer throwsCard: Ally for: bPlayer in: aLoadedBoard.	
+	aPlayer addCards: (OrderedCollection with: (Ally)).	
 	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Ally for: bPlayer in: aLoadedBoard.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.
 	aGame playTurn: aPlayer.

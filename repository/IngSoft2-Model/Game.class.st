@@ -11,7 +11,8 @@ Class {
 		'maxLaps',
 		'players',
 		'turnHolder',
-		'lastEffect'
+		'lastEffect',
+		'lastCard'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -50,6 +51,11 @@ Game >> checkBounty: rollRes for: player [
 		prob > 20
 			ifTrue: [ player ship addFuelCapacity: 1 ]
 			ifFalse: [ player ship addFuelCapacity: -1 ] ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> getLastCard [
+	^lastCard.
 ]
 
 { #category : #action }
@@ -97,6 +103,8 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 	board := aBoard.
 	dice := someDice.
 	players := OrderedCollection new.
+	lastCard := NullCard.
+	lastEffect := NullEffect new.
 	(1 to: playerAmount) do: [ :x | players add: (Player named: (x asString) withShip: (Ship withFuel: self calculateMaxFuel)) ].
 ]
 
@@ -118,9 +126,10 @@ Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
 		aPlayer useCard: (aCard
 				 withPlayers: players
 				 withTarget: aTarget
-				 withLast: lastEffect
+				 withLast: (OrderedCollection with: lastEffect with: lastCard)
 				 withBoard: board).
 		aPlayer removeCard: aCard ].
+	lastCard := aCard.
 ]
 
 { #category : #action }
