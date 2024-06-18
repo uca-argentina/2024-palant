@@ -188,6 +188,24 @@ EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
 ]
 
 { #category : #tests }
+EffectTest >> testPlayerGetsACardWhenItLandsOnCardDealer [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (CardDealer withTypes: (OrderedCollection with: Repeat with:Redo with: Ally)) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: aPlayer ship getShipPosition equals: 10.
+	'self assert: (aPlayer getCards size) equals: 1.'
+]
+
+{ #category : #tests }
 EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
