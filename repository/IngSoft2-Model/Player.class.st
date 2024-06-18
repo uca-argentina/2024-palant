@@ -71,16 +71,6 @@ Player >> initializeName: aName initializeShip: aShip [
 ]
 
 { #category : #accessing }
-Player >> initializeName: aName initializeShip: aShip initializeCards: someCards [
-	cards := OrderedCollection new.
-	self addCards: someCards.
-	activeCards := OrderedCollection new.
-	penalization := 0.
-	name:=aName.
-	ship := aShip.
-]
-
-{ #category : #accessing }
 Player >> penalize: penalizationAmount [
 
 	penalization := penalization + penalizationAmount
