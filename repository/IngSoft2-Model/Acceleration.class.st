@@ -14,7 +14,7 @@ Acceleration class >> removeCardEffect [
  ^true.
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 Acceleration >> applyCardEffect [
 	players do: [ :player | player activateCard: Acceleration].
 ]

@@ -35,22 +35,22 @@ Player >> deactivateCard: aCard [
 	activeCards remove: aCard.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> getActiveCards [
 	^activeCards.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> getAlly [ 
 	^ally.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> getCards [
 	^cards.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> getName [
 	^name.
 
@@ -101,12 +101,12 @@ Player >> rollDice: someDice [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> setAlly: aPlayer [
 	ally := aPlayer.
 ]
 
-{ #category : #accessing }
+{ #category : #getsAndSets }
 Player >> ship [
 ^ship
 ]

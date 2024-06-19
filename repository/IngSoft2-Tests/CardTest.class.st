@@ -5,40 +5,11 @@ Class {
 }
 
 { #category : #tests }
-CardTest >> testAccelerationIncreasesAllPlayersThrow [
+CardTest >> test01PlayerCanUseInstantCardsAnytime [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Acceleration).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Acceleration for: (OrderedCollection with: 'Pepe' with: NullCard) in: aLoadedBoard.
-	aGame playTurn: aPlayer.
-	aGame giveTurn: bPlayer.
-	aGame playTurn: bPlayer.
-	self assert: (aPlayer ship getShipPosition) equals: 11.
-	self assert: (bPlayer ship getShipPosition) equals: 11.
-
-
-
-]
-
-{ #category : #tests }
-CardTest >> testAllyCardAndItsEffectCanBeRemovedFromPlayer [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
 	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
@@ -47,190 +18,33 @@ CardTest >> testAllyCardAndItsEffectCanBeRemovedFromPlayer [
 	bPlayer := aGame getPlayers at: 2.
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Ally).
+	aPlayer addCards: (OrderedCollection with: Repeat).
 	'--------------------------------------------------------------------------'.
 	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	aPlayer deactivateCard: Ally.
-	self assert: (aPlayer getActiveCards size) equals: 0.
-
-
-
-]
-
-{ #category : #tests }
-CardTest >> testAllyCardLeavesActiveCardInPlayer [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
-	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Ally).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	self assert: (aPlayer getActiveCards size) equals: 1.
-
-
-
-]
-
-{ #category : #tests }
-CardTest >> testAllyCardSetsAnAlly [
-
-	| aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-
-	aLoadedBoard := LoadedBoard clone: (Board
-			                 withSize: 20
-			                 withWorms: false
-			                 withParsecs: 1
-			                 withDice: someDice).
-	aLoadedBoard removeEffects.
-	aGame := Game
-		         withBoard: aLoadedBoard
-		         withDice: someDice
-		         withPlayers: 2
-		         withMaxLaps: 100.
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	
-	aPlayer addCards: (OrderedCollection with: (Ally)).	
-	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer) in: aLoadedBoard.
-	aGame playTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	self assert: aPlayer ship getShipPosition equals: 20.
-	self assert: bPlayer ship getFuel equals: 5.
-]
-
-{ #category : #tests }
-CardTest >> testCancellationCanRemoveAccelerationCard [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Acceleration).
-	bPlayer addCards: (OrderedCollection with: Cancellation).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Acceleration for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
 	aGame giveTurn: bPlayer.
-	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: bPlayer with: Acceleration) in: aLoadedBoard.
-	aGame playTurn: bPlayer.
-	self assert: (bPlayer ship getShipPosition) equals: 10.
+	aGame player: aPlayer throwsCard: Repeat for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	self assert: (bPlayer ship getShipPosition) equals: 1.
 
 
 
-]
 
-{ #category : #tests }
-CardTest >> testCancellationCanRemoveOverloadCard [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
 
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Overload).
-	bPlayer addCards: (OrderedCollection with: Cancellation).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Overload for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	aGame giveTurn: bPlayer.
-	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: bPlayer with: Overload) in: aLoadedBoard.
-	aGame playTurn: bPlayer.
-	self assert: (bPlayer ship getShipPosition) equals: 10.
+
+
+
+
+
+
+
+
 
 
 
 ]
 
 { #category : #tests }
-CardTest >> testCancellationCardCanRemoveAllyEfect [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
-	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Ally).
-	bPlayer addCards: (OrderedCollection with: Cancellation).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: aPlayer with: Ally) in: aLoadedBoard.
-	
-	self assert: (aPlayer getActiveCards size) equals: 0.
-
-
-
-]
-
-{ #category : #tests }
-CardTest >> testOverloadReducesPlayersThrow [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard removeEffects.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Overload).
-	'--------------------------------------------------------------------------'.
-	aGame giveTurn: aPlayer.
-	aGame player: aPlayer throwsCard: Overload for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	aGame giveTurn: bPlayer.
-	aGame playTurn: bPlayer.
-	self assert: (bPlayer ship getShipPosition) equals: 8.
-
-
-
-]
-
-{ #category : #tests }
-CardTest >> testPlayerCanOnlyUsePermanentCardOnHisTurn [
+CardTest >> test02PlayerCanOnlyUsePermanentCardOnHisTurn [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
@@ -271,11 +85,119 @@ CardTest >> testPlayerCanOnlyUsePermanentCardOnHisTurn [
 ]
 
 { #category : #tests }
-CardTest >> testPlayerCanUseInstantCardsAnytime [
+CardTest >> test03RepeatCardMovesTargetShipBackwarsWhenLastEffectIsBlackHole [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
 	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aPlayer addCards: (OrderedCollection with: Repeat).
+	aGame player: aPlayer throwsCard: Repeat for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	self assert: (bPlayer ship getShipPosition) equals: 1. 
+]
+
+{ #category : #tests }
+CardTest >> test04AccelerationIncreasesAllPlayersThrow [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Acceleration).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Acceleration for: (OrderedCollection with: 'Pepe' with: NullCard) in: aLoadedBoard.
+	aGame playTurn: aPlayer.
+	aGame giveTurn: bPlayer.
+	aGame playTurn: bPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 11.
+	self assert: (bPlayer ship getShipPosition) equals: 11.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test05OverloadReducesPlayersThrow [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Overload).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Overload for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	aGame giveTurn: bPlayer.
+	aGame playTurn: bPlayer.
+	self assert: (bPlayer ship getShipPosition) equals: 8.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test06AllyCardSetsAnAlly [
+
+	| aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+
+	aLoadedBoard := LoadedBoard clone: (Board
+			                 withSize: 20
+			                 withWorms: false
+			                 withParsecs: 1
+			                 withDice: someDice).
+	aLoadedBoard removeEffects.
+	aGame := Game
+		         withBoard: aLoadedBoard
+		         withDice: someDice
+		         withPlayers: 2
+		         withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	
+	aPlayer addCards: (OrderedCollection with: (Ally)).	
+	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer) in: aLoadedBoard.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: aPlayer ship getShipPosition equals: 20.
+	self assert: bPlayer ship getFuel equals: 5.
+]
+
+{ #category : #tests }
+CardTest >> test07AllyCardLeavesActiveCardInPlayer [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
 	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
 
 	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
@@ -284,33 +206,131 @@ CardTest >> testPlayerCanUseInstantCardsAnytime [
 	bPlayer := aGame getPlayers at: 2.
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
-	aPlayer addCards: (OrderedCollection with: Repeat).
+	aPlayer addCards: (OrderedCollection with: Ally).
 	'--------------------------------------------------------------------------'.
 	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
-	aGame giveTurn: bPlayer.
-	aGame player: aPlayer throwsCard: Repeat for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	self assert: (bPlayer ship getShipPosition) equals: 1.
-
-
-
-
-
-
-
-
-
-
-
-
-
+	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	self assert: (aPlayer getActiveCards size) equals: 1.
 
 
 
 ]
 
 { #category : #tests }
-CardTest >> testRedoCardCopiesLastCard [
+CardTest >> test08AllyCardAndItsEffectCanBeRemovedFromPlayer [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Ally).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	aPlayer deactivateCard: Ally.
+	self assert: (aPlayer getActiveCards size) equals: 0.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test09CancellationCanRemoveAccelerationCard [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Acceleration).
+	bPlayer addCards: (OrderedCollection with: Cancellation).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Acceleration for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	aGame giveTurn: bPlayer.
+	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: bPlayer with: Acceleration) in: aLoadedBoard.
+	aGame playTurn: bPlayer.
+	self assert: (bPlayer ship getShipPosition) equals: 10.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test10CancellationCanRemoveOverloadCard [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Overload).
+	bPlayer addCards: (OrderedCollection with: Cancellation).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Overload for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	aGame giveTurn: bPlayer.
+	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: bPlayer with: Overload) in: aLoadedBoard.
+	aGame playTurn: bPlayer.
+	self assert: (bPlayer ship getShipPosition) equals: 10.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test11CancellationCardCanRemoveAllyEfect [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Ally).
+	bPlayer addCards: (OrderedCollection with: Cancellation).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Ally for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
+	aGame player: bPlayer throwsCard: Cancellation for: (OrderedCollection with: aPlayer with: Ally) in: aLoadedBoard.
+	
+	self assert: (aPlayer getActiveCards size) equals: 0.
+
+
+
+]
+
+{ #category : #tests }
+CardTest >> test12RedoCardCopiesLastCard [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
@@ -339,7 +359,7 @@ CardTest >> testRedoCardCopiesLastCard [
 ]
 
 { #category : #tests }
-CardTest >> testRedoCardDoesNothingIfNoCardsWereUsed [
+CardTest >> test13RedoCardDoesNothingIfNoCardsWereUsed [
 	|aPlayer bPlayer someDice aLoadedBoard aGame |
 	someDice := OrderedCollection with: (LoadedDie of: 5).
 	
@@ -360,24 +380,4 @@ CardTest >> testRedoCardDoesNothingIfNoCardsWereUsed [
 	self assert: (bPlayer ship getShipPosition) equals: 5.
 
 
-]
-
-{ #category : #tests }
-CardTest >> testRepeatCardMovesTargetShipBackwarsWhenLastEffectIsBlackHole [
-	|aPlayer bPlayer someDice aLoadedBoard aGame |
-	someDice := OrderedCollection with: (LoadedDie of: 5).
-	
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
-	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
-
-	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
-	aPlayer := aGame getPlayers at: 1.
-	bPlayer := aGame getPlayers at: 2.
-	aLoadedBoard place: aPlayer at: 5.
-	aLoadedBoard place: bPlayer at: 5.
-	aGame giveTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aPlayer addCards: (OrderedCollection with: Repeat).
-	aGame player: aPlayer throwsCard: Repeat for: (OrderedCollection with: bPlayer with: NullCard) in: aLoadedBoard.
-	self assert: (bPlayer ship getShipPosition) equals: 1. 
 ]

@@ -11,7 +11,18 @@ ShipTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage 
 ]
 
 { #category : #tests }
-ShipTest >> testIsValidWhenShipsFuelReducesProportionallyToMovement [
+ShipTest >> test01PassesWhenShipCanRollMultipleDice [
+	
+	|aPlayer dice |
+	dice:= OrderedCollection new.
+	dice add: (LoadedDie of: 4).
+	dice add: (LoadedDie of: 5).
+	aPlayer := Player named: 'Pepe' withShip: 1.
+	self assert: ((aPlayer rollDice: dice) = 9).
+]
+
+{ #category : #tests }
+ShipTest >> test02IsValidWhenShipsFuelReducesProportionallyToMovement [
 
 	| aShip aPlayer aBoard |
 	aBoard := Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
@@ -23,18 +34,22 @@ ShipTest >> testIsValidWhenShipsFuelReducesProportionallyToMovement [
 ]
 
 { #category : #tests }
-ShipTest >> testPassesWhenShipCanRollMultipleDice [
-	
-	|aPlayer dice |
-	dice:= OrderedCollection new.
-	dice add: (LoadedDie of: 4).
-	dice add: (LoadedDie of: 5).
-	aPlayer := Player named: 'Pepe' withShip: 1.
-	self assert: ((aPlayer rollDice: dice) = 9).
+ShipTest >> test03ShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
+	|aPlayer aBoard aGame|
+	aBoard := LoadedBoard clone: (Board withSize: 100 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3))).
+	aBoard removeEffects.
+	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 5)) withPlayers: 1  withMaxLaps: 1.
+	aPlayer := (aGame getPlayers) at: 1.
+	aBoard place: aPlayer at: 1.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 1. 
 ]
 
 { #category : #tests }
-ShipTest >> testShipDoesntMoveWhenSkipsTurn [
+ShipTest >> test04ShipDoesntMoveWhenSkipsTurn [
 	|aPlayer aBoard aGame|
 	aBoard := Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 3)) withPlayers: 1  withMaxLaps: 1.
@@ -45,7 +60,7 @@ ShipTest >> testShipDoesntMoveWhenSkipsTurn [
 ]
 
 { #category : #tests }
-ShipTest >> testShipGetsRefueledWhenSkipsTurn [
+ShipTest >> test05ShipGetsRefueledWhenSkipsTurn [
 	|aPlayer aBoard aGame|
 	aBoard :=LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3))).
 	aBoard removeEffects.
@@ -59,7 +74,7 @@ ShipTest >> testShipGetsRefueledWhenSkipsTurn [
 ]
 
 { #category : #tests }
-ShipTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
+ShipTest >> test06ShipsLapsIncreseWhenItGoesPastEndSquare [
 	|aBoard aBoardSize aPlayer|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
@@ -70,7 +85,7 @@ ShipTest >> testShipsLapsIncreseWhenItGoesPastEndSquare [
 ]
 
 { #category : #tests }
-ShipTest >> testShipsLapsReduceWhenExceedsBoardGoingBackwards [
+ShipTest >> test07ShipsLapsReduceWhenExceedsBoardGoingBackwards [
 	|aBoard aBoardSize aPlayer|
 	aBoardSize := 10.
 	aBoard := Board withSize: aBoardSize withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
@@ -79,19 +94,4 @@ ShipTest >> testShipsLapsReduceWhenExceedsBoardGoingBackwards [
 	aBoard move: aPlayer distance: -5.
 	aPlayer ship addLaps: 2.
 	self assert: (aPlayer ship getLaps ) equals: 1.
-]
-
-{ #category : #tests }
-ShipTest >> testShipsPositionIsResetWhenShipDoesNotHaveEnoughFuelToMove [
-	|aPlayer aBoard aGame|
-	aBoard := LoadedBoard clone: (Board withSize: 100 withWorms: false withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aBoard removeEffects.
-	aGame := Game withBoard: aBoard withDice: (OrderedCollection with: (LoadedDie of: 5)) withPlayers: 1  withMaxLaps: 1.
-	aPlayer := (aGame getPlayers) at: 1.
-	aBoard place: aPlayer at: 1.
-	aGame playTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	aGame playTurn: aPlayer.
-	self assert: (aPlayer ship getShipPosition) equals: 1. 
 ]

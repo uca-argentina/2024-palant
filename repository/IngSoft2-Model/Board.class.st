@@ -25,7 +25,7 @@ Board >> boardSize [
 	^(squares size).
 ]
 
-{ #category : #accessing }
+{ #category : #action }
 Board >> canReach: aPlayer distance: aDistance [
 	| missingFuel |
 	(aPlayer ship consumeFuel: aDistance) ifFalse: [
@@ -38,12 +38,12 @@ Board >> canReach: aPlayer distance: aDistance [
 	^ true
 ]
 
-{ #category : #'modifier state' }
+{ #category : #getsAndSets }
 Board >> getParsecs [
 	^parsecs.
 ]
 
-{ #category : #'modifier state' }
+{ #category : #getsAndSets }
 Board >> getSquares [
 	^squares.
 ]
@@ -131,7 +131,7 @@ Board >> move: aPlayer distance: aDistance [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #action }
 Board >> place: aPlayer at: aPosition [
 
 	| moveTo |

@@ -5,7 +5,14 @@ Class {
 }
 
 { #category : #tests }
-SquareTest >> testSquareCanDockAShip [
+SquareTest >> test01SquareReturnsEmptyCollectionWhenNoDockedShips [ 
+	|aSquare|
+	aSquare := Square createEmptySquare.
+	self assert: (aSquare getDockedShips) isEmpty.
+]
+
+{ #category : #tests }
+SquareTest >> test02SquareCanDockAShip [
 	|aSquare aShip|
 	aShip := Ship withFuel: 1000.
 	aSquare := Square createEmptySquare.
@@ -14,7 +21,7 @@ SquareTest >> testSquareCanDockAShip [
 ]
 
 { #category : #tests }
-SquareTest >> testSquareCanUndockAShip [
+SquareTest >> test03SquareCanUndockAShip [
 	|aSquare aShip|
 	aSquare := Square createEmptySquare.
 	aSquare dockShip: aShip.
@@ -22,14 +29,7 @@ SquareTest >> testSquareCanUndockAShip [
 ]
 
 { #category : #tests }
-SquareTest >> testSquareReturnsEmptyCollectionWhenNoDockedShips [ 
-	|aSquare|
-	aSquare := Square createEmptySquare.
-	self assert: (aSquare getDockedShips) isEmpty.
-]
-
-{ #category : #tests }
-SquareTest >> testSquareReturnsShipWhenDockedShip [ 
+SquareTest >> test04SquareReturnsShipWhenDockedShip [ 
 	|aSquare aShip|
 	aSquare := Square createEmptySquare.
 	aSquare dockShip: aShip.

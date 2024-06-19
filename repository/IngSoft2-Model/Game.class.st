@@ -54,7 +54,7 @@ Game >> checkBounty: rollRes for: player [
 			ifFalse: [ player ship addFuelCapacity: -1 ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #getsAndSets }
 Game >> getLastCard [
 	^lastCard.
 ]
@@ -67,7 +67,7 @@ Game >> getLeaderboard [
 	^sortedPlayers.
 ]
 
-{ #category : #action }
+{ #category : #testing }
 Game >> getPlayers [
  ^players.
 ]

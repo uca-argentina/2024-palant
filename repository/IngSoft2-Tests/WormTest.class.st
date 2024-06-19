@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-WormTest >> testWormHolesAreInitialized [
+WormTest >> test01WormHolesAreInitialized [
 
 	|aBoard testingBoard wormPositions|
 	aBoard := Board withSize: 20 withWorms: true withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
@@ -15,7 +15,7 @@ WormTest >> testWormHolesAreInitialized [
 ]
 
 { #category : #tests }
-WormTest >> testWormHolesTeleportShips [
+WormTest >> test02WormHolesTeleportShips [
 	|aBoard testingBoard aShip aPlayer wormPositions|
 	aBoard := Board withSize: 20 withWorms: true withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
 	testingBoard := LoadedBoard clone: aBoard.
