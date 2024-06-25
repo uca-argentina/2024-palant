@@ -13,12 +13,12 @@ MoonWalk class >> withDistance: aDistance [
 ]
 
 { #category : #application }
-MoonWalk >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+MoonWalk >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
-	someShips do: [ :aShip |
-		affectedShip = aShip ifFalse: [
-			aShip getGravity > 0 ifFalse: [
-				aBoard move: aShip distance: myDistance * -1 ] ] ]
+	somePlayers do: [ :aPlayer |
+		affectedPlayer = aPlayer ifFalse: [
+			aPlayer ship getGravity > 0 ifFalse: [
+				aBoard move: aPlayer distance: myDistance * -1 ] ] ]
 ]
 
 { #category : #initialization }

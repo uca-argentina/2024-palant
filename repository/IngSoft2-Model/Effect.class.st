@@ -5,6 +5,7 @@ Class {
 }
 
 { #category : #application }
-Effect >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	self subclassResponsibility.
+Effect >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+
+	self subclassResponsibility
 ]

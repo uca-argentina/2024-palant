@@ -2,38 +2,37 @@ Class {
 	#name : #HyperJump,
 	#superclass : #Effect,
 	#instVars : [
-		'parsecList'
+		'distanceList'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'as yet unclassified' }
-HyperJump class >> withParsecs: parsecs [
-	^(self new) initializeParsecs: parsecs.
+HyperJump class >> withUnits: aUnitList withBoard: aBoard [
+	^(self new) initializeDistances: aUnitList initializeBoard: aBoard
 ]
 
 { #category : #application }
-HyperJump >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+HyperJump >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
 	aBoard
-		move: affectedShip
+		move: affectedPlayer
 		distance:
-		(self cycleParsec * (aBoard boardSize / aBoard getParsecs))
-			truncated
+		(self cycleDistance)
 ]
 
 { #category : #utility }
-HyperJump >> cycleParsec [
-
+HyperJump >> cycleDistance [
 	| temp |
-	temp := parsecList at: parsecList size.
-	parsecList removeLast.
-	parsecList addFirst: temp.
+	temp := distanceList at: distanceList size.
+	distanceList removeLast.
+	distanceList addFirst: temp.
 	^ temp
 ]
 
-{ #category : #initialization }
-HyperJump >> initializeParsecs: aParsecList [
-	parsecList := aParsecList.
-	parsecList sort.
+{ #category : #utility }
+HyperJump >> initializeDistances: aUnitList initializeBoard: aBoard [
+	distanceList := OrderedCollection new.
+	aUnitList do: [ :someUnit | distanceList add: (someUnit parseToSquares: (aBoard boardSize) parsecAmount: (aBoard getParsecs) )].
+	distanceList sort.
 ]

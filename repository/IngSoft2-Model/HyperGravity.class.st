@@ -13,9 +13,9 @@ HyperGravity class >> withNecessaryRolledResult: someResult [
 ]
 
 { #category : #application }
-HyperGravity >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+HyperGravity >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
-	affectedShip setGravity: necessaryRolledResult
+	affectedPlayer ship setGravity: necessaryRolledResult
 ]
 
 { #category : #initialization }

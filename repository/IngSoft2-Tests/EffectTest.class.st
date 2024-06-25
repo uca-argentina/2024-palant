@@ -5,193 +5,287 @@ Class {
 }
 
 { #category : #tests }
-EffectTest >> testAtomicBombDoesNotAffectFuel [
-	|aShip aBoard aTestBoard shipList|
-	aShip := Ship named: 'Pepe' withFuel: 100.
-	shipList := OrderedCollection new.
-	shipList add: aShip.
-	aBoard := Board withSize: 100 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aTestBoard := LoadedBoard clone: aBoard.
-	aTestBoard initializeEffect: (AtomicBomb new) initializeAt:  15.
-	aTestBoard place: aShip at: 14.
-	(aTestBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aTestBoard .
-	self assert: aShip getFuel equals: 99. 
+EffectTest >> test01AtomicBombResetsAllShip [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 2.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	
+	self assert: (aPlayer ship getShipPosition) equals: 1. 
+	self assert: (bPlayer ship getShipPosition) equals: 1. 
+	
+	 
 ]
 
 { #category : #tests }
-EffectTest >> testAtomicBombDoesNotAffectLaps [
-	|aShip aLoadedBoard aBoard shipList|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	shipList := OrderedCollection new.
-	shipList add: aShip.
-	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	aLoadedBoard := LoadedBoard clone: aBoard.
-	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 7.
-	aLoadedBoard place: aShip at: 6.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard.
-	self assert:(aShip getLaps = 0). 
+EffectTest >> test02AtomicBombDoesNotAffectFuel [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getFuel) equals: 5. 
+	
+	 
 ]
 
 { #category : #tests }
-EffectTest >> testAtomicBombResetsAllShip [
-	|aShip bShip aLoadedBoard allShips|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	bShip := Ship named: 'Pedro' withFuel: 1000.
-	allShips := OrderedCollection new.
-	allShips add: aShip.
-	allShips add: bShip.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 4.
-	aLoadedBoard place: bShip at: 6.
-	(aLoadedBoard move: bShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aLoadedBoard.
-	self assert: aShip getShipPosition equals: 1.
-	self assert: bShip getShipPosition equals: 1. 
+EffectTest >> test03AtomicBombDoesNotAffectLaps [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aPlayer ship addLaps: 2.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getLaps) equals: 2. 
+	
+	 
 ]
 
 { #category : #tests }
-EffectTest >> testBlackHoleEffectMovesShipBackwards [
-	|aShip aLoadedBoard|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 4.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aLoadedBoard .
-	self assert: aShip getShipPosition equals: 1. 
+EffectTest >> test04MoonWalkEffectMovesAllOtherShipBackwards [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (MoonWalk withDistance: 1) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	
+	self assert: (aPlayer ship getShipPosition) equals: 10. 
+	self assert: (bPlayer ship getShipPosition) equals: 4. 
+	
 ]
 
 { #category : #tests }
-EffectTest >> testHyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
-	|aShip bShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	bShip := Ship named: 'Pedro' withFuel: 1000.
-	shipList := OrderedCollection with: aShip with: bShip.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 80 withWorms: false withParsecs: 20 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 10.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard.
-	aLoadedBoard place: bShip at: 10.
-	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: shipList inBoard: aLoadedBoard.
-	self assert: aShip getShipPosition equals: 43. 
-	self assert: bShip getShipPosition equals: 27.
+EffectTest >> test05MoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSkipsTwoTurns [
+
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (MoonWalk withDistance: 100) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (bPlayer ship getShipPosition) equals: 1.
+	
+	
 ]
 
 { #category : #tests }
-EffectTest >> testHyperJumpParsecListResets [
-	|aShip aLoadedBoard shipList|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	shipList := OrderedCollection new.
-	shipList add: aShip.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 30 withWorms: false withParsecs: 23 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 10.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
-	aLoadedBoard takeOut: aShip.
-	aLoadedBoard place: aShip at: 10.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
-	aLoadedBoard takeOut: aShip.
-	aLoadedBoard place: aShip at: 10.
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: shipList inBoard: aLoadedBoard .
-	self assert: aShip getShipPosition equals: 21.
+EffectTest >> test06BlackHoleEffectMovesShipBackwards [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 6. 
 ]
 
 { #category : #tests }
-EffectTest >> testMoonWalkEffectMovesAllOtherShipBackwards [
-	|aShip bShip aLoadedBoard allShips|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	bShip := Ship named: 'Pedro' withFuel: 1000.
-	allShips := OrderedCollection new.
-	allShips add: aShip.
-	allShips add: bShip.
-	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 4.
-	aLoadedBoard place: bShip at: 8.
-	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aLoadedBoard.
-	self assert: aShip getShipPosition equals: 1. 
+EffectTest >> test07HyperJumpMovesShipCorrectSquareAmountAccordingToParsecs [
+	|aPlayer someDice aLoadedBoard aGame myUnits|
+	someDice := OrderedCollection with: (LoadedDie of: 10).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 10  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	
+	
+	myUnits := OrderedCollection with: (Parsec withUnits: 2) with: (Parsec withUnits: 4).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 3. 
 ]
 
 { #category : #tests }
-EffectTest >> testMoonWalkResetsShipPositionIfItDoesNotHaveEnoughFuelToMoveAndSkipsTwoTurns [
-	|someDice aShip bShip aLoadedBoard allShips|
-	someDice := OrderedCollection with: (Die of: 4).
-	aShip := Ship named: 'Pepe' withFuel: 1.
-	bShip := Ship named: 'Pedro' withFuel: 1000.
-	allShips := OrderedCollection new.
-	allShips add: aShip.
-	allShips add: bShip.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 19.
-	aLoadedBoard place: bShip at: 8.
-	(aLoadedBoard move: bShip distance: 1) applyEffect: bShip withShips: allShips inBoard: aLoadedBoard.
-	aLoadedBoard move: aShip distance: (aShip play: someDice).
-	aLoadedBoard move: aShip distance: (aShip play: someDice).
-	self assert: aShip getShipPosition equals: 1. 
+EffectTest >> test08HyperJumpParsecListResets [
+	|aPlayer someDice aLoadedBoard aGame myUnits |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 10  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	myUnits := OrderedCollection with: (Parsec withUnits: 2) with: (Parsec withUnits: 4).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aPlayer ship initializeFuel: 100101012.
+	aLoadedBoard place: aPlayer at: 10.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aLoadedBoard takeOut: aPlayer.
+		aLoadedBoard place: aPlayer at: 10.
+	aGame playTurn: aPlayer.
+	aLoadedBoard takeOut: aPlayer.
+		aLoadedBoard place: aPlayer at: 10.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 3. 
 ]
 
 { #category : #tests }
-EffectTest >> testOnlyOneEffectIsAppliedPerTurn [
-	|aShip downedShip aLoadedBoard|
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	downedShip := Ship named: 'Mati' withFuel: 1000.
-	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 1. 
-	aLoadedBoard place: downedShip  at: 4. 
-	(aLoadedBoard move: aShip distance: 1) applyEffect: aShip withShips: aShip inBoard: aLoadedBoard.
-	self deny: aShip getShipPosition equals: 1.
-	self assert: downedShip getShipPosition equals: 4. 
+EffectTest >> test09ShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 1) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 10. 
+	
 ]
 
 { #category : #tests }
-EffectTest >> testShipDoesNotGetAffectedByEffectsIfInHyperGravity [
-	|aShip bShip aLoadedBoard someShips someDice|
-	aShip := Ship named: '1' withFuel: 1000.
-	bShip := Ship named: '2' withFuel: 1000.
-	someShips := OrderedCollection with: aShip with: bShip. 
-	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aLoadedBoard := LoadedBoard clone: ( Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffect: AtomicBomb new initializeAt: 3.
-	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 3) initializeAt: 6.
-	aLoadedBoard place: aShip at: 1.
-	aLoadedBoard place: bShip at: 1.
-	(aLoadedBoard move: bShip distance: 5) applyEffect: bShip withShips: someShips inBoard: aLoadedBoard.
-	(aLoadedBoard move: aShip distance: 2) applyEffect: aShip withShips: someShips inBoard: aLoadedBoard.
-	self assert: aShip getShipPosition equals: 1.
-	self assert: bShip getShipPosition equals: 6.
+EffectTest >> test10ShipMovesWhenRollsHyperGravityNecessaryRolledResult [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 5) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame skipTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 15. 
 ]
 
 { #category : #tests }
-EffectTest >> testShipDoesNotMoveWhenRollsDifferentThanHyperGravityNecessaryRolledResult [
+EffectTest >> test11ShipDoesNotGetAffectedByEffectsIfInHyperGravity [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (HyperGravity withNecessaryRolledResult: 10) initializeAt: 6.
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 10.
 
-	| someDice aShip aLoadedBoard allShips |
-	someDice := OrderedCollection with: (LoadedDie of: 4).
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	allShips := OrderedCollection new.
-	allShips add: aShip.
-	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false withParsecs: 0 withDice: (OrderedCollection with: (LoadedDie of: 3))).
-	aLoadedBoard initializeEffects.
-	aLoadedBoard place: aShip at: 12.
-	(aLoadedBoard move: aShip distance: 1)
-		applyEffect: aShip
-		withShips: allShips
-		inBoard: aLoadedBoard.
-	aLoadedBoard move: aShip distance: (aShip play: someDice).
-	self assert: aShip getShipPosition equals: 13.
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	
+	aLoadedBoard place: aPlayer at: 1.
+	aLoadedBoard place: bPlayer at: 5.
+	
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame giveTurn: bPlayer.
+	aGame playTurn: bPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 6.
+	
 ]
 
 { #category : #tests }
-EffectTest >> testShipMovesWhenRollsHyperGravityNecessaryRolledResult [
-	|someDice aShip aBoard aLoadedBoard allShips|
-	someDice := OrderedCollection with: (LoadedDie of: 3).
-	aShip := Ship named: 'Pepe' withFuel: 1000.
-	allShips := OrderedCollection new.
-	allShips add: aShip.
-	aBoard := Board withSize: 20 withWorms: false withParsecs: 0 withDice: someDice.
-	aLoadedBoard := LoadedBoard clone: aBoard.
-	aBoard place: aShip at: (aLoadedBoard findSquareWithEffect: HyperGravity) - 1.
-	(aBoard move: aShip distance: 1) applyEffect: aShip withShips: allShips inBoard: aBoard.
-	aBoard move: aShip distance: 3.
-	self deny: ((aShip getShipPosition) = (aLoadedBoard findSquareWithEffect: HyperGravity)). 
+EffectTest >> test12OnlyOneEffectIsAppliedPerTurn [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard initializeEffect: (MoonWalk withDistance: 1) initializeAt: 10.
+	aLoadedBoard initializeEffect: (AtomicBomb new) initializeAt: 4.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (bPlayer ship getShipPosition) equals: 4.
+]
+
+{ #category : #tests }
+EffectTest >> test13HyperJumpMovesShipCorrectSquareAmountAccordingToLightYears [
+	|aPlayer someDice aLoadedBoard aGame myUnits|
+	someDice := OrderedCollection with: (LoadedDie of: 10).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 30 withWorms: false  withParsecs: 10  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	
+	
+	myUnits := OrderedCollection with: (LightYear withUnits: 1).
+	aLoadedBoard initializeEffect: (HyperJump withUnits: myUnits withBoard: aLoadedBoard) initializeAt: 15.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: 16. 
+]
+
+{ #category : #tests }
+EffectTest >> test14PlayerGetsACardWhenItLandsOnCardDealer [
+	|aPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (CardDealer new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 1 withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+	aLoadedBoard place: aPlayer at: 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer getCards size) equals: 3.
 ]

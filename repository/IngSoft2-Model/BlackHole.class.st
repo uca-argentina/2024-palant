@@ -5,6 +5,7 @@ Class {
 }
 
 { #category : #application }
-BlackHole >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
-	aBoard move: affectedShip  distance: -4.
+BlackHole >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+
+	aBoard move: (affectedPlayer) distance: -4
 ]

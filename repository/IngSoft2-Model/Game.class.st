@@ -8,14 +8,19 @@ Class {
 		'board',
 		'dice',
 		'ships',
-		'maxLaps'
+		'deck',
+		'maxLaps',
+		'players',
+		'turnHolder',
+		'lastEffect',
+		'lastCard'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'as yet unclassified' }
-Game class >> withBoard: aBoard withDice: someDice withShips: someShips  withMaxLaps: someLaps [
-^(self new) initializeBoard: aBoard initializeDice: someDice initializeShips: someShips  initializeMaxLaps: someLaps.
+Game class >> withBoard: aBoard withDice: someDice withPlayers: somePlayers  withMaxLaps: someLaps [
+^(self new) initializeBoard: aBoard initializeDice: someDice initializePlayers: somePlayers  initializeMaxLaps: someLaps initializeDeck: (Deck getDeck).
 ]
 
 { #category : #'modifier state' }
@@ -29,69 +34,112 @@ Game >> calculateMaxFuel [
 ]
 
 { #category : #action }
-Game >> canPlay: aShip [
+Game >> canPlay: aPlayer [
 |penalization|
-	penalization := aShip getPenalization.
+	penalization := aPlayer getPenalization.
 	penalization = 0 ifFalse: [
 		penalization := penalization - 1.
-		penalization = 0 ifTrue: [ aShip resetFuelTank ].
+		penalization = 0 ifTrue: [ aPlayer ship resetFuelTank ].
 		^ false ].
 	^ true
 ]
 
 { #category : #action }
+Game >> checkBounty: rollRes for: player [
+	| prob |
+	(rollRes = (self calculateMaxFuel / 2)) ifTrue: [
+		prob := 100 atRandom.
+		prob > 20
+			ifTrue: [ player ship addFuelCapacity: 1 ]
+			ifFalse: [ player ship addFuelCapacity: -1 ] ]
+]
+
+{ #category : #getsAndSets }
+Game >> getLastCard [
+	^lastCard.
+]
+
+{ #category : #action }
+Game >> getLeaderboard [
+   | sortedPlayers |
+	sortedPlayers := OrderedCollection new.
+	(self getRanking) do: [ :player | sortedPlayers add: (player getName)]	.
+	^sortedPlayers.
+]
+
+{ #category : #testing }
+Game >> getPlayers [
+ ^players.
+]
+
+{ #category : #action }
 Game >> getRanking [
 
-    | sortedShips |
+    | sortedPlayers |
 
-    sortedShips := ships.
+    sortedPlayers := players.
 
-    ^ sortedShips asSortedCollection: [ :shipA :shipB |
-          ((shipA getLaps ) * board boardSize + shipA getShipPosition)
+    ^ sortedPlayers asSortedCollection: [ :playerA :playerB |
+          ((playerA ship getLaps ) * board boardSize + playerA ship getShipPosition)
           >=
-          ((shipB getLaps ) * board boardSize + shipB getShipPosition) ]
+          ((playerB ship getLaps ) * board boardSize + playerB ship getShipPosition) ]
 ]
 
 { #category : #action }
-Game >> getShips [
-	^ships.
-]
+Game >> giveTurn: aPlayer [
 
-{ #category : #action }
-Game >> giveTurn: aShip [
-
-	(self canPlay: aShip) ifTrue: [
-		aShip decideToPlay
-			ifTrue: [ self playTurn: aShip ]
-			ifFalse: [ self skipTurn: aShip ] ]
+	(self canPlay: aPlayer) ifTrue: [ turnHolder := aPlayer ]
 ]
 
 { #category : #action }
 Game >> hasWinner [
 
-	^ ships anySatisfy: [ :x | x getLaps >= maxLaps ]
+	^ players anySatisfy: [ :x | x ship getLaps >= maxLaps ]
 ]
 
 { #category : #initialization }
-Game >> initializeBoard: aBoard initializeDice: someDice initializeShips: shipsAmount initializeMaxLaps: someLaps [
+Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: playerAmount initializeMaxLaps: someLaps initializeDeck: aDeck [
 
+	deck := aDeck.
 	maxLaps := someLaps.
 	board := aBoard.
 	dice := someDice.
-	ships := OrderedCollection new.
-	(1 to: shipsAmount) do: [ :x | ships add: (Ship named: (x asString) withFuel: self calculateMaxFuel ) ].
+	players := OrderedCollection new.
+	lastCard := NullCard.
+	lastEffect := NullEffect new.
+	(1 to: playerAmount) do: [ :x |
+		players add: ((Player
+				  named: x asString
+				  withShip: (Ship withFuel: self calculateMaxFuel)) addCards:
+				 (Deck getRandomCards: 2)) ]
 ]
 
 { #category : #action }
-Game >> playTurn: aShip [
+Game >> playTurn: player [
 
-	(board move: aShip distance: (aShip play: dice))
-		applyEffect: aShip
-		withShips: ships
-		inBoard: board
+	turnHolder = player ifTrue: [
+		| rollRes thisEffect |
+		rollRes := player play: dice.
+		self checkBounty: rollRes for: player.
+		thisEffect := board move: player distance: rollRes.
+		thisEffect applyEffect: player withPlayers: players inBoard: board.
+		lastEffect := thisEffect ]
 ]
 
 { #category : #action }
-Game >> skipTurn: aShip [
-	aShip resetFuelTank.
+Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
+	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
+		aPlayer useCard: (aCard
+				 withPlayers: players
+				 withTarget: aTarget
+				 withLast: (OrderedCollection with: lastEffect with: lastCard)
+				 withBoard: board).
+		aPlayer removeCard: aCard ].
+	lastCard := aCard.
+]
+
+{ #category : #action }
+Game >> skipTurn: player [
+
+	turnHolder = player ifTrue: [ player ship resetFuelTank ]
 ]

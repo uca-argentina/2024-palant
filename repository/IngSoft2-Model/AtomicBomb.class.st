@@ -5,7 +5,8 @@ Class {
 }
 
 { #category : #application }
-AtomicBomb >> applyEffect: affectedShip withShips: someShips inBoard: aBoard [
+AtomicBomb >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
 
-	someShips do: [ :aShip | (aShip getGravity > 0) ifFalse: [aBoard resetToStart: aShip] ]
+	somePlayers do: [ :aPlayer |
+		aPlayer ship getGravity > 0 ifFalse: [ aBoard resetToStart: aPlayer ] ]
 ]

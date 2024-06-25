@@ -25,12 +25,25 @@ Board >> boardSize [
 	^(squares size).
 ]
 
-{ #category : #'modifier state' }
+{ #category : #action }
+Board >> canReach: aPlayer distance: aDistance [
+	| missingFuel |
+	(aPlayer ship consumeFuel: aDistance) ifFalse: [
+		(aPlayer getAlly isNil) ifTrue: [^false].
+		missingFuel := aDistance - aPlayer getAlly ship getFuel.
+		(aPlayer getAlly ship consumeFuel: missingFuel) ifFalse: [
+			self resetToStart: aPlayer getAlly.
+			aPlayer getAlly penalize: 2.
+			^ false ] ].
+	^ true
+]
+
+{ #category : #getsAndSets }
 Board >> getParsecs [
 	^parsecs.
 ]
 
-{ #category : #'modifier state' }
+{ #category : #getsAndSets }
 Board >> getSquares [
 	^squares.
 ]
@@ -42,8 +55,12 @@ Board >> initializeRandomEffects: someDice [
 	squares do: [ :square |
 		probabilityScore := 100 atRandom.
 
-		probabilityScore <= 40 ifTrue: [
+		probabilityScore <= 30 ifTrue: [
 			square initializeWithEffect: NullEffect new ].
+
+		probabilityScore > 30 ifTrue: [
+			square initializeWithEffect: (CardDealer new)
+			 ].
 
 		probabilityScore > 40 ifTrue: [
 			square initializeWithEffect: BlackHole new ].
@@ -61,8 +78,11 @@ Board >> initializeRandomEffects: someDice [
 				(MoonWalk withDistance: self boardSize atRandom) ].
 
 		probabilityScore > 90 ifTrue: [
+			|unitList|
+			unitList := OrderedCollection with: (LightYear withUnits: 2) with:(Parsec withUnits: 1) with: (LightYear withUnits: 1).
 			square initializeWithEffect:
-				(HyperJump withParsecs: #( 2 4 3 5 9 10 ) asOrderedCollection) ].
+				(HyperJump withUnits: unitList withBoard: self)
+				].
 
 		probabilityScore > 98 ifTrue: [
 			square initializeWithEffect: AtomicBomb new ] ]
@@ -91,49 +111,52 @@ Board >> initializeWormSquares [
 ]
 
 { #category : #action }
-Board >> move: aShip distance: aDistance [
+Board >> move: aPlayer distance: aDistance [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	(aShip consumeFuel: aDistance)
+	shipPosition := aPlayer ship getShipPosition.
+	(self canReach: aPlayer distance: aDistance )
 		ifTrue: [
-			(self takeOut: aShip).
-			aShip setShipPosition: shipPosition + aDistance.
-			^(self place: aShip at: shipPosition + aDistance)
+			(self takeOut: aPlayer).
+			aPlayer ship setShipPosition: shipPosition + aDistance.
+			^(self place: aPlayer at: shipPosition + aDistance)
 			 ]
-		ifFalse: [ self resetToStart: aShip.
-					  aShip penalize: 2.
+		ifFalse: [
+			
+			
+			 self resetToStart: aPlayer ship.
+					  aPlayer ship penalize: 2.
 					  ^NullEffect new.
 					 ].
 	
 ]
 
-{ #category : #accessing }
-Board >> place: aShip at: aPosition [
+{ #category : #action }
+Board >> place: aPlayer at: aPosition [
 
 	| moveTo |
 	moveTo := aPosition.
 	[ moveTo > self boardSize ] whileTrue: [
-		aShip addLaps: 1.
+		aPlayer ship addLaps: 1.
 		moveTo := moveTo - self boardSize ].
 	[ moveTo <= 0 ] whileTrue: [
-		aShip addLaps: -1.
+		aPlayer ship addLaps: -1.
 		moveTo := moveTo + self boardSize ].
-	aShip setShipPosition: moveTo.
-	^ (squares at: moveTo) dockShip: aShip
+	aPlayer ship setShipPosition: moveTo.
+	^ (squares at: moveTo) dockShip: aPlayer ship.
 ]
 
 { #category : #'modifier state' }
-Board >> resetToStart: aShip [
-	self takeOut: aShip.
-	self place: aShip at: 1.
+Board >> resetToStart: aPlayer [
+	self takeOut: aPlayer.
+	self place: aPlayer at: 1.
 ]
 
 { #category : #'modifier state' }
-Board >> takeOut: aShip [
+Board >> takeOut: aPlayer [
 
 	| shipPosition |
-	shipPosition := aShip getShipPosition.
-	aShip setShipPosition: -1.
-	^ (squares at: shipPosition) undockShip: aShip
+	shipPosition := aPlayer ship getShipPosition.
+	aPlayer ship setShipPosition: -1.
+	^ (squares at: shipPosition) undockShip: aPlayer ship
 ]
