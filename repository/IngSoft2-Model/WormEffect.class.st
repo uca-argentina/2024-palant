@@ -13,10 +13,10 @@ WormEffect class >> withLink: linkPos [
 ]
 
 { #category : #application }
-WormEffect >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+WormEffect >> applyEffect: affectedPlayer [
 
-	aBoard takeOut: affectedPlayer.
-	aBoard place: affectedPlayer at: linkPosition
+	board takeOut: affectedPlayer.
+	board place: affectedPlayer at: linkPosition
 ]
 
 { #category : #initialization }

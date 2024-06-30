@@ -6,5 +6,5 @@ Class {
 
 { #category : #initialization }
 Repeat >> applyCardEffect [
-	(lastEffect at: 1) applyEffect: (myTarget at: 1) withPlayers: players inBoard: board. 
+	lastEffect applyEffect: targetPlayer. 
 ]

@@ -6,10 +6,13 @@ Class {
 
 { #category : #'as yet unclassified' }
 Redo class >> canBeUsedAnytime [
-	^(thisContext sender receiver) getLastCard canBeUsedAnytime.
+	(thisContext sender receiver getLastCard isNil) ifFalse:[
+	^ (thisContext sender receiver) getLastCard canBeUsedAnytime.
+	].
+	^true.
 ]
 
 { #category : #initialization }
 Redo >> applyCardEffect [
-	((lastEffect at: 2) withPlayers: players withTarget: myTarget withLast: lastEffect withBoard: board) applyCardEffect.  
+	lastEffect applyEffect: targetPlayer
 ]

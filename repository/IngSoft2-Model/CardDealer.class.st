@@ -8,6 +8,6 @@ Class {
 }
 
 { #category : #application }
-CardDealer >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+CardDealer >> applyEffect: affectedPlayer [
 	affectedPlayer addCards: (Deck getRandomCards: 1).
 ]

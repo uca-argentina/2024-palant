@@ -15,6 +15,6 @@ PermanentCard class >> canBeUsedAnytime [
 ]
 
 { #category : #'as yet unclassified' }
-PermanentCard class >> removeCardEffect [
+PermanentCard class >> removeCardEffect: aCard from: aCardList [
 	self subclassResponsibility.
 ]
