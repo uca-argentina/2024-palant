@@ -345,7 +345,7 @@ CardTest >> test12RedoCardCopiesLastCard [
 	aLoadedBoard place: aPlayer at: 5.
 	aLoadedBoard place: bPlayer at: 5.
 	aPlayer addCards: (OrderedCollection with: Repeat).
-	bPlayer addCards: (OrderedCollection with: Redo).
+	bPlayer addCards: (OrderedCollection with: Redo with: Redo).
 	'--------------------------------------------------------------------------'.
 	aGame giveTurn: aPlayer.
 	aGame playTurn: aPlayer.
@@ -378,6 +378,43 @@ CardTest >> test13RedoCardDoesNothingIfNoCardsWereUsed [
 	aGame player: bPlayer throwsCard: Redo targetPlayer: aPlayer targetCard: nil.
 	self assert: (aPlayer ship getShipPosition) equals: 10.
 	self assert: (bPlayer ship getShipPosition) equals: 5.
+
+
+]
+
+{ #category : #tests }
+CardTest >> test14RedoCardCanBeThrownMultipleTimesInARow [
+	|aPlayer bPlayer someDice aLoadedBoard aGame |
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+	
+	aLoadedBoard := LoadedBoard clone: (Board withSize: 20 withWorms: false  withParsecs: 1  withDice: someDice ).
+	aLoadedBoard removeEffects.
+	aLoadedBoard initializeEffect: (BlackHole new) initializeAt: 10.
+
+	aGame := Game withBoard: aLoadedBoard withDice: someDice withPlayers: 2 withMaxLaps: 100.
+	
+	aPlayer := aGame getPlayers at: 1.
+	bPlayer := aGame getPlayers at: 2.
+	aLoadedBoard place: aPlayer at: 5.
+	aLoadedBoard place: bPlayer at: 5.
+	aPlayer addCards: (OrderedCollection with: Repeat).
+	bPlayer addCards: (OrderedCollection with: Redo with: Redo with: Redo).
+	'--------------------------------------------------------------------------'.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	aGame player: aPlayer throwsCard: Repeat targetPlayer: bPlayer targetCard: nil.
+	aGame skipTurn: aPlayer. 'FOR FUEL'.
+	aGame player: bPlayer throwsCard: Redo targetPlayer: aPlayer targetCard: nil.
+	aGame giveTurn: aPlayer.
+	aGame skipTurn: aPlayer. 'FOR FUEL'.
+	aGame giveTurn: bPlayer.
+	aGame player: bPlayer throwsCard: Redo targetPlayer: aPlayer targetCard: nil.
+	aGame giveTurn: aPlayer.
+	aGame skipTurn: aPlayer. 'FOR FUEL'.
+	aGame giveTurn: bPlayer.
+	aGame player: bPlayer throwsCard: Redo targetPlayer: aPlayer targetCard: nil.
+	self assert: (aPlayer ship getShipPosition) equals: 14.
+
 
 
 ]

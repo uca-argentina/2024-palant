@@ -14,5 +14,5 @@ Redo class >> canBeUsedAnytime [
 
 { #category : #initialization }
 Redo >> applyCardEffect [
-	lastEffect applyEffect: targetPlayer
+	(lastCard withTargetPlayer: targetPlayer withTargetCard: targetCard withLastEffect: lastEffect withLastCard: lastCard withBoard: board)	applyCardEffect.
 ]

@@ -129,15 +129,16 @@ Game >> playTurn: player [
 
 { #category : #action }
 Game >> player: aPlayer throwsCard: aCard targetPlayer: aTargetPlayer targetCard: aTargetCard [
+
 	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
 		aPlayer useCard: (aCard
 				 withTargetPlayer: aTargetPlayer
 				 withTargetCard: aTargetCard
 				 withLastEffect: lastEffect
-				 withLastCard: lastCard  
+				 withLastCard: lastCard
 				 withBoard: board).
 		aPlayer removeCard: aCard ].
-	lastCard := aCard.
+	aCard = Redo ifFalse: [ lastCard := aCard ]
 ]
 
 { #category : #action }
