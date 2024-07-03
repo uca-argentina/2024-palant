@@ -16,12 +16,6 @@ Ally class >> removeCardEffect: aCard fromCards: someCardList fromPlayer: aPlaye
 ]
 
 { #category : #initialization }
-Ally >> applyCardEffect [
-	usedBy setAlly: targetPlayer.
-	usedBy activateCard: Ally.
-]
-
-{ #category : #initialization }
 Ally >> applyCardEffect: cardUser [
 	cardUser setAlly: targetPlayer.
 	cardUser activateCard: Ally.
