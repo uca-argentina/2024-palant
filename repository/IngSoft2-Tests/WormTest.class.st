@@ -16,14 +16,25 @@ WormTest >> test01WormHolesAreInitialized [
 
 { #category : #tests }
 WormTest >> test02WormHolesTeleportShips [
-	|aBoard testingBoard aShip aPlayer wormPositions|
-	aBoard := Board withSize: 20 withWorms: true withParsecs: 1 withDice: (OrderedCollection with: (LoadedDie of: 3)).
-	testingBoard := LoadedBoard clone: aBoard.
-	aShip := Ship withFuel: 1000.
-	aPlayer := Player named: 'Pepe' withShip: aShip.
-	wormPositions := testingBoard findWormSquares.
-	aBoard place: aPlayer at: (wormPositions at: 1).
-	(aBoard move: aPlayer distance: -1).
-	(aBoard move: aPlayer distance: 1) applyEffect: aPlayer withPlayers: (OrderedCollection with: aPlayer) inBoard: aBoard .
-	self assert: (aPlayer ship getShipPosition ) equals: (wormPositions at: 2)
+	| aPlayer someDice aLoadedBoard aGame worms|
+	someDice := OrderedCollection with: (LoadedDie of: 5).
+
+	aLoadedBoard := LoadedBoard clone: (Board
+			                 withSize: 20
+			                 withWorms: true
+			                 withParsecs: 1
+			                 withDice: someDice).
+	aGame := Game
+		         withBoard: aLoadedBoard
+		         withDice: someDice
+		         withPlayers: 2
+		         withMaxLaps: 100.
+	aPlayer := aGame getPlayers at: 1.
+
+	worms := aLoadedBoard findWormSquares.
+	aLoadedBoard place: aPlayer at: (worms at: 1) - 5.
+	aGame giveTurn: aPlayer.
+	aGame playTurn: aPlayer.
+	self assert: (aPlayer ship getShipPosition) equals: (worms at: 2)
+	
 ]

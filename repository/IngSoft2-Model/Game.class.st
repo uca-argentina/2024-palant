@@ -54,11 +54,6 @@ Game >> checkBounty: rollRes for: player [
 			ifFalse: [ player ship addFuelCapacity: -1 ] ]
 ]
 
-{ #category : #getsAndSets }
-Game >> getLastCard [
-	^lastCard.
-]
-
 { #category : #action }
 Game >> getLeaderboard [
    | sortedPlayers |
@@ -105,7 +100,7 @@ Game >> initializeBoard: aBoard initializeDice: someDice initializePlayers: play
 	board := aBoard.
 	dice := someDice.
 	players := OrderedCollection new.
-	lastCard := NullCard.
+	lastCard := nil.
 	lastEffect := NullEffect new.
 	(1 to: playerAmount) do: [ :x |
 		players add: ((Player
@@ -122,20 +117,23 @@ Game >> playTurn: player [
 		rollRes := player play: dice.
 		self checkBounty: rollRes for: player.
 		thisEffect := board move: player distance: rollRes.
-		thisEffect applyEffect: player withPlayers: players inBoard: board.
+		thisEffect initializePlayers: players initializeBoard: board. 
+		thisEffect applyEffect: player.
 		lastEffect := thisEffect ]
 ]
 
 { #category : #action }
-Game >> player: aPlayer throwsCard: aCard for: aTarget in: aBoard [
-	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
+Game >> player: aPlayer throwsCard: aCard targetPlayer: aTargetPlayer targetCard: aTargetCard [
+
+	(aPlayer = turnHolder or: (aCard canBeUsedConsidering: lastCard)) ifTrue: [
 		aPlayer useCard: (aCard
-				 withPlayers: players
-				 withTarget: aTarget
-				 withLast: (OrderedCollection with: lastEffect with: lastCard)
+				 withTargetPlayer: aTargetPlayer
+				 withTargetCard: aTargetCard
+				 withLastEffect: lastEffect
+				 withLastCard: lastCard
 				 withBoard: board).
 		aPlayer removeCard: aCard ].
-	lastCard := aCard.
+	aCard = Redo ifFalse: [ lastCard := aCard ]
 ]
 
 { #category : #action }

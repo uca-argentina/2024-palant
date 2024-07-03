@@ -31,8 +31,7 @@ Player >> addCards: someCards [
 
 { #category : #accessing }
 Player >> deactivateCard: aCard [
-	aCard removeCardEffect.
-	activeCards remove: aCard.
+	aCard removeCardEffect: aCard fromCards: activeCards fromPlayer: self.
 ]
 
 { #category : #getsAndSets }
@@ -86,10 +85,12 @@ Player >> play: someDice [
 
 { #category : #accessing }
 Player >> removeCard: aCard [
-	| cardIndex |
+
 	1 to: cards size do: [ :x |
-	(cards at: x) = aCard ifTrue: [ cardIndex := x ] ].
-	cards removeAt: cardIndex
+		(cards at: x) = aCard ifTrue: [
+			cards removeAt: x.
+			^ true ] ].
+	Error signal: 'Player does not have such card.'. 
 ]
 
 { #category : #accessing }
@@ -113,5 +114,5 @@ Player >> ship [
 
 { #category : #accessing }
 Player >> useCard: aCard [
-	aCard applyCardEffect.
+	aCard applyCardEffect: self.
 ]

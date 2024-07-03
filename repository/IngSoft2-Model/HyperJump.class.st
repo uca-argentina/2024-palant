@@ -13,9 +13,9 @@ HyperJump class >> withUnits: aUnitList withBoard: aBoard [
 ]
 
 { #category : #application }
-HyperJump >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+HyperJump >> applyEffect: affectedPlayer [
 
-	aBoard
+	board
 		move: affectedPlayer
 		distance:
 		(self cycleDistance)

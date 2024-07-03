@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #application }
-BlackHole >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
+BlackHole >> applyEffect: affectedPlayer [
 
-	aBoard move: (affectedPlayer) distance: -4
+	board move: (affectedPlayer) distance: -4
 ]

@@ -5,7 +5,6 @@ Class {
 }
 
 { #category : #application }
-NullEffect >> applyEffect: affectedPlayer withPlayers: somePlayers inBoard: aBoard [
-
+NullEffect >> applyEffect: affectedPlayer [
 	^ true
 ]

@@ -10,11 +10,11 @@ Acceleration class >> affectRollResult [
 ]
 
 { #category : #'as yet unclassified' }
-Acceleration class >> removeCardEffect [
- ^true.
+Acceleration class >> removeCardEffect: aCard fromCards: someCardList fromPlayer: aPlayer [
+ someCardList remove: aCard.
 ]
 
 { #category : #action }
-Acceleration >> applyCardEffect [
-	players do: [ :player | player activateCard: Acceleration].
+Acceleration >> applyCardEffect: cardUser [
+	targetPlayer do: [ :player | player activateCard: Acceleration].
 ]

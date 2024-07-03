@@ -10,11 +10,11 @@ PermanentCard class >> affectRollResult [
 ]
 
 { #category : #'as yet unclassified' }
-PermanentCard class >> canBeUsedAnytime [
+PermanentCard class >> canBeUsedConsidering: lastCard [
 	^false.
 ]
 
 { #category : #'as yet unclassified' }
-PermanentCard class >> removeCardEffect [
+PermanentCard class >> removeCardEffect: aCard from: aCardList [
 	self subclassResponsibility.
 ]

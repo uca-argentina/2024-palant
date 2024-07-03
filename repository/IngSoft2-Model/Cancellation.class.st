@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #initialization }
-Cancellation >> applyCardEffect [
-	(myTarget at: 1) deactivateCard: (myTarget at: 2).
+Cancellation >> applyCardEffect: cardUser [
+	targetPlayer deactivateCard: targetCard.
 ]
