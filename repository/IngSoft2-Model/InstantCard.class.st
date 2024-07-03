@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-InstantCard class >> canBeUsedAnytime [
+InstantCard class >> canBeUsedConsidering: lastCard [
 	^true.
 ]

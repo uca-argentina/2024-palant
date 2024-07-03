@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Redo class >> canBeUsedAnytime [
-	(thisContext sender receiver getLastCard isNil) ifFalse:[
-	^ (thisContext sender receiver) getLastCard canBeUsedAnytime.
+Redo class >> canBeUsedConsidering: lastCard [
+	(lastCard isNil) ifFalse:[
+	^ lastCard canBeUsedConsidering: self.
 	].
 	^true.
 ]
