@@ -10,13 +10,19 @@ Ally class >> affectRollResult [
 ]
 
 { #category : #'as yet unclassified' }
-Ally class >> removeCardEffect: aCard from: someCardList [
+Ally class >> removeCardEffect: aCard fromCards: someCardList fromPlayer: aPlayer [
    someCardList remove: aCard.
-	thisContext sender receiver setAlly: nil
+	aPlayer setAlly: nil
 ]
 
 { #category : #initialization }
 Ally >> applyCardEffect [
-	(thisContext sender receiver) setAlly: targetPlayer.
-	(thisContext sender receiver) activateCard: Ally.
+	usedBy setAlly: targetPlayer.
+	usedBy activateCard: Ally.
+]
+
+{ #category : #initialization }
+Ally >> applyCardEffect: cardUser [
+	cardUser setAlly: targetPlayer.
+	cardUser activateCard: Ally.
 ]

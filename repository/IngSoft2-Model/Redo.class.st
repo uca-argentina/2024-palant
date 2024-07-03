@@ -13,7 +13,7 @@ Redo class >> canBeUsedAnytime [
 ]
 
 { #category : #initialization }
-Redo >> applyCardEffect [
+Redo >> applyCardEffect: cardUser [
 
 	lastCard isNil ifFalse: [
 		(lastCard
@@ -21,5 +21,5 @@ Redo >> applyCardEffect [
 			 withTargetCard: targetCard
 			 withLastEffect: lastEffect
 			 withLastCard: lastCard
-			 withBoard: board) applyCardEffect ]
+			 withBoard: board) applyCardEffect: cardUser ]
 ]
