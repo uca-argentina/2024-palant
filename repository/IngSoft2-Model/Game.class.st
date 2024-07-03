@@ -54,11 +54,6 @@ Game >> checkBounty: rollRes for: player [
 			ifFalse: [ player ship addFuelCapacity: -1 ] ]
 ]
 
-{ #category : #getsAndSets }
-Game >> getLastCard [
-	^lastCard.
-]
-
 { #category : #action }
 Game >> getLeaderboard [
    | sortedPlayers |
@@ -130,7 +125,7 @@ Game >> playTurn: player [
 { #category : #action }
 Game >> player: aPlayer throwsCard: aCard targetPlayer: aTargetPlayer targetCard: aTargetCard [
 
-	(aPlayer = turnHolder or: aCard canBeUsedAnytime) ifTrue: [
+	(aPlayer = turnHolder or: (aCard canBeUsedConsidering: lastCard)) ifTrue: [
 		aPlayer useCard: (aCard
 				 withTargetPlayer: aTargetPlayer
 				 withTargetCard: aTargetCard

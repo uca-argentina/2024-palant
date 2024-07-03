@@ -5,15 +5,15 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Redo class >> canBeUsedAnytime [
-	(thisContext sender receiver getLastCard isNil) ifFalse:[
-	^ (thisContext sender receiver) getLastCard canBeUsedAnytime.
+Redo class >> canBeUsedConsidering: lastCard [
+	(lastCard isNil) ifFalse:[
+	^ lastCard canBeUsedConsidering: self.
 	].
 	^true.
 ]
 
 { #category : #initialization }
-Redo >> applyCardEffect [
+Redo >> applyCardEffect: cardUser [
 
 	lastCard isNil ifFalse: [
 		(lastCard
@@ -21,5 +21,5 @@ Redo >> applyCardEffect [
 			 withTargetCard: targetCard
 			 withLastEffect: lastEffect
 			 withLastCard: lastCard
-			 withBoard: board) applyCardEffect ]
+			 withBoard: board) applyCardEffect: cardUser ]
 ]

@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #initialization }
-Repeat >> applyCardEffect [
+Repeat >> applyCardEffect: cardUser [
 	lastEffect applyEffect: targetPlayer. 
 ]

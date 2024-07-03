@@ -10,11 +10,11 @@ Overload class >> affectRollResult [
 ]
 
 { #category : #'as yet unclassified' }
-Overload class >> removeCardEffect: aCard from: someCardList [
+Overload class >> removeCardEffect: aCard fromCards: someCardList fromPlayer: aPlayer [
 	someCardList remove: aCard.
 ]
 
 { #category : #initialization }
-Overload >> applyCardEffect [
+Overload >> applyCardEffect: cardUser [
 	targetPlayer activateCard: Overload.
 ]

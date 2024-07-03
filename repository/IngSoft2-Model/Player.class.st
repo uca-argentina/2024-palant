@@ -31,7 +31,7 @@ Player >> addCards: someCards [
 
 { #category : #accessing }
 Player >> deactivateCard: aCard [
-	aCard removeCardEffect: aCard from: activeCards.
+	aCard removeCardEffect: aCard fromCards: activeCards fromPlayer: self.
 ]
 
 { #category : #getsAndSets }
@@ -114,5 +114,5 @@ Player >> ship [
 
 { #category : #accessing }
 Player >> useCard: aCard [
-	aCard applyCardEffect.
+	aCard applyCardEffect: self.
 ]
